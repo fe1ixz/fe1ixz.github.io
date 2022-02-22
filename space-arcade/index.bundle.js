@@ -56956,10 +56956,9 @@ const ASTROID_BLASTER_CONSTANTS = {
 	ASTROID_START_PLANE: 'start_plane',
 	ASTROID_PREFIX: 'astroid',
 	TURRET_HANDLE_COLLIDER_RADIUS: 0.2,
-	SHIELD_DISTANCE: 7.5,
-	ASTROID_SPEED_MULTIPLIER: 1,
-	ASTROID_SPAWN_MULTIPLIER: 1,
+	SHIELD_DISTANCE: 8,
 	PLAYER_HEALTH_POINTS: 10,
+	ASTROID_BASE_SPAWN_TIME: 2,
 };
 
 const DROIDS_CONSTANTS = {
@@ -56992,6 +56991,10 @@ const DROIDS_CONSTANTS = {
 			),
 		},
 	},
+	DROID_BASE_SPAWN_TIME: 3,
+	DROID_BASE_MOVEMENT_SPEED: 2,
+	DROID_BASE_LASER_SPEED: 2,
+	DROID_ATTACK_CHARGING_TIME: 1,
 };
 
 
@@ -57007,34 +57010,42 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "setupECSY": () => (/* binding */ setupECSY)
 /* harmony export */ });
-/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
-/* harmony import */ var _components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/AstroidBlasterGameComponent */ "./src/js/components/AstroidBlasterGameComponent.js");
+/* harmony import */ var _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/AstroidsGameComponent */ "./src/js/components/AstroidsGameComponent.js");
+/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
 /* harmony import */ var _components_TagComponents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/TagComponents */ "./src/js/components/TagComponents.js");
 /* harmony import */ var _components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/DroidsGameComponents */ "./src/js/components/DroidsGameComponents.js");
 /* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
-/* harmony import */ var _systems_AstroidBlasterGameSystem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./systems/AstroidBlasterGameSystem */ "./src/js/systems/AstroidBlasterGameSystem.js");
-/* harmony import */ var _systems_AstroidSystem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./systems/AstroidSystem */ "./src/js/systems/AstroidSystem.js");
-/* harmony import */ var _systems_droidsGame_DroidSystem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./systems/droidsGame/DroidSystem */ "./src/js/systems/droidsGame/DroidSystem.js");
-/* harmony import */ var _systems_droidsGame_DamageSystem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./systems/droidsGame/DamageSystem */ "./src/js/systems/droidsGame/DamageSystem.js");
-/* harmony import */ var _systems_droidsGame_DroidsGameSystem__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./systems/droidsGame/DroidsGameSystem */ "./src/js/systems/droidsGame/DroidsGameSystem.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
-/* harmony import */ var _systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./systems/HandAnimationSystem */ "./src/js/systems/HandAnimationSystem.js");
-/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/HandComponent */ "./src/js/components/HandComponent.js");
-/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
-/* harmony import */ var _systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./systems/ObjectGNTSystem */ "./src/js/systems/ObjectGNTSystem.js");
-/* harmony import */ var _systems_droidsGame_PistolSystem__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./systems/droidsGame/PistolSystem */ "./src/js/systems/droidsGame/PistolSystem.js");
-/* harmony import */ var _systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./systems/RenderingSystem */ "./src/js/systems/RenderingSystem.js");
-/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var _systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./systems/RigidBodyPhysicsSystem */ "./src/js/systems/RigidBodyPhysicsSystem.js");
-/* harmony import */ var _systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./systems/SceneCreationSystem */ "./src/js/systems/SceneCreationSystem.js");
-/* harmony import */ var _systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./systems/SnapTurnSystem */ "./src/js/systems/SnapTurnSystem.js");
-/* harmony import */ var _systems_SwitchSystem__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./systems/SwitchSystem */ "./src/js/systems/SwitchSystem.js");
-/* harmony import */ var _systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./systems/TeleportSystem */ "./src/js/systems/TeleportSystem.js");
-/* harmony import */ var _systems_TurretSystem__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./systems/TurretSystem */ "./src/js/systems/TurretSystem.js");
-/* harmony import */ var _systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./systems/VrInputSystem */ "./src/js/systems/VrInputSystem.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
-/* harmony import */ var _systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./systems/WristMenuSystem */ "./src/js/systems/WristMenuSystem.js");
+/* harmony import */ var _components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/AssetLoaderComponent */ "./src/js/components/AssetLoaderComponent.js");
+/* harmony import */ var _systems_AssetLoadingSystem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./systems/AssetLoadingSystem */ "./src/js/systems/AssetLoadingSystem.js");
+/* harmony import */ var _systems_astroidsGame_AstroidSystem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./systems/astroidsGame/AstroidSystem */ "./src/js/systems/astroidsGame/AstroidSystem.js");
+/* harmony import */ var _systems_astroidsGame_MiniGameSystem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./systems/astroidsGame/MiniGameSystem */ "./src/js/systems/astroidsGame/MiniGameSystem.js");
+/* harmony import */ var _systems_droidsGame_DroidSystem__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./systems/droidsGame/DroidSystem */ "./src/js/systems/droidsGame/DroidSystem.js");
+/* harmony import */ var _systems_droidsGame_DamageSystem__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./systems/droidsGame/DamageSystem */ "./src/js/systems/droidsGame/DamageSystem.js");
+/* harmony import */ var _systems_droidsGame_MiniGameSystem__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./systems/droidsGame/MiniGameSystem */ "./src/js/systems/droidsGame/MiniGameSystem.js");
+/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
+/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
+/* harmony import */ var _systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./systems/HandAnimationSystem */ "./src/js/systems/HandAnimationSystem.js");
+/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./components/HandComponent */ "./src/js/components/HandComponent.js");
+/* harmony import */ var _systems_MiniGameSwitchingSystem__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./systems/MiniGameSwitchingSystem */ "./src/js/systems/MiniGameSwitchingSystem.js");
+/* harmony import */ var _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./components/MiniGamesComponent */ "./src/js/components/MiniGamesComponent.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./systems/ObjectGNTSystem */ "./src/js/systems/ObjectGNTSystem.js");
+/* harmony import */ var _systems_droidsGame_PistolSystem__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./systems/droidsGame/PistolSystem */ "./src/js/systems/droidsGame/PistolSystem.js");
+/* harmony import */ var _systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./systems/RenderingSystem */ "./src/js/systems/RenderingSystem.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ./components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./systems/RigidBodyPhysicsSystem */ "./src/js/systems/RigidBodyPhysicsSystem.js");
+/* harmony import */ var _systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(/*! ./systems/SceneCreationSystem */ "./src/js/systems/SceneCreationSystem.js");
+/* harmony import */ var _systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(/*! ./systems/SnapTurnSystem */ "./src/js/systems/SnapTurnSystem.js");
+/* harmony import */ var _systems_SwitchSystem__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(/*! ./systems/SwitchSystem */ "./src/js/systems/SwitchSystem.js");
+/* harmony import */ var _systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(/*! ./systems/TeleportSystem */ "./src/js/systems/TeleportSystem.js");
+/* harmony import */ var _systems_astroidsGame_TurretSystem__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(/*! ./systems/astroidsGame/TurretSystem */ "./src/js/systems/astroidsGame/TurretSystem.js");
+/* harmony import */ var _systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(/*! ./systems/VrInputSystem */ "./src/js/systems/VrInputSystem.js");
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var _systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_31__ = __webpack_require__(/*! ./systems/WristMenuSystem */ "./src/js/systems/WristMenuSystem.js");
+
+
+
+
 
 
 
@@ -57066,7 +57077,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const setupECSY = () => {
-	let world = new ecsy__WEBPACK_IMPORTED_MODULE_26__.World();
+	let world = new ecsy__WEBPACK_IMPORTED_MODULE_30__.World();
 
 	registerTagComponents(world);
 
@@ -57088,8 +57099,9 @@ const registerTagComponents = (world) => {
 	world.registerComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.RightController);
 	world.registerComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.LeftController);
 	world.registerComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.Occupied);
-	world.registerComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.ArcadeSwitch);
-	world.registerComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_1__.TurretLaser);
+	world.registerComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__.ArcadeSwitch);
+	world.registerComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__.MiniGameSwitch);
+	world.registerComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretLaser);
 	world.registerComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__.PistolLaser);
 	world.registerComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__.DroidLaser);
 };
@@ -57099,18 +57111,23 @@ const registerTagComponents = (world) => {
  * @param {World} world
  */
 const registerComponents = (world) => {
-	world.registerComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_10__.GameStateComponent);
-	world.registerComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_14__.Object3DComponent);
+	world.registerComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_12__.GameStateComponent);
+	world.registerComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_18__.Object3DComponent);
 	world.registerComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.VrControllerComponent);
-	world.registerComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_18__.RigidBodyComponent);
-	world.registerComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_13__.HandComponent);
-	world.registerComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_11__.GrabbableComponent);
-	world.registerComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.SwitchComponent);
-	world.registerComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_1__.AstroidBlasterGameComponent);
-	world.registerComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_1__.AstroidComponent);
+	world.registerComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_22__.RigidBodyComponent);
+	world.registerComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_15__.HandComponent);
+	world.registerComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_13__.GrabbableComponent);
+	world.registerComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__.SwitchComponent);
+	world.registerComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidsGameComponent);
+	world.registerComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent);
 	world.registerComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__.DroidsGameComponent);
 	world.registerComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__.PistolComponent);
 	world.registerComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__.DroidComponent);
+	world.registerComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_3__.PlayerComponent);
+	world.registerComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretComponent);
+	world.registerComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AGPlayerComponent);
+	world.registerComponent(_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_17__.MiniGamesComponent);
+	world.registerComponent(_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_5__.AssetLoaderComponent);
 };
 
 /**
@@ -57118,50 +57135,100 @@ const registerComponents = (world) => {
  * @param {World} world
  */
 const registerSystems = (world) => {
-	world.registerSystem(_systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_20__.SceneCreationSystem);
+	world.registerSystem(_systems_AssetLoadingSystem__WEBPACK_IMPORTED_MODULE_6__.AssetLoadingSystem);
+	world.registerSystem(_systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_24__.SceneCreationSystem);
 	// input
-	world.registerSystem(_systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_25__.VrInputSystem);
-	world.registerSystem(_systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_12__.HandAnimationSystem);
+	world.registerSystem(_systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_29__.VrInputSystem);
+	world.registerSystem(_systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_14__.HandAnimationSystem);
 	// locomotion
-	world.registerSystem(_systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_23__.TeleportSystem);
-	world.registerSystem(_systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_21__.SnapTurnSystem);
+	world.registerSystem(_systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_27__.TeleportSystem);
+	world.registerSystem(_systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_25__.SnapTurnSystem);
 	// object manipulation
-	world.registerSystem(_systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_15__.ObjectGNTSystem);
-	world.registerSystem(_systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_19__.RigidBodyPhysicsSystem);
-	world.registerSystem(_systems_SwitchSystem__WEBPACK_IMPORTED_MODULE_22__.SwitchSystem);
+	world.registerSystem(_systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_19__.ObjectGNTSystem);
+	world.registerSystem(_systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_23__.RigidBodyPhysicsSystem);
+	world.registerSystem(_systems_SwitchSystem__WEBPACK_IMPORTED_MODULE_26__.SwitchSystem);
+	world.registerSystem(_systems_MiniGameSwitchingSystem__WEBPACK_IMPORTED_MODULE_16__.MiniGameSwitchingSystem);
 	// Astroids mini game
-	world.registerSystem(_systems_AstroidBlasterGameSystem__WEBPACK_IMPORTED_MODULE_5__.AstroidBlasterGameSystem);
-	world.registerSystem(_systems_TurretSystem__WEBPACK_IMPORTED_MODULE_24__.TurretSystem);
-	world.registerSystem(_systems_AstroidSystem__WEBPACK_IMPORTED_MODULE_6__.AstroidSystem);
+	world.registerSystem(_systems_astroidsGame_MiniGameSystem__WEBPACK_IMPORTED_MODULE_8__.MiniGameSystem);
+	world.registerSystem(_systems_astroidsGame_TurretSystem__WEBPACK_IMPORTED_MODULE_28__.TurretSystem);
+	world.registerSystem(_systems_astroidsGame_AstroidSystem__WEBPACK_IMPORTED_MODULE_7__.AstroidSystem);
+	world.getSystem(_systems_astroidsGame_AstroidSystem__WEBPACK_IMPORTED_MODULE_7__.AstroidSystem).stop();
 	// Droids mini game
-	world.registerSystem(_systems_droidsGame_DroidsGameSystem__WEBPACK_IMPORTED_MODULE_9__.DroidsGameSystem);
-	world.registerSystem(_systems_droidsGame_PistolSystem__WEBPACK_IMPORTED_MODULE_16__.PistolSystem);
-	world.registerSystem(_systems_droidsGame_DroidSystem__WEBPACK_IMPORTED_MODULE_7__.DroidSystem);
-	world.registerSystem(_systems_droidsGame_DamageSystem__WEBPACK_IMPORTED_MODULE_8__.DamageSystem);
-	world.getSystem(_systems_droidsGame_DroidSystem__WEBPACK_IMPORTED_MODULE_7__.DroidSystem).stop();
-	world.getSystem(_systems_droidsGame_DamageSystem__WEBPACK_IMPORTED_MODULE_8__.DamageSystem).stop();
+	world.registerSystem(_systems_droidsGame_MiniGameSystem__WEBPACK_IMPORTED_MODULE_11__.MiniGameSystem);
+	world.registerSystem(_systems_droidsGame_PistolSystem__WEBPACK_IMPORTED_MODULE_20__.PistolSystem);
+	world.registerSystem(_systems_droidsGame_DroidSystem__WEBPACK_IMPORTED_MODULE_9__.DroidSystem);
+	world.registerSystem(_systems_droidsGame_DamageSystem__WEBPACK_IMPORTED_MODULE_10__.DamageSystem);
+	world.getSystem(_systems_droidsGame_DroidSystem__WEBPACK_IMPORTED_MODULE_9__.DroidSystem).stop();
+	world.getSystem(_systems_droidsGame_DamageSystem__WEBPACK_IMPORTED_MODULE_10__.DamageSystem).stop();
 
-	world.registerSystem(_systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_27__.WristMenuSystem);
-	world.registerSystem(_systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_17__.RenderingSystem);
-
-	// world.getSystem(AstroidBlasterGameSystem).stop();
-	world.getSystem(_systems_droidsGame_DroidsGameSystem__WEBPACK_IMPORTED_MODULE_9__.DroidsGameSystem).stop();
+	world.registerSystem(_systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_31__.WristMenuSystem);
+	world.registerSystem(_systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_21__.RenderingSystem);
 };
 
 
 /***/ }),
 
-/***/ "./src/js/components/AstroidBlasterGameComponent.js":
-/*!**********************************************************!*\
-  !*** ./src/js/components/AstroidBlasterGameComponent.js ***!
-  \**********************************************************/
+/***/ "./src/js/components/AssetLoaderComponent.js":
+/*!***************************************************!*\
+  !*** ./src/js/components/AssetLoaderComponent.js ***!
+  \***************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AstroidBlasterGameComponent": () => (/* binding */ AstroidBlasterGameComponent),
+/* harmony export */   "GLTF_MODELS": () => (/* binding */ GLTF_MODELS),
+/* harmony export */   "GLTF_PATHS": () => (/* binding */ GLTF_PATHS),
+/* harmony export */   "AssetLoaderComponent": () => (/* binding */ AssetLoaderComponent)
+/* harmony export */ });
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+
+
+const GLTF_MODELS = {
+	STATIC_SCENE: 0,
+	DROIDS_MINI_GAME: 1,
+	ASTROIDS_MINI_GAME: 2,
+	COLLIDERS: 3,
+	INTERACTIVE: 4,
+	SWITCHES: 5,
+};
+
+const GLTF_PATHS = {};
+GLTF_PATHS[GLTF_MODELS.STATIC_SCENE] = 'assets/static-scene.glb';
+GLTF_PATHS[GLTF_MODELS.DROIDS_MINI_GAME] = 'assets/droids-mini-game.glb';
+GLTF_PATHS[GLTF_MODELS.ASTROIDS_MINI_GAME] = 'assets/astroids-mini-game.glb';
+GLTF_PATHS[GLTF_MODELS.COLLIDERS] = 'assets/colliders.glb';
+GLTF_PATHS[GLTF_MODELS.INTERACTIVE] = 'assets/interactive.glb';
+GLTF_PATHS[GLTF_MODELS.SWITCHES] = 'assets/switches.glb';
+
+class AssetLoaderComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+AssetLoaderComponent.schema = {
+	models: {
+		type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref,
+		default: new Array(Object.keys(GLTF_MODELS).length).fill().map((_) => {
+			return { isLoading: false, isLoaded: false, model: null };
+		}),
+	},
+	itemsLoaded: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
+	allLoaded: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: false },
+};
+
+
+/***/ }),
+
+/***/ "./src/js/components/AstroidsGameComponent.js":
+/*!****************************************************!*\
+  !*** ./src/js/components/AstroidsGameComponent.js ***!
+  \****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AstroidsGameComponent": () => (/* binding */ AstroidsGameComponent),
 /* harmony export */   "AstroidComponent": () => (/* binding */ AstroidComponent),
-/* harmony export */   "TurretLaser": () => (/* binding */ TurretLaser)
+/* harmony export */   "TurretComponent": () => (/* binding */ TurretComponent),
+/* harmony export */   "TurretLaser": () => (/* binding */ TurretLaser),
+/* harmony export */   "AGPlayerComponent": () => (/* binding */ AGPlayerComponent)
 /* harmony export */ });
 /* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
 /* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
@@ -57169,44 +57236,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class AstroidBlasterGameComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {
-	resetGame() {
-		this.gameActive = false;
-		this.gameTimer = 0;
-		this.astroidSpawnTimer = 0;
-		this.playerHealthPoints = _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.PLAYER_HEALTH_POINTS;
-		this.playerScore = 0;
-		this.astroidSpeedMultiplier = _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.ASTROID_SPEED_MULTIPLIER;
-		this.astroidSpawnMultiplier = _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.ASTROID_SPAWN_MULTIPLIER;
-	}
-}
+class AstroidsGameComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
 
-AstroidBlasterGameComponent.schema = {
-	turretBase: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	turretBody: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	turretHandle: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	turretMuzzle: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	astroidPrototypes: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-
-	astroidStartPlane: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	astroidDirection: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	astroidMaxDistance: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.SHIELD_DISTANCE },
-
-	astroidSpeedMultiplier: {
-		type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number,
-		default: _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.ASTROID_SPEED_MULTIPLIER,
-	},
-	astroidSpawnMultiplier: {
-		type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number,
-		default: _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.ASTROID_SPAWN_MULTIPLIER,
-	},
-
+AstroidsGameComponent.schema = {
 	gameActive: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: false },
-	turretEngaged: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: false },
 	gameTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
 	astroidSpawnTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
-	playerHealthPoints: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.PLAYER_HEALTH_POINTS },
-	playerScore: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
+	astroidSpeedMultiplier: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 1 },
+	astroidSpawnMultiplier: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 1 },
 	gameRecords: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: [] },
 };
 
@@ -57214,10 +57251,27 @@ class AstroidComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
 
 AstroidComponent.schema = {
 	startPoint: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	healthPoints: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 2 },
+	maxDistance: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.SHIELD_DISTANCE },
+};
+
+class TurretComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+TurretComponent.schema = {
+	turretBase: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	turretBody: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	turretHandle: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	turretMuzzle: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	engaged: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: false },
 };
 
 class TurretLaser extends ecsy__WEBPACK_IMPORTED_MODULE_0__.TagComponent {}
+
+class AGPlayerComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+AGPlayerComponent.schema = {
+	hitPoints: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.PLAYER_HEALTH_POINTS },
+	score: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
+};
 
 
 /***/ }),
@@ -57235,33 +57289,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "PistolLaser": () => (/* binding */ PistolLaser),
 /* harmony export */   "DROID_STATE": () => (/* binding */ DROID_STATE),
 /* harmony export */   "DroidComponent": () => (/* binding */ DroidComponent),
-/* harmony export */   "DroidLaser": () => (/* binding */ DroidLaser)
+/* harmony export */   "DroidLaser": () => (/* binding */ DroidLaser),
+/* harmony export */   "PlayerComponent": () => (/* binding */ PlayerComponent)
 /* harmony export */ });
 /* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
 
 
-class DroidsGameComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {
-	resetGame() {
-		this.gameActive = false;
-		this.gameTimer = 0;
-		this.droidSpawnTimer = 5;
-		this.droidSpawnMultiplier = 1;
-		this.playerHitPoints = 10;
-	}
-}
+
+
+class DroidsGameComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
 
 DroidsGameComponent.schema = {
-	crateBase: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	crateLid: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	droidPrototype: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-
 	gameActive: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: false },
 	gameTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
-	droidSpawnTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 5 },
+	droidSpawnTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 3 },
 	droidSpawnMultiplier: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 1 },
-
-	playerHitPoints: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 10 },
-	playerHeadCollider: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: null },
+	droidMovementSpeedMultiplier: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 1 },
+	droidLaserSpeedMultiplier: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 1 },
 };
 
 class PistolComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
@@ -57283,11 +57328,22 @@ DroidComponent.schema = {
 	hitPoints: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 2 },
 	state: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: DROID_STATE.MOVING },
 	targetPosition: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
-	speed: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 5 },
-	attackTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 3 },
+	speed: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
+	attackTimer: {
+		type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number,
+		default: _Constants__WEBPACK_IMPORTED_MODULE_1__.DROIDS_CONSTANTS.DROID_ATTACK_CHARGING_TIME,
+	},
+	laserSpeed: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
 };
 
 class DroidLaser extends ecsy__WEBPACK_IMPORTED_MODULE_0__.TagComponent {}
+
+class PlayerComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+PlayerComponent.schema = {
+	hitPoints: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 10 },
+	score: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
+};
 
 
 /***/ }),
@@ -57415,6 +57471,44 @@ HandComponent.schema = {
 
 /***/ }),
 
+/***/ "./src/js/components/MiniGamesComponent.js":
+/*!*************************************************!*\
+  !*** ./src/js/components/MiniGamesComponent.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MiniGamesComponent": () => (/* binding */ MiniGamesComponent),
+/* harmony export */   "MINI_GAME_TYPE": () => (/* binding */ MINI_GAME_TYPE),
+/* harmony export */   "MINI_GAME_STATE": () => (/* binding */ MINI_GAME_STATE)
+/* harmony export */ });
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+
+
+class MiniGamesComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+const MINI_GAME_TYPE = {
+	ASTROIDS: 0,
+	DROIDS: 1,
+};
+
+const MINI_GAME_STATE = {
+	READY: 0,
+	CLEARING_PREV: 1,
+	CREATING_NEXT: 2,
+};
+
+MiniGamesComponent.schema = {
+	previousGame: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: MINI_GAME_TYPE.DROIDS },
+	activeGame: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: MINI_GAME_TYPE.ASTROIDS },
+	state: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: MINI_GAME_STATE.READY },
+	transitionTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
+};
+
+
+/***/ }),
+
 /***/ "./src/js/components/Object3DComponent.js":
 /*!************************************************!*\
   !*** ./src/js/components/Object3DComponent.js ***!
@@ -57534,6 +57628,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "BUTTON_STATE": () => (/* binding */ BUTTON_STATE),
 /* harmony export */   "SwitchComponent": () => (/* binding */ SwitchComponent),
 /* harmony export */   "ArcadeSwitch": () => (/* binding */ ArcadeSwitch),
+/* harmony export */   "MiniGameSwitch": () => (/* binding */ MiniGameSwitch),
 /* harmony export */   "SWITCH_TAG_MAPPING": () => (/* binding */ SWITCH_TAG_MAPPING)
 /* harmony export */ });
 /* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
@@ -57558,8 +57653,11 @@ SwitchComponent.schema = {
 
 class ArcadeSwitch extends ecsy__WEBPACK_IMPORTED_MODULE_0__.TagComponent {}
 
+class MiniGameSwitch extends ecsy__WEBPACK_IMPORTED_MODULE_0__.TagComponent {}
+
 const SWITCH_TAG_MAPPING = {
 	arcade: ArcadeSwitch,
+	minigame: MiniGameSwitch,
 };
 
 
@@ -58259,246 +58357,22 @@ const wrapText = (text, maxLength, center = false) => {
 
 /***/ }),
 
-/***/ "./src/js/systems/AstroidBlasterGameSystem.js":
-/*!****************************************************!*\
-  !*** ./src/js/systems/AstroidBlasterGameSystem.js ***!
-  \****************************************************/
+/***/ "./src/js/systems/AssetLoadingSystem.js":
+/*!**********************************************!*\
+  !*** ./src/js/systems/AssetLoadingSystem.js ***!
+  \**********************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AstroidBlasterGameSystem": () => (/* binding */ AstroidBlasterGameSystem)
+/* harmony export */   "AssetLoadingSystem": () => (/* binding */ AssetLoadingSystem)
 /* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
-/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
-/* harmony import */ var _components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/AstroidBlasterGameComponent */ "./src/js/components/AstroidBlasterGameComponent.js");
-/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
-/* harmony import */ var _lib_TextPanel__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../lib/TextPanel */ "./src/js/lib/TextPanel.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
-
-
-
-
-
-
-
-
-
-
-
-
-class AstroidBlasterGameSystem extends ecsy__WEBPACK_IMPORTED_MODULE_5__.System {
-	init() {
-		this.assetLoaded = false;
-		this.turretUI = null;
-		this.gameUI = null;
-		this.aimRings = null;
-	}
-
-	execute(delta, _time) {
-		if (!this.assetLoaded) {
-			this.queries.gameManager.results.forEach((entity) => {
-				this.loadGameAssets(entity.getComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_4__.GameStateComponent).scene);
-				this.assetLoaded = true;
-			});
-		}
-
-		let game = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_7__.getOnlyEntity)(
-			this.queries.astroidBlasterGame,
-			false,
-		)?.getMutableComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_2__.AstroidBlasterGameComponent);
-
-		if (!game) return;
-
-		this.turretUI.visible = game.turretEngaged;
-		this.aimRings.visible = game.turretEngaged;
-		this.gameUI.visible = !game.gameActive;
-
-		this.queries.arcadeSwitch.results.forEach((entity) => {
-			let switchComponent = entity.getComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.SwitchComponent);
-			if (switchComponent.valueJustChanged) {
-				if (game.gameActive && game.gameTimer > 5) {
-					game.resetGame();
-				} else if (!game.gameActive) {
-					game.gameActive = true;
-				}
-			}
-		});
-
-		if (game.gameActive) {
-			this.executeGame(delta, game);
-		}
-	}
-
-	loadGameAssets(scene) {
-		let loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_3__.GLTFLoader();
-		let turretBase, turretBody, turretHandle, turretMuzzle, astroidStartPlane;
-		let astroidPrototypes = [];
-
-		loader.load(_Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.GLTF_PATH, (gltf) => {
-			let object = gltf.scene;
-			object.children.forEach((node) => {
-				switch (node.name) {
-					case _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.TURRET_BASE_NAME:
-						turretBase = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.TURRET_BODY_NAME:
-						turretBody = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.TURRET_HANDLE_NAME:
-						turretHandle = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.TURRET_MUZZLE_NAME:
-						turretMuzzle = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.ASTROID_START_PLANE:
-						astroidStartPlane = node;
-						break;
-					default:
-						if (node.name.startsWith(_Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.ASTROID_PREFIX)) {
-							astroidPrototypes.push(node);
-						}
-						break;
-				}
-			});
-			scene.attach(turretBase);
-			turretBase.attach(turretBody);
-			turretBody.attach(turretHandle);
-			turretBody.attach(turretMuzzle);
-			let entity = this.world.createEntity();
-			entity.addComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_2__.AstroidBlasterGameComponent, {
-				turretBase,
-				turretBody,
-				turretHandle,
-				turretMuzzle,
-				astroidPrototypes,
-				astroidStartPlane,
-				astroidDirection: new three__WEBPACK_IMPORTED_MODULE_8__.Vector3(0, 0, 1),
-				astroidMaxDistance: 8,
-			});
-			this.turretUI = new _lib_TextPanel__WEBPACK_IMPORTED_MODULE_6__.TextPanel({
-				text: this.generateTurretUIText(),
-				fontOpacity: 0.5,
-				backgroundOpacity: 0.3,
-				padding: 0.01,
-				cornerRadius: 0.02,
-				zOffset: 0.005,
-			});
-			this.turretUI.rotateY(Math.PI);
-			this.turretUI.rotateX(Math.PI / -6);
-			this.turretUI.position.set(0, 0.06, -0.26);
-			turretBody.add(this.turretUI);
-
-			this.aimRings = new three__WEBPACK_IMPORTED_MODULE_8__.Group();
-			const aimRingGeometry = new three__WEBPACK_IMPORTED_MODULE_8__.RingGeometry(0.03, 0.04, 16);
-			for (let i = 0; i < 4; i++) {
-				const ring = new three__WEBPACK_IMPORTED_MODULE_8__.Mesh(
-					aimRingGeometry,
-					new three__WEBPACK_IMPORTED_MODULE_8__.MeshBasicMaterial({
-						color: 0xffffff,
-						transparent: true,
-						opacity: (0.5 * (4 - i)) / 4,
-					}),
-				);
-				ring.position.z = 0.3 * (i + 1);
-				ring.rotateY(Math.PI);
-				this.aimRings.add(ring);
-			}
-			this.aimRings.position.copy(
-				turretMuzzle.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_8__.Vector3()),
-			);
-			turretMuzzle.attach(this.aimRings);
-
-			const map = new three__WEBPACK_IMPORTED_MODULE_8__.TextureLoader().load(
-				'assets/images/astroids_welcome_panel.png',
-			);
-			const material = new three__WEBPACK_IMPORTED_MODULE_8__.MeshBasicMaterial({
-				map: map,
-				transparent: true,
-			});
-
-			this.gameUI = new three__WEBPACK_IMPORTED_MODULE_8__.Mesh(new three__WEBPACK_IMPORTED_MODULE_8__.PlaneGeometry(1, 1), material);
-			this.gameUI.rotateY(Math.PI);
-			this.gameUI.position.copy(turretBase.position);
-			this.gameUI.position.y += 0.5;
-			this.gameUI.position.z += 1;
-			scene.add(this.gameUI);
-		});
-	}
-
-	generateTurretUIText(game = null) {
-		return (
-			'Health: ' +
-			formatNumber(
-				game
-					? Math.floor(
-							(game.playerHealthPoints / _Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.PLAYER_HEALTH_POINTS) * 100,
-					  )
-					: 100,
-				3,
-			) +
-			'%\nScore:  ' +
-			formatNumber(game ? game.playerScore : 0, 4) +
-			'\nTimer:  ' +
-			formatNumber(game ? Math.floor(game.gameTimer) : 0, 3) +
-			's'
-		);
-	}
-
-	executeGame(delta, game) {
-		game.gameTimer += delta;
-		game.astroidSpawnMultiplier = 1 + (game.gameTimer / 15) * 0.1;
-		game.astroidSpeedMultiplier = 1 + (game.gameTimer / 15) * 0.1;
-		game.astroidSpawnTimer += delta;
-		this.turretUI.setText(this.generateTurretUIText(game));
-
-		if (game.playerHealthPoints <= 0) {
-			game.gameRecords.push({
-				playerScore: game.playerScore,
-				timeSurvived: game.gameTimer,
-			});
-			game.resetGame();
-		}
-	}
-}
-
-AstroidBlasterGameSystem.queries = {
-	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_4__.GameStateComponent] },
-	arcadeSwitch: { components: [_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.SwitchComponent, _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.ArcadeSwitch] },
-	astroidBlasterGame: { components: [_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_2__.AstroidBlasterGameComponent] },
-};
-
-const formatNumber = (number, digits) => {
-	let numberString = number.toString();
-	while (numberString.length < digits) numberString = '0' + numberString;
-	return numberString;
-};
-
-
-/***/ }),
-
-/***/ "./src/js/systems/AstroidSystem.js":
-/*!*****************************************!*\
-  !*** ./src/js/systems/AstroidSystem.js ***!
-  \*****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AstroidSystem": () => (/* binding */ AstroidSystem)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AstroidBlasterGameComponent */ "./src/js/components/AstroidBlasterGameComponent.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AssetLoaderComponent */ "./src/js/components/AssetLoaderComponent.js");
 /* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
-/* harmony import */ var _lib_ExpandingParticleCloud__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../lib/ExpandingParticleCloud */ "./src/js/lib/ExpandingParticleCloud.js");
-/* harmony import */ var _lib_ExpandingRing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/ExpandingRing */ "./src/js/lib/ExpandingRing.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
-/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
+/* harmony import */ var three_examples_jsm_loaders_KTX2Loader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three/examples/jsm/loaders/KTX2Loader */ "./node_modules/three/examples/jsm/loaders/KTX2Loader.js");
+/* harmony import */ var three_examples_jsm_libs_meshopt_decoder_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three/examples/jsm/libs/meshopt_decoder.module */ "./node_modules/three/examples/jsm/libs/meshopt_decoder.module.js");
 
 
 
@@ -58508,121 +58382,56 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const MANAGER = new three__WEBPACK_IMPORTED_MODULE_5__.LoadingManager();
 
+const THREE_PATH = `https://unpkg.com/three@0.${three__WEBPACK_IMPORTED_MODULE_5__.REVISION}.x`;
+const KTX2_LOADER = new three_examples_jsm_loaders_KTX2Loader__WEBPACK_IMPORTED_MODULE_3__.KTX2Loader(MANAGER).setTranscoderPath(
+	`${THREE_PATH}/examples/js/libs/basis/`,
+);
 
-
-const ASTROID_SPAWN_TIME = 1.5;
-
-class AstroidSystem extends ecsy__WEBPACK_IMPORTED_MODULE_7__.System {
+class AssetLoadingSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSystem {
 	init() {
-		this.raycaster = new three__WEBPACK_IMPORTED_MODULE_8__.Raycaster();
-		this.raycaster.far = 0.1;
+		this.loader = null;
 	}
 
-	execute(_delta, _time) {
-		let scene = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.getOnlyEntity)(this.queries.gameManager, false)?.getComponent(
-			_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_4__.GameStateComponent,
-		).scene;
-		let game = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.getOnlyEntity)(
-			this.queries.astroidBlasterGame,
-			false,
-		)?.getMutableComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidBlasterGameComponent);
-		if (!game || !scene) return;
-
-		if (game.gameActive) {
-			if (
-				game.astroidSpawnTimer >=
-				ASTROID_SPAWN_TIME / game.astroidSpawnMultiplier
-			) {
-				this.spawnAstroid(game, scene);
-				game.astroidSpawnTimer = 0;
-			}
-			this.updateAstroids(game, scene);
-		} else {
-			this.queries.astroid.results.forEach(_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.deleteEntity);
+	onExecute(_delta, _time) {
+		if (!this.loader) {
+			this.loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_2__.GLTFLoader(MANAGER)
+				.setCrossOrigin('anonymous')
+				.setKTX2Loader(
+					KTX2_LOADER.detectSupport(this.gameStateComponent.renderer),
+				)
+				.setMeshoptDecoder(three_examples_jsm_libs_meshopt_decoder_module__WEBPACK_IMPORTED_MODULE_4__.MeshoptDecoder);
 		}
-	}
 
-	spawnAstroid(game, scene) {
-		// console.log('spawning astroid');
-		let astroidPrototypes = game.astroidPrototypes;
-		let astroid = astroidPrototypes[
-			Math.floor(astroidPrototypes.length * Math.random())
-		].clone();
-		scene.add(astroid);
-		astroid.position.copy(game.astroidStartPlane.position);
-		astroid.position.x += Math.random() * 2 - 1;
-		astroid.position.y += Math.random() * 2 - 1;
-		let astroidEntity = this.world.createEntity();
-		astroidEntity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent, {
-			active: true,
-			direction: game.astroidDirection.clone(),
-			speed: (0.5 + Math.random() * 1.5) * game.astroidSpeedMultiplier,
-			hasRotation: true,
-			rotationAxis: new three__WEBPACK_IMPORTED_MODULE_8__.Vector3().randomDirection(),
-			rotationSpeed: Math.random() * 3,
-			perishable: false,
-		});
-		astroidEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__.Object3DComponent, { value: astroid });
-		astroidEntity.addComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent, {
-			startPoint: astroid.position.clone(),
-		});
-	}
+		const loaderComponent = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.getOnlyEntity)(
+			this.queries.assetLoader,
+			false,
+		)?.getMutableComponent(_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.AssetLoaderComponent);
+		if (!loaderComponent) return;
 
-	updateAstroids(game, scene) {
-		let astroidObjects = [];
-		let entitiesToDelete = new Set();
-		this.queries.astroid.results.forEach((entity) => {
-			let astroidComponent = entity.getMutableComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent);
-			let astroidObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__.Object3DComponent).value;
-			astroidObject.entity = entity;
-			astroidObjects.push(astroidObject);
-			if (
-				astroidObject.position.distanceTo(astroidComponent.startPoint) >
-				game.astroidMaxDistance
-			) {
-				game.playerHealthPoints -= 1;
-				entitiesToDelete.add(entity);
-				let expandingRing = new _lib_ExpandingRing__WEBPACK_IMPORTED_MODULE_3__.ExpandingRing({ color: 0xef6666 });
-				scene.add(expandingRing);
-				expandingRing.position.copy(astroidObject.position);
+		Object.entries(_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_MODELS).forEach((entry, i) => {
+			if (!loaderComponent.models[i].isLoading) {
+				loaderComponent.models[i].isLoading = true;
+				const path = _components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_PATHS[entry[1]];
+				this.loader.load(path, (gltf) => {
+					loaderComponent.models[i].model = gltf.scene;
+					loaderComponent.models[i].isLoaded = true;
+					loaderComponent.itemsLoaded += 1;
+				});
 			}
 		});
-		this.queries.laser.results.forEach((entity) => {
-			let laserObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__.Object3DComponent).value;
-			let laserRigidBody = entity.getMutableComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent);
-			this.raycaster.set(laserObject.position, laserRigidBody.direction);
-			let intersect = this.raycaster.intersectObjects(astroidObjects)[0];
-			if (intersect) {
-				let astroidEntity = intersect.object.entity;
-				let astroidRigidBody = astroidEntity.getComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent);
-				game.playerScore += 1;
-				entitiesToDelete.add(astroidEntity);
-				entitiesToDelete.add(entity);
-				let particleCloud = new _lib_ExpandingParticleCloud__WEBPACK_IMPORTED_MODULE_2__.ExpandingParticleCloud(
-					20,
-					astroidRigidBody.direction
-						.clone()
-						.multiplyScalar(astroidRigidBody.speed),
-				);
-				scene.add(particleCloud);
-				particleCloud.position.copy(intersect.object.position);
-			}
-		});
-		entitiesToDelete.forEach(_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.deleteEntity);
+
+		if (loaderComponent.itemsLoaded == Object.keys(_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_MODELS).length) {
+			loaderComponent.allLoaded = true;
+			this.stop();
+		}
 	}
 }
 
-AstroidSystem.queries = {
-	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_4__.GameStateComponent] },
-	astroidBlasterGame: { components: [_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidBlasterGameComponent] },
-	astroid: {
-		components: [_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__.Object3DComponent, _components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent],
-	},
-	laser: {
-		components: [_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__.Object3DComponent, _components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretLaser],
-	},
-};
+AssetLoadingSystem.addQueries({
+	assetLoader: { components: [_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.AssetLoaderComponent] },
+});
 
 
 /***/ }),
@@ -58695,6 +58504,81 @@ HandAnimationSystem.queries = {
 
 /***/ }),
 
+/***/ "./src/js/systems/MiniGameSwitchingSystem.js":
+/*!***************************************************!*\
+  !*** ./src/js/systems/MiniGameSwitchingSystem.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MiniGameSwitchingSystem": () => (/* binding */ MiniGameSwitchingSystem)
+/* harmony export */ });
+/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/MiniGamesComponent */ "./src/js/components/MiniGamesComponent.js");
+/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
+// import * as THREE from 'three';
+
+
+
+
+
+const CLEARING_PREV_TIME = 2;
+const CREATING_NEXT_TIME = 2;
+
+class MiniGameSwitchingSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_0__.GameSystem {
+	init() {
+		this.miniGameSwitchEntity = null;
+		this.miniGameEntity = this.world.createEntity();
+		this.miniGameEntity.addComponent(_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MiniGamesComponent);
+	}
+
+	onExecute(delta, _time) {
+		const miniGameSwitch = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_0__.getOnlyEntity)(
+			this.queries.miniGameSwitch,
+			false,
+		)?.getComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_2__.SwitchComponent);
+
+		const miniGame = this.miniGameEntity.getMutableComponent(
+			_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MiniGamesComponent,
+		);
+
+		if (!miniGameSwitch || !miniGame) return;
+
+		if (miniGameSwitch.valueJustChanged) {
+			if (miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MINI_GAME_STATE.READY) {
+				const prevGame = miniGame.activeGame;
+				miniGame.activeGame = miniGame.previousGame;
+				miniGame.previousGame = prevGame;
+				miniGame.transitionTimer = 0;
+				miniGame.state = _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MINI_GAME_STATE.CLEARING_PREV;
+			}
+		}
+
+		if (miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MINI_GAME_STATE.CLEARING_PREV) {
+			miniGame.transitionTimer += delta;
+			if (miniGame.transitionTimer >= CLEARING_PREV_TIME) {
+				miniGame.state = _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MINI_GAME_STATE.CREATING_NEXT;
+				miniGame.transitionTimer = 0;
+			}
+		} else if (miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MINI_GAME_STATE.CREATING_NEXT) {
+			miniGame.transitionTimer += delta;
+			if (miniGame.transitionTimer >= CREATING_NEXT_TIME) {
+				miniGame.state = _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MINI_GAME_STATE.READY;
+				miniGame.transitionTimer = 0;
+			}
+		}
+	}
+}
+
+MiniGameSwitchingSystem.addQueries({
+	miniGameSwitch: { components: [_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_2__.SwitchComponent, _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_2__.MiniGameSwitch] },
+	miniGame: { components: [_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_1__.MiniGamesComponent] },
+});
+
+
+/***/ }),
+
 /***/ "./src/js/systems/ObjectGNTSystem.js":
 /*!*******************************************!*\
   !*** ./src/js/systems/ObjectGNTSystem.js ***!
@@ -58751,6 +58635,7 @@ class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 		camera.getWorldPosition(this.cameraPosition);
 		let maxScore = 0;
 		let focusEntity = null;
+		let handOccupied = { LEFT: false, RIGHT: false };
 		this.queries.grabbable.results.forEach((entity) => {
 			let grabbableComponent = entity.getMutableComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_0__.GrabbableComponent);
 			let object = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value;
@@ -58834,6 +58719,20 @@ class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 						this.gripFrames[handKey].pop();
 					}
 				}
+			}
+			if (grabbableComponent.handKey) {
+				handOccupied[grabbableComponent.handKey] = true;
+			}
+		});
+
+		['LEFT', 'RIGHT'].forEach((handKey) => {
+			if (
+				!handOccupied[handKey] &&
+				this.controllerEntities[handKey].hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.Occupied)
+			) {
+				this.handComponents[handKey].mode = _components_HandComponent__WEBPACK_IMPORTED_MODULE_1__.HAND_MODE.FIST;
+				this.handComponents[handKey].resetGrabSpace();
+				this.controllerEntities[handKey].removeComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.Occupied);
 			}
 		});
 
@@ -59123,20 +59022,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SceneCreationSystem": () => (/* binding */ SceneCreationSystem)
 /* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _components_TagComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/TagComponents */ "./src/js/components/TagComponents.js");
-/* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
-/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
-/* harmony import */ var _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../lib/ControllerInterface */ "./src/js/lib/ControllerInterface.js");
-/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
-/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/HandComponent */ "./src/js/components/HandComponent.js");
-/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
-/* harmony import */ var three_examples_jsm_webxr_XRControllerModelFactory__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! three/examples/jsm/webxr/XRControllerModelFactory */ "./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js");
-/* harmony import */ var _utils_modelProcessingUtils__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ../utils/modelProcessingUtils */ "./src/js/utils/modelProcessingUtils.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AssetLoaderComponent */ "./src/js/components/AssetLoaderComponent.js");
+/* harmony import */ var _components_TagComponents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/TagComponents */ "./src/js/components/TagComponents.js");
+/* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
+/* harmony import */ var _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../lib/ControllerInterface */ "./src/js/lib/ControllerInterface.js");
+/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
+/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
+/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
+/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../components/HandComponent */ "./src/js/components/HandComponent.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var three_examples_jsm_webxr_XRControllerModelFactory__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! three/examples/jsm/webxr/XRControllerModelFactory */ "./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js");
+/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
 
 
 
@@ -59150,31 +59050,28 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// import { RGBELoader } from 'three/examples/jsm/loaders/RGBELoader.js';
-// import { RoughnessMipmapper } from 'three/examples/jsm/utils/RoughnessMipmapper.js';
 
 
 
 
-const ENV_MODEL_PATH = 'assets/space-voyager-simulator.glb';
 
-class SceneCreationSystem extends ecsy__WEBPACK_IMPORTED_MODULE_10__.System {
+class SceneCreationSystem extends ecsy__WEBPACK_IMPORTED_MODULE_11__.System {
 	init() {
 		this.controllerEntities = {
 			LEFT: null,
 			RIGHT: null,
 		};
+		this.scene = null;
 	}
 
 	execute(_delta, _time) {
 		this.queries.gameManager.added.forEach((entity) => {
-			let gameStateComponent = entity.getComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_6__.GameStateComponent);
-			let scene = gameStateComponent.scene;
+			let gameStateComponent = entity.getComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_7__.GameStateComponent);
+			this.scene = gameStateComponent.scene;
 			let renderer = gameStateComponent.renderer;
 			let viewerTransform = gameStateComponent.viewerTransform;
 
-			createLighting(scene);
-			createEnvironment(scene, this.world);
+			createLighting(this.scene);
 			setupControllers(
 				renderer,
 				viewerTransform,
@@ -59182,11 +59079,41 @@ class SceneCreationSystem extends ecsy__WEBPACK_IMPORTED_MODULE_10__.System {
 				this.controllerEntities,
 			);
 		});
+
+		const assetLoader = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_13__.getOnlyEntity)(this.queries.assetLoader)?.getComponent(
+			_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.AssetLoaderComponent,
+		);
+
+		if (assetLoader && assetLoader.allLoaded && this.scene) {
+			this.createEnvironment(assetLoader);
+			this.stop();
+		}
+	}
+
+	createEnvironment(assetLoader) {
+		const models = assetLoader.models;
+		this.scene.add(models[_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_MODELS.STATIC_SCENE].model);
+		loadColliders(
+			models[_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_MODELS.COLLIDERS].model.children,
+			this.world,
+			this.scene,
+		);
+		loadGrabbables(
+			models[_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_MODELS.INTERACTIVE].model.children,
+			this.world,
+			this.scene,
+		);
+		loadSwitches(
+			models[_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.GLTF_MODELS.SWITCHES].model.children,
+			this.world,
+			this.scene,
+		);
 	}
 }
 
 SceneCreationSystem.queries = {
-	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_6__.GameStateComponent], listen: { added: true } },
+	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_7__.GameStateComponent], listen: { added: true } },
+	assetLoader: { components: [_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_0__.AssetLoaderComponent] },
 };
 
 /**
@@ -59194,53 +59121,22 @@ SceneCreationSystem.queries = {
  * @param {THREE.Scene} scene
  */
 const createLighting = (scene) => {
-	let ambientLight = new three__WEBPACK_IMPORTED_MODULE_13__.AmbientLight(0xffffff, 0.2);
+	let ambientLight = new three__WEBPACK_IMPORTED_MODULE_14__.AmbientLight(0xffffff, 0.2);
 	scene.add(ambientLight);
 
-	let directionalLight = new three__WEBPACK_IMPORTED_MODULE_13__.DirectionalLight(0xffffff, 0.2);
+	let directionalLight = new three__WEBPACK_IMPORTED_MODULE_14__.DirectionalLight(0xffffff, 0.2);
 	scene.add(directionalLight);
 };
 
-/**
- * Load and process model, setup game objects
- * @param {THREE.Scene} scene
- * @param {ecsy.World} world
- */
-const createEnvironment = (scene, world) => {
-	let loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_5__.GLTFLoader();
-
-	loader.load(ENV_MODEL_PATH, function (gltf) {
-		let object = gltf.scene;
-		let colliderObjects = [];
-		let grabbableObjects = [];
-		let switchObjects = [];
-
-		let environmentGroup = (0,_utils_modelProcessingUtils__WEBPACK_IMPORTED_MODULE_12__.processModel)(
-			object,
-			colliderObjects,
-			grabbableObjects,
-			switchObjects,
-		);
-
-		loadColliders(colliderObjects, world, scene);
-
-		loadGrabbables(grabbableObjects, world, scene);
-
-		loadSwitches(switchObjects, world, scene);
-
-		scene.add(environmentGroup);
-	});
-};
-
 const loadColliders = (objects, world, scene) => {
-	objects.forEach((object) => {
+	[...objects].forEach((object) => {
 		let entity = world.createEntity();
-		entity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_0__.Collider);
-		entity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_9__.Object3DComponent, { value: object });
+		entity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_1__.Collider);
+		entity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent, { value: object });
 		if (object.userData.verticalCollider) {
-			entity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_0__.VerticalCollider);
+			entity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_1__.VerticalCollider);
 		} else if (object.userData.objectCollider) {
-			entity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_0__.ObjectCollider);
+			entity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_1__.ObjectCollider);
 		}
 		object.visible = false;
 		scene.add(object);
@@ -59248,11 +59144,11 @@ const loadColliders = (objects, world, scene) => {
 };
 
 const loadGrabbables = (objects, world, scene) => {
-	objects.forEach((object) => {
+	[...objects].forEach((object) => {
 		let entity = world.createEntity();
-		entity.addComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_7__.GrabbableComponent);
-		entity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_2__.RigidBodyComponent, (0,_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_2__.createDefaultRigidBodySchema)());
-		entity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_9__.Object3DComponent, { value: object });
+		entity.addComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_8__.GrabbableComponent);
+		entity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__.RigidBodyComponent, (0,_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__.createDefaultRigidBodySchema)());
+		entity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent, { value: object });
 
 		scene.add(object);
 	});
@@ -59260,29 +59156,33 @@ const loadGrabbables = (objects, world, scene) => {
 
 const loadSwitches = (objects, world, scene) => {
 	let switches = {};
-	objects.forEach((object) => {
-		let switchName = object.name.split('_')[2];
-		if (!switches[switchName]) {
-			switches[switchName] = {
-				base: null,
-				button: null,
-			};
-		}
-		if (object.name.split('_')[1] == 'base') {
-			switches[switchName].base = object;
-		} else if (object.name.split('_')[1] == 'button') {
-			switches[switchName].button = object;
+	[...objects].forEach((object) => {
+		if (object.name.startsWith('MESH')) {
+			scene.add(object);
+		} else {
+			let switchName = object.name.split('_')[2];
+			if (!switches[switchName]) {
+				switches[switchName] = {
+					base: null,
+					button: null,
+				};
+			}
+			if (object.name.split('_')[1] == 'base') {
+				switches[switchName].base = object;
+			} else if (object.name.split('_')[1] == 'button') {
+				switches[switchName].button = object;
+			}
 		}
 	});
 	Object.entries(switches).forEach((entry) => {
 		let [switchName, switchData] = entry;
 		let switchEntity = world.createEntity();
-		switchEntity.addComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_3__.SwitchComponent, {
+		switchEntity.addComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_4__.SwitchComponent, {
 			baseMesh: switchData.base,
 			buttonMesh: switchData.button,
 		});
-		switchEntity.addComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_3__.SWITCH_TAG_MAPPING[switchName]);
-		scene.add(switchData.base);
+		switchEntity.addComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_4__.SWITCH_TAG_MAPPING[switchName]);
+		scene.attach(switchData.base);
 		switchData.base.attach(switchData.button);
 	});
 };
@@ -59299,7 +59199,7 @@ const setupControllers = (
 	world,
 	controllerEntities,
 ) => {
-	const controllerModelFactory = new three_examples_jsm_webxr_XRControllerModelFactory__WEBPACK_IMPORTED_MODULE_11__.XRControllerModelFactory();
+	const controllerModelFactory = new three_examples_jsm_webxr_XRControllerModelFactory__WEBPACK_IMPORTED_MODULE_12__.XRControllerModelFactory();
 
 	for (let i = 0; i < 2; i++) {
 		let controller = renderer.xr.getController(i);
@@ -59309,15 +59209,15 @@ const setupControllers = (
 			if (controllerEntities[handedness]) {
 				let controllerEntity = controllerEntities[handedness];
 				controllerEntity
-					.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__.VrControllerComponent)
+					.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_2__.VrControllerComponent)
 					.controllerInterface.controllerModel.parent.remove(
-						controllerEntity.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__.VrControllerComponent)
+						controllerEntity.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_2__.VrControllerComponent)
 							.controllerInterface.controllerModel,
 					);
 				controllerEntity
-					.getComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_8__.HandComponent)
+					.getComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_9__.HandComponent)
 					.model.parent.remove(
-						controllerEntity.getComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_8__.HandComponent).model,
+						controllerEntity.getComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_9__.HandComponent).model,
 					);
 				controllerEntity.remove();
 			}
@@ -59329,17 +59229,17 @@ const setupControllers = (
 			viewerTransform.add(controllerGrip);
 
 			let controllerEntity = world.createEntity();
-			let controllerInterface = new _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_4__.ControllerInterface(
+			let controllerInterface = new _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_5__.ControllerInterface(
 				this,
 				event.data.gamepad,
 				controllerModel,
 			);
-			controllerEntity.addComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__.VrControllerComponent, {
+			controllerEntity.addComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_2__.VrControllerComponent, {
 				model: controllerModel,
 				controllerInterface,
 			});
 			controllerEntity.addComponent(
-				handedness === 'LEFT' ? _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__.LeftController : _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__.RightController,
+				handedness === 'LEFT' ? _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_2__.LeftController : _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_2__.RightController,
 			);
 			controllerEntity.handedness = handedness;
 
@@ -59355,7 +59255,7 @@ const setupHands = (
 	controllerGrip,
 	controllerEntity,
 ) => {
-	let loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_5__.GLTFLoader();
+	let loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_6__.GLTFLoader();
 
 	loader.load('assets/hand-' + handedness + '.glb', function (gltf) {
 		let models = gltf.scene;
@@ -59380,7 +59280,7 @@ const setupHands = (
 					if (isDefaultModel) {
 						joints[jointKey] = node;
 						if (jointKey == 'index3') {
-							indexTip = new three__WEBPACK_IMPORTED_MODULE_13__.Object3D();
+							indexTip = new three__WEBPACK_IMPORTED_MODULE_14__.Object3D();
 							indexTip.position.set(0, 0.03, 0);
 							node.add(indexTip);
 						}
@@ -59392,7 +59292,7 @@ const setupHands = (
 
 		controllerModel.visible = false;
 		controllerGrip.add(defaultModel);
-		let grabSpace = new three__WEBPACK_IMPORTED_MODULE_13__.Object3D();
+		let grabSpace = new three__WEBPACK_IMPORTED_MODULE_14__.Object3D();
 		controllerGrip.add(grabSpace);
 		document.addEventListener('keydown', onDocumentKeyDown, false);
 		function onDocumentKeyDown(event) {
@@ -59411,34 +59311,34 @@ const setupHands = (
 				grabSpace.position.z += 0.001;
 			} else if (keyCode == 85) {
 				grabSpace.quaternion.multiply(
-					new three__WEBPACK_IMPORTED_MODULE_13__.Quaternion(0.0087265, 0, 0, 0.9999619),
+					new three__WEBPACK_IMPORTED_MODULE_14__.Quaternion(0.0087265, 0, 0, 0.9999619),
 				);
 			} else if (keyCode == 74) {
 				grabSpace.quaternion.multiply(
-					new three__WEBPACK_IMPORTED_MODULE_13__.Quaternion(-0.0087265, 0, 0, 0.9999619),
+					new three__WEBPACK_IMPORTED_MODULE_14__.Quaternion(-0.0087265, 0, 0, 0.9999619),
 				);
 			} else if (keyCode == 73) {
 				grabSpace.quaternion.multiply(
-					new three__WEBPACK_IMPORTED_MODULE_13__.Quaternion(0, 0.0087265, 0, 0.9999619),
+					new three__WEBPACK_IMPORTED_MODULE_14__.Quaternion(0, 0.0087265, 0, 0.9999619),
 				);
 			} else if (keyCode == 75) {
 				grabSpace.quaternion.multiply(
-					new three__WEBPACK_IMPORTED_MODULE_13__.Quaternion(0, -0.0087265, 0, 0.9999619),
+					new three__WEBPACK_IMPORTED_MODULE_14__.Quaternion(0, -0.0087265, 0, 0.9999619),
 				);
 			} else if (keyCode == 79) {
 				grabSpace.quaternion.multiply(
-					new three__WEBPACK_IMPORTED_MODULE_13__.Quaternion(0, 0, 0.0087265, 0.9999619),
+					new three__WEBPACK_IMPORTED_MODULE_14__.Quaternion(0, 0, 0.0087265, 0.9999619),
 				);
 			} else if (keyCode == 76) {
 				grabSpace.quaternion.multiply(
-					new three__WEBPACK_IMPORTED_MODULE_13__.Quaternion(0, 0, -0.0087265, 0.9999619),
+					new three__WEBPACK_IMPORTED_MODULE_14__.Quaternion(0, 0, -0.0087265, 0.9999619),
 				);
 			} else if (keyCode == 13) {
 				console.log(handedness, grabSpace.quaternion, grabSpace.position);
 			}
 		}
 
-		controllerEntity.addComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_8__.HandComponent, {
+		controllerEntity.addComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_9__.HandComponent, {
 			joints: joints,
 			poses: poses,
 			model: defaultModel,
@@ -59446,7 +59346,7 @@ const setupHands = (
 			indexTip: indexTip,
 		});
 
-		controllerEntity.getComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_8__.HandComponent).resetGrabSpace();
+		controllerEntity.getComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_9__.HandComponent).resetGrabSpace();
 	});
 };
 
@@ -59710,7 +59610,10 @@ class TeleportSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inter
 		);
 
 		// game environment is enclosed with boundary colliders, there should always be an intersection
-		let intersection = this.raycaster.intersectObjects(intersectableObjects)[0];
+		let intersection = this.raycaster.intersectObjects(
+			intersectableObjects,
+			true,
+		)[0];
 		if (!intersection) {
 			console.warn('no intersection, something went wrong');
 			return;
@@ -59805,230 +59708,6 @@ const isJoystickEngaged = (controllerInterface) => {
 		axisVal >= _Constants__WEBPACK_IMPORTED_MODULE_3__.LOCOMOTION_CONSTANTS.TELEPORT_VALUE_MIN
 	);
 };
-
-
-/***/ }),
-
-/***/ "./src/js/systems/TurretSystem.js":
-/*!****************************************!*\
-  !*** ./src/js/systems/TurretSystem.js ***!
-  \****************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "TurretSystem": () => (/* binding */ TurretSystem)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/AstroidBlasterGameComponent */ "./src/js/components/AstroidBlasterGameComponent.js");
-/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
-/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/HandComponent */ "./src/js/components/HandComponent.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
-/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
-/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../lib/ControllerInterface */ "./src/js/lib/ControllerInterface.js");
-
-
-
-
-
-
-
-
-
-
-
-const HANDS_ON_TURRET_OFFSET = {
-	LEFT: {
-		position: new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(0.13, 0.02, -0.02),
-		quaternion: new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion(0, 0.76604, -0.64279, 0),
-	},
-	RIGHT: {
-		position: new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(-0.13, 0.02, -0.02),
-		quaternion: new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion(0, 0.76604, -0.64279, 0),
-	},
-};
-
-class TurretSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.InteractionSystem {
-	init() {
-		this.turretBase = null;
-		this.turretBody = null;
-		this.turretMuzzle = null;
-		this.turretHandle = null;
-		this.turretGimbalPoint = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
-
-		this.controllersMidPoint = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
-		this.turretDirection = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
-		this.controllerStates = {
-			LEFT: {
-				inRange: false,
-				gripSqueezed: false,
-				triggerPressed: false,
-			},
-			RIGHT: {
-				inRange: false,
-				gripSqueezed: false,
-				triggerPressed: false,
-			},
-		};
-
-		this._helperVec3 = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
-		this._helperQuat = new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion();
-	}
-
-	onExecute() {
-		let game;
-		this.queries.astroidBlasterGame.results.forEach((entity) => {
-			game = entity.getMutableComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidBlasterGameComponent);
-			this.turretBase = game.turretBase;
-			this.turretBody = game.turretBody;
-			this.turretHandle = game.turretHandle;
-			this.turretMuzzle = game.turretMuzzle;
-			this.turretBase.getWorldPosition(this.turretGimbalPoint);
-		});
-
-		if (!game) return;
-
-		Object.entries(this.controllerStates).forEach((entry) => {
-			let [handKey, state] = entry;
-			state.inRange = this.isControllerInRange(
-				this.controllerInterfaces[handKey],
-			);
-			state.gripSqueezed = this.controllerInterfaces[handKey].triggerPressed(
-				_lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__.TRIGGERS.HAND_TRIGGER,
-			);
-			state.triggerPressed = this.controllerInterfaces[
-				handKey
-			].triggerJustPressed(_lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__.TRIGGERS.INDEX_TRIGGER);
-			if (state.inRange && state.gripSqueezed) {
-				this.fixHandsOnTurret(handKey);
-			} else {
-				this.releaseHandsFromTurret(handKey);
-			}
-		});
-
-		if (game.turretEngaged) {
-			if (
-				!this.controllerStates.LEFT.gripSqueezed ||
-				!this.controllerStates.RIGHT.gripSqueezed
-			) {
-				game.turretEngaged = false;
-			}
-			this.updateTurretOrientation();
-			if (
-				this.controllerStates.LEFT.triggerPressed ||
-				this.controllerStates.RIGHT.triggerPressed
-			) {
-				this.spawnLaserProjectile();
-			}
-		} else {
-			if (
-				this.controllerStates.LEFT.inRange ||
-				this.controllerStates.RIGHT.inRange
-			) {
-				this.onControllersInRange();
-				if (
-					this.controllerStates.LEFT.inRange &&
-					this.controllerStates.LEFT.gripSqueezed &&
-					this.controllerStates.RIGHT.inRange &&
-					this.controllerStates.RIGHT.gripSqueezed
-				) {
-					game.turretEngaged = true;
-				}
-			} else {
-				this.onControllersOutOfRange();
-			}
-		}
-	}
-
-	isControllerInRange(controllerInterface) {
-		this.turretHandle.getWorldPosition(this._helperVec3);
-		return (
-			controllerInterface.getPosition().distanceTo(this._helperVec3) <
-			_Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.TURRET_HANDLE_COLLIDER_RADIUS
-		);
-	}
-
-	onControllersInRange() {
-		this.turretHandle.material.emissive.setHex(0x363636);
-	}
-
-	updateTurretOrientation() {
-		this.controllersMidPoint
-			.addVectors(
-				this.controllerInterfaces.LEFT.getPosition(),
-				this.controllerInterfaces.RIGHT.getPosition(),
-			)
-			.multiplyScalar(0.5);
-		this.turretBody
-			.getWorldPosition(this.turretDirection)
-			.sub(this.controllersMidPoint)
-			.normalize();
-		this.turretBody.lookAt(
-			this._helperVec3.addVectors(this.turretDirection, this.turretGimbalPoint),
-		);
-	}
-
-	onControllersOutOfRange() {
-		this.turretHandle.material.emissive.setHex(0x000000);
-	}
-
-	spawnLaserProjectile() {
-		let laserEntity = this.world.createEntity();
-		let laserMesh = new three__WEBPACK_IMPORTED_MODULE_7__.Mesh(
-			new three__WEBPACK_IMPORTED_MODULE_7__.BoxGeometry(0.04, 0.04, 0.3),
-			new three__WEBPACK_IMPORTED_MODULE_7__.MeshBasicMaterial({ color: 0x8d1b1f }),
-		);
-		this.gameStateComponent.scene.add(laserMesh);
-		laserMesh.position.copy(
-			this.turretMuzzle.getWorldPosition(this._helperVec3),
-		);
-		let direction = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(0, 0, 1);
-		direction.applyQuaternion(
-			this.turretMuzzle.getWorldQuaternion(this._helperQuat),
-		);
-		laserMesh.lookAt(this._helperVec3.add(direction));
-		laserEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent, { value: laserMesh });
-		laserEntity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, {
-			direction: direction,
-			speed: 8,
-			dragDecel: 0,
-			perishable: true,
-			timeToLive: 3,
-		});
-		laserEntity.addComponent(_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretLaser);
-	}
-
-	fixHandsOnTurret(handKey) {
-		let handComponent = this.handComponents[handKey];
-		if (!handComponent.overrideParent) {
-			handComponent.overrideParent = true;
-			handComponent.overrideMode = _components_HandComponent__WEBPACK_IMPORTED_MODULE_2__.HAND_MODE.HOLD;
-			this.turretHandle.add(handComponent.model);
-			handComponent.model.position.copy(
-				HANDS_ON_TURRET_OFFSET[handKey].position,
-			);
-			handComponent.model.quaternion.copy(
-				HANDS_ON_TURRET_OFFSET[handKey].quaternion,
-			);
-		}
-	}
-
-	releaseHandsFromTurret(handKey) {
-		let handComponent = this.handComponents[handKey];
-		if (handComponent.overrideParent) {
-			handComponent.overrideParent = false;
-			let parent = this.controllerInterfaces[handKey].controllerModel.parent;
-			parent.add(handComponent.model);
-			handComponent.model.position.set(0, 0, 0);
-			handComponent.model.quaternion.set(0, 0, 0, 1);
-		}
-	}
-}
-
-TurretSystem.addQueries({
-	astroidBlasterGame: { components: [_components_AstroidBlasterGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidBlasterGameComponent] },
-});
 
 
 /***/ }),
@@ -60284,6 +59963,684 @@ const createLongButton = (width, height, path) => {
 
 /***/ }),
 
+/***/ "./src/js/systems/astroidsGame/AstroidSystem.js":
+/*!******************************************************!*\
+  !*** ./src/js/systems/astroidsGame/AstroidSystem.js ***!
+  \******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AstroidSystem": () => (/* binding */ AstroidSystem)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/AstroidsGameComponent */ "./src/js/components/AstroidsGameComponent.js");
+/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _lib_ExpandingParticleCloud__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../lib/ExpandingParticleCloud */ "./src/js/lib/ExpandingParticleCloud.js");
+/* harmony import */ var _lib_ExpandingRing__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../lib/ExpandingRing */ "./src/js/lib/ExpandingRing.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+
+
+
+
+
+
+
+
+
+
+class AstroidSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSystem {
+	init() {
+		this.raycaster = new three__WEBPACK_IMPORTED_MODULE_6__.Raycaster();
+		this.raycaster.far = 0.1;
+	}
+
+	onExecute(_delta, _time) {
+		const player = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.getOnlyEntity)(
+			this.queries.agplayer,
+			false,
+		)?.getMutableComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AGPlayerComponent);
+		if (!player) return;
+
+		this.updateAstroids(player);
+	}
+
+	updateAstroids(player) {
+		let astroidObjects = [];
+		let entitiesToDelete = new Set();
+		this.queries.astroid.results.forEach((entity) => {
+			let astroidComponent = entity.getMutableComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent);
+			let astroidObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent).value;
+			astroidObject.entity = entity;
+			astroidObjects.push(astroidObject);
+			if (
+				astroidObject.position.distanceTo(astroidComponent.startPoint) >
+				astroidComponent.maxDistance
+			) {
+				player.hitPoints -= 1;
+				entitiesToDelete.add(entity);
+				let expandingRing = new _lib_ExpandingRing__WEBPACK_IMPORTED_MODULE_3__.ExpandingRing({ color: 0xef6666 });
+				this.gameStateComponent.scene.add(expandingRing);
+				expandingRing.position.copy(astroidObject.position);
+			}
+		});
+		this.queries.laser.results.forEach((entity) => {
+			let laserObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent).value;
+			let laserRigidBody = entity.getMutableComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent);
+			this.raycaster.set(laserObject.position, laserRigidBody.direction);
+			let intersect = this.raycaster.intersectObjects(astroidObjects)[0];
+			if (intersect) {
+				let astroidEntity = intersect.object.entity;
+				let astroidRigidBody = astroidEntity.getComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent);
+				player.score += 1;
+				entitiesToDelete.add(astroidEntity);
+				entitiesToDelete.add(entity);
+				let particleCloud = new _lib_ExpandingParticleCloud__WEBPACK_IMPORTED_MODULE_2__.ExpandingParticleCloud(
+					20,
+					astroidRigidBody.direction
+						.clone()
+						.multiplyScalar(astroidRigidBody.speed),
+				);
+				this.gameStateComponent.scene.add(particleCloud);
+				particleCloud.position.copy(intersect.object.position);
+			}
+		});
+		entitiesToDelete.forEach(_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.deleteEntity);
+	}
+}
+
+AstroidSystem.addQueries({
+	agplayer: { components: [_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AGPlayerComponent] },
+	astroid: {
+		components: [_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent, _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent],
+	},
+	laser: {
+		components: [_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent, _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretLaser],
+	},
+});
+
+
+/***/ }),
+
+/***/ "./src/js/systems/astroidsGame/MiniGameSystem.js":
+/*!*******************************************************!*\
+  !*** ./src/js/systems/astroidsGame/MiniGameSystem.js ***!
+  \*******************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MiniGameSystem": () => (/* binding */ MiniGameSystem)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/AstroidsGameComponent */ "./src/js/components/AstroidsGameComponent.js");
+/* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
+/* harmony import */ var _components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/AssetLoaderComponent */ "./src/js/components/AssetLoaderComponent.js");
+/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/MiniGamesComponent */ "./src/js/components/MiniGamesComponent.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../Constants */ "./src/js/Constants.js");
+/* harmony import */ var _AstroidSystem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./AstroidSystem */ "./src/js/systems/astroidsGame/AstroidSystem.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _lib_TextPanel__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../lib/TextPanel */ "./src/js/lib/TextPanel.js");
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// import { TurretSystem } from './TurretSystem';
+
+class MiniGameSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.GameSystem {
+	init() {
+		this.assetLoaded = false;
+		this.turretUI = null;
+		this.welcomePanel = null;
+		this.aimRings = null;
+
+		this.game = null;
+		this.astroidEntities = new Set();
+		this.astroidPrototypes = [];
+		this.astroidStartPlane = null;
+		this.astroidDirection = new three__WEBPACK_IMPORTED_MODULE_10__.Vector3(0, 0, 1);
+
+		this.isActiveMiniGame = false;
+		this.wasActiveMiniGame = false;
+		this.turretBase = null;
+		this.turretBaseDefaultY = null;
+		this.turretComponent = null;
+		this.playerComponent = null;
+	}
+
+	onExecute(delta, _time) {
+		if (!this.assetLoaded) {
+			const assetLoader = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.getOnlyEntity)(this.queries.assetLoader)?.getComponent(
+				_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_2__.AssetLoaderComponent,
+			);
+
+			if (assetLoader && assetLoader.allLoaded) {
+				this.loadGameAssets(assetLoader.models[_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_2__.GLTF_MODELS.ASTROIDS_MINI_GAME]);
+				this.assetLoaded = true;
+			}
+		}
+
+		this.game = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.getOnlyEntity)(
+			this.queries.astroidsGame,
+			false,
+		)?.getMutableComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidsGameComponent);
+
+		const miniGame = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.getOnlyEntity)(this.queries.miniGame, false)?.getComponent(
+			_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MiniGamesComponent,
+		);
+
+		if (!this.game || !miniGame) return;
+
+		this.isActiveMiniGame = miniGame.activeGame === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_TYPE.ASTROIDS;
+		if (!this.isActiveMiniGame && !this.wasActiveMiniGame) {
+			this.disappear(2);
+		}
+
+		if (this.isActiveMiniGame && !this.wasActiveMiniGame) {
+			console.log('astroids game activated');
+		}
+
+		if (!this.isActiveMiniGame && this.wasActiveMiniGame) {
+			this.onGameEnd();
+			this.resetGame();
+			console.log('astroids game deactivated');
+		}
+
+		if (
+			miniGame.previousGame === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_TYPE.ASTROIDS &&
+			miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_STATE.CLEARING_PREV
+		) {
+			this.disappear(miniGame.transitionTimer);
+		}
+
+		if (
+			miniGame.activeGame === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_TYPE.ASTROIDS &&
+			miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_STATE.CREATING_NEXT
+		) {
+			this.appear(miniGame.transitionTimer);
+		}
+
+		this.turretUI.visible =
+			this.turretComponent.engaged && this.isActiveMiniGame;
+		this.aimRings.visible =
+			this.turretComponent.engaged && this.isActiveMiniGame;
+		this.welcomePanel.visible = !this.game.gameActive && this.isActiveMiniGame;
+
+		if (this.isActiveMiniGame) {
+			this.queries.arcadeSwitch.results.forEach((entity) => {
+				let switchComponent = entity.getComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__.SwitchComponent);
+				if (switchComponent.valueJustChanged) {
+					if (this.game.gameActive && this.game.gameTimer > 5) {
+						this.onGameEnd();
+					} else if (!this.game.gameActive) {
+						this.onGameStart();
+					}
+				}
+			});
+
+			if (this.game.gameActive) {
+				this.executeGame(delta, this.game);
+			}
+		}
+
+		this.wasActiveMiniGame = this.isActiveMiniGame;
+	}
+
+	loadGameAssets(object) {
+		let turretBody, turretHandle, turretMuzzle;
+		this.astroidPrototypes = [];
+
+		object.model.children.forEach((node) => {
+			switch (node.name) {
+				case _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.TURRET_BASE_NAME:
+					this.turretBase = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.TURRET_BODY_NAME:
+					turretBody = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.TURRET_HANDLE_NAME:
+					turretHandle = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.TURRET_MUZZLE_NAME:
+					turretMuzzle = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.ASTROID_START_PLANE:
+					this.astroidStartPlane = node;
+					break;
+				default:
+					if (node.name.startsWith(_Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.ASTROID_PREFIX)) {
+						this.astroidPrototypes.push(node);
+					}
+					break;
+			}
+		});
+		this.gameStateComponent.scene.attach(this.turretBase);
+		this.turretBaseDefaultY = this.turretBase.position.y;
+		this.turretBase.attach(turretBody);
+		turretBody.attach(turretHandle);
+		turretBody.attach(turretMuzzle);
+		let entity = this.world.createEntity();
+		entity.addComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidsGameComponent);
+
+		const playerEntity = this.world.createEntity();
+		playerEntity.addComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AGPlayerComponent);
+		this.playerComponent = playerEntity.getMutableComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AGPlayerComponent);
+
+		const turretEntity = this.world.createEntity();
+		turretEntity.addComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretComponent, {
+			turretBase: this.turretBase,
+			turretBody,
+			turretHandle,
+			turretMuzzle,
+		});
+		this.turretComponent = turretEntity.getComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretComponent);
+
+		this.turretUI = new _lib_TextPanel__WEBPACK_IMPORTED_MODULE_9__.TextPanel({
+			text: this.generateTurretUIText(),
+			fontOpacity: 0.5,
+			backgroundOpacity: 0.3,
+			padding: 0.01,
+			cornerRadius: 0.02,
+			zOffset: 0.005,
+		});
+		this.turretUI.rotateY(Math.PI);
+		this.turretUI.rotateX(Math.PI / -6);
+		this.turretUI.position.set(0, 0.06, -0.26);
+		turretBody.add(this.turretUI);
+
+		this.aimRings = new three__WEBPACK_IMPORTED_MODULE_10__.Group();
+		const aimRingGeometry = new three__WEBPACK_IMPORTED_MODULE_10__.RingGeometry(0.03, 0.04, 16);
+		for (let i = 0; i < 4; i++) {
+			const ring = new three__WEBPACK_IMPORTED_MODULE_10__.Mesh(
+				aimRingGeometry,
+				new three__WEBPACK_IMPORTED_MODULE_10__.MeshBasicMaterial({
+					color: 0xffffff,
+					transparent: true,
+					opacity: (0.5 * (4 - i)) / 4,
+				}),
+			);
+			ring.position.z = 0.3 * (i + 1);
+			ring.rotateY(Math.PI);
+			this.aimRings.add(ring);
+		}
+		this.aimRings.position.copy(
+			turretMuzzle.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_10__.Vector3()),
+		);
+		turretMuzzle.attach(this.aimRings);
+
+		const map = new three__WEBPACK_IMPORTED_MODULE_10__.TextureLoader().load(
+			'assets/images/astroids_welcome_panel.png',
+		);
+		const material = new three__WEBPACK_IMPORTED_MODULE_10__.MeshBasicMaterial({
+			map: map,
+			transparent: true,
+		});
+
+		this.welcomePanel = new three__WEBPACK_IMPORTED_MODULE_10__.Mesh(new three__WEBPACK_IMPORTED_MODULE_10__.PlaneGeometry(1, 1), material);
+		this.welcomePanel.rotateY(Math.PI);
+		this.welcomePanel.position.set(4.2, 1.6, 10);
+		this.gameStateComponent.scene.add(this.welcomePanel);
+	}
+
+	appear(transitionTimer) {
+		this.turretBase.position.y =
+			this.turretBaseDefaultY - (2 - transitionTimer) * 1;
+	}
+
+	disappear(transitionTimer) {
+		this.turretBase.position.y = this.turretBaseDefaultY - transitionTimer * 1;
+	}
+
+	generateTurretUIText(game = null) {
+		return (
+			'Health: ' +
+			formatNumber(
+				game
+					? Math.floor(
+							(this.playerComponent.hitPoints / _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.PLAYER_HEALTH_POINTS) * 100,
+					  )
+					: 100,
+				3,
+			) +
+			'%\nScore:  ' +
+			formatNumber(game ? this.playerComponent.score : 0, 4) +
+			'\nTimer:  ' +
+			formatNumber(game ? Math.floor(game.gameTimer) : 0, 3) +
+			's'
+		);
+	}
+
+	spawnAstroid(game) {
+		const astroid = this.astroidPrototypes[
+			Math.floor(this.astroidPrototypes.length * Math.random())
+		].clone();
+		this.gameStateComponent.scene.add(astroid);
+		astroid.position.copy(this.astroidStartPlane.position);
+		astroid.position.x += Math.random() * 2 - 1;
+		astroid.position.y += Math.random() * 2 - 1;
+		let astroidEntity = this.world.createEntity();
+		astroidEntity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_8__.RigidBodyComponent, {
+			active: true,
+			direction: this.astroidDirection.clone(),
+			speed: (0.5 + Math.random() * 1.5) * game.astroidSpeedMultiplier,
+			hasRotation: true,
+			rotationAxis: new three__WEBPACK_IMPORTED_MODULE_10__.Vector3().randomDirection(),
+			rotationSpeed: Math.random() * 3,
+			perishable: false,
+		});
+		astroidEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_7__.Object3DComponent, { value: astroid });
+		astroidEntity.addComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent, {
+			startPoint: astroid.position.clone(),
+		});
+		this.astroidEntities.add(astroidEntity);
+	}
+
+	onGameEnd() {
+		console.log('game over');
+		this.game.gameActive = false;
+		this.queries.astroid.results.forEach((entity) => {
+			entity.getMutableComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_8__.RigidBodyComponent).active = false;
+		});
+		this.world.getSystem(_AstroidSystem__WEBPACK_IMPORTED_MODULE_6__.AstroidSystem).stop();
+	}
+
+	onGameStart() {
+		this.resetGame();
+		this.game.gameActive = true;
+		this.world.getSystem(_AstroidSystem__WEBPACK_IMPORTED_MODULE_6__.AstroidSystem).play();
+	}
+
+	resetGame() {
+		this.game.gameActive = false;
+		this.game.gameTimer = 0;
+		this.game.astroidSpawnTimer = _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.ASTROID_BASE_SPAWN_TIME;
+		this.game.astroidSpeedMultiplier = 1;
+		this.game.astroidSpawnMultiplier = 1;
+		this.playerComponent.hitPoints = _Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.PLAYER_HEALTH_POINTS;
+		this.playerComponent.score = 0;
+		this.astroidEntities.forEach(_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.deleteEntity);
+		this.astroidEntities.clear();
+	}
+
+	executeGame(delta, game) {
+		game.gameTimer += delta;
+		game.astroidSpawnMultiplier = 1 + (game.gameTimer / 15) * 0.1;
+		game.astroidSpeedMultiplier = 1 + (game.gameTimer / 15) * 0.1;
+		game.astroidSpawnTimer -= delta;
+		this.turretUI.setText(this.generateTurretUIText(game));
+
+		if (game.astroidSpawnTimer <= 0) {
+			this.spawnAstroid(game);
+			game.astroidSpawnTimer =
+				_Constants__WEBPACK_IMPORTED_MODULE_5__.ASTROID_BLASTER_CONSTANTS.ASTROID_BASE_SPAWN_TIME / game.astroidSpawnMultiplier;
+		}
+
+		if (this.playerComponent.hitPoints <= 0) {
+			game.gameRecords.push({
+				playerScore: this.playerComponent.score,
+				timeSurvived: game.gameTimer,
+			});
+			this.onGameEnd();
+		}
+	}
+}
+
+MiniGameSystem.addQueries({
+	miniGame: { components: [_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MiniGamesComponent] },
+	arcadeSwitch: { components: [_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__.SwitchComponent, _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_1__.ArcadeSwitch] },
+	astroidsGame: { components: [_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidsGameComponent] },
+	astroid: {
+		components: [_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_8__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_7__.Object3DComponent, _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.AstroidComponent],
+	},
+	assetLoader: { components: [_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_2__.AssetLoaderComponent] },
+});
+
+const formatNumber = (number, digits) => {
+	let numberString = number.toString();
+	while (numberString.length < digits) numberString = '0' + numberString;
+	return numberString;
+};
+
+
+/***/ }),
+
+/***/ "./src/js/systems/astroidsGame/TurretSystem.js":
+/*!*****************************************************!*\
+  !*** ./src/js/systems/astroidsGame/TurretSystem.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TurretSystem": () => (/* binding */ TurretSystem)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/AstroidsGameComponent */ "./src/js/components/AstroidsGameComponent.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../Constants */ "./src/js/Constants.js");
+/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/HandComponent */ "./src/js/components/HandComponent.js");
+/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../lib/ControllerInterface */ "./src/js/lib/ControllerInterface.js");
+
+
+
+
+
+
+
+
+
+
+
+const HANDS_ON_TURRET_OFFSET = {
+	LEFT: {
+		position: new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(0.13, 0.02, -0.02),
+		quaternion: new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion(0, 0.76604, -0.64279, 0),
+	},
+	RIGHT: {
+		position: new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(-0.13, 0.02, -0.02),
+		quaternion: new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion(0, 0.76604, -0.64279, 0),
+	},
+};
+
+class TurretSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.InteractionSystem {
+	init() {
+		this.turretBase = null;
+		this.turretBody = null;
+		this.turretMuzzle = null;
+		this.turretHandle = null;
+		this.turretGimbalPoint = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
+
+		this.controllersMidPoint = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
+		this.turretDirection = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
+		this.controllerStates = {
+			LEFT: {
+				inRange: false,
+				gripSqueezed: false,
+				triggerPressed: false,
+			},
+			RIGHT: {
+				inRange: false,
+				gripSqueezed: false,
+				triggerPressed: false,
+			},
+		};
+
+		this._helperVec3 = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
+		this._helperQuat = new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion();
+	}
+
+	onExecute() {
+		let turret;
+		this.queries.turret.results.forEach((entity) => {
+			turret = entity.getMutableComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretComponent);
+			this.turretBase = turret.turretBase;
+			this.turretBody = turret.turretBody;
+			this.turretHandle = turret.turretHandle;
+			this.turretMuzzle = turret.turretMuzzle;
+			this.turretBase.getWorldPosition(this.turretGimbalPoint);
+		});
+
+		if (!turret) return;
+
+		Object.entries(this.controllerStates).forEach((entry) => {
+			let [handKey, state] = entry;
+			state.inRange = this.isControllerInRange(
+				this.controllerInterfaces[handKey],
+			);
+			state.gripSqueezed = this.controllerInterfaces[handKey].triggerPressed(
+				_lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__.TRIGGERS.HAND_TRIGGER,
+			);
+			state.triggerPressed = this.controllerInterfaces[
+				handKey
+			].triggerJustPressed(_lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__.TRIGGERS.INDEX_TRIGGER);
+			if (state.inRange && state.gripSqueezed) {
+				this.fixHandsOnTurret(handKey);
+			} else {
+				this.releaseHandsFromTurret(handKey);
+			}
+		});
+
+		if (turret.engaged) {
+			if (
+				!this.controllerStates.LEFT.gripSqueezed ||
+				!this.controllerStates.RIGHT.gripSqueezed
+			) {
+				turret.engaged = false;
+			}
+			this.updateTurretOrientation();
+			if (
+				this.controllerStates.LEFT.triggerPressed ||
+				this.controllerStates.RIGHT.triggerPressed
+			) {
+				this.spawnLaserProjectile();
+			}
+		} else {
+			if (
+				this.controllerStates.LEFT.inRange ||
+				this.controllerStates.RIGHT.inRange
+			) {
+				this.onControllersInRange();
+				if (
+					this.controllerStates.LEFT.inRange &&
+					this.controllerStates.LEFT.gripSqueezed &&
+					this.controllerStates.RIGHT.inRange &&
+					this.controllerStates.RIGHT.gripSqueezed
+				) {
+					turret.engaged = true;
+				}
+			} else {
+				this.onControllersOutOfRange();
+			}
+		}
+	}
+
+	isControllerInRange(controllerInterface) {
+		this.turretHandle.getWorldPosition(this._helperVec3);
+		return (
+			controllerInterface.getPosition().distanceTo(this._helperVec3) <
+			_Constants__WEBPACK_IMPORTED_MODULE_1__.ASTROID_BLASTER_CONSTANTS.TURRET_HANDLE_COLLIDER_RADIUS
+		);
+	}
+
+	onControllersInRange() {
+		this.turretHandle.material.emissive.setHex(0x363636);
+	}
+
+	updateTurretOrientation() {
+		this.controllersMidPoint
+			.addVectors(
+				this.controllerInterfaces.LEFT.getPosition(),
+				this.controllerInterfaces.RIGHT.getPosition(),
+			)
+			.multiplyScalar(0.5);
+		this.turretBody
+			.getWorldPosition(this.turretDirection)
+			.sub(this.controllersMidPoint)
+			.normalize();
+		this.turretBody.lookAt(
+			this._helperVec3.addVectors(this.turretDirection, this.turretGimbalPoint),
+		);
+	}
+
+	onControllersOutOfRange() {
+		this.turretHandle.material.emissive.setHex(0x000000);
+	}
+
+	spawnLaserProjectile() {
+		let laserEntity = this.world.createEntity();
+		let laserMesh = new three__WEBPACK_IMPORTED_MODULE_7__.Mesh(
+			new three__WEBPACK_IMPORTED_MODULE_7__.BoxGeometry(0.04, 0.04, 0.3),
+			new three__WEBPACK_IMPORTED_MODULE_7__.MeshBasicMaterial({ color: 0x8d1b1f }),
+		);
+		this.gameStateComponent.scene.add(laserMesh);
+		laserMesh.position.copy(
+			this.turretMuzzle.getWorldPosition(this._helperVec3),
+		);
+		let direction = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(0, 0, 1);
+		direction.applyQuaternion(
+			this.turretMuzzle.getWorldQuaternion(this._helperQuat),
+		);
+		laserMesh.lookAt(this._helperVec3.add(direction));
+		laserEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent, { value: laserMesh });
+		laserEntity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, {
+			direction: direction,
+			speed: 8,
+			dragDecel: 0,
+			perishable: true,
+			timeToLive: 3,
+		});
+		laserEntity.addComponent(_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretLaser);
+	}
+
+	fixHandsOnTurret(handKey) {
+		let handComponent = this.handComponents[handKey];
+		if (!handComponent.overrideParent) {
+			handComponent.overrideParent = true;
+			handComponent.overrideMode = _components_HandComponent__WEBPACK_IMPORTED_MODULE_2__.HAND_MODE.HOLD;
+			this.turretHandle.add(handComponent.model);
+			handComponent.model.position.copy(
+				HANDS_ON_TURRET_OFFSET[handKey].position,
+			);
+			handComponent.model.quaternion.copy(
+				HANDS_ON_TURRET_OFFSET[handKey].quaternion,
+			);
+		}
+	}
+
+	releaseHandsFromTurret(handKey) {
+		let handComponent = this.handComponents[handKey];
+		if (handComponent.overrideParent) {
+			handComponent.overrideParent = false;
+			let parent = this.controllerInterfaces[handKey].controllerModel.parent;
+			parent.add(handComponent.model);
+			handComponent.model.position.set(0, 0, 0);
+			handComponent.model.quaternion.set(0, 0, 0, 1);
+		}
+	}
+}
+
+TurretSystem.addQueries({
+	turret: { components: [_components_AstroidsGameComponent__WEBPACK_IMPORTED_MODULE_0__.TurretComponent] },
+});
+
+
+/***/ }),
+
 /***/ "./src/js/systems/droidsGame/DamageSystem.js":
 /*!***************************************************!*\
   !*** ./src/js/systems/droidsGame/DamageSystem.js ***!
@@ -60315,16 +60672,10 @@ __webpack_require__.r(__webpack_exports__);
 class DamageSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSystem {
 	init() {
 		this.raycaster = new three__WEBPACK_IMPORTED_MODULE_6__.Raycaster();
-		this.game = null;
 		this.entitiesToDelete = new Set();
 	}
 
 	onExecute(delta, _time) {
-		this.game = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.getOnlyEntity)(this.queries.game, false)?.getMutableComponent(
-			_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidsGameComponent,
-		);
-		if (!this.game) return;
-
 		this.entitiesToDelete.clear();
 
 		const droidObjects = [];
@@ -60332,6 +60683,13 @@ class DamageSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSys
 			const droidObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent).value;
 			droidObject.entity = entity;
 			droidObjects.push(droidObject);
+		});
+
+		const playerObjects = [];
+		this.queries.player.results.forEach((entity) => {
+			const playerObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent).value;
+			playerObject.entity = entity;
+			playerObjects.push(playerObject);
 		});
 
 		const laserEntities = [].concat(
@@ -60347,9 +60705,7 @@ class DamageSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSys
 			this.raycaster.far = laserRigidBody.speed * delta;
 
 			const intersect = this.raycaster.intersectObjects(
-				laserEntity.hasComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PistolLaser)
-					? droidObjects
-					: [this.game.playerHeadCollider],
+				laserEntity.hasComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PistolLaser) ? droidObjects : playerObjects,
 			)[0];
 			if (intersect) {
 				if (laserEntity.hasComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PistolLaser)) {
@@ -60377,7 +60733,8 @@ class DamageSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSys
 	}
 
 	onPlayerHit(intersect) {
-		this.game.playerHitPoints -= 1;
+		const playerEntity = intersect.object.entity;
+		playerEntity.getMutableComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PlayerComponent).hitPoints -= 1;
 		const expandingRing = new _lib_ExpandingRing__WEBPACK_IMPORTED_MODULE_3__.ExpandingRing({
 			innerRadius: 0.01,
 			outerRadius: 0.02,
@@ -60390,7 +60747,7 @@ class DamageSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSys
 }
 
 DamageSystem.addQueries({
-	game: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidsGameComponent] },
+	player: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PlayerComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent] },
 	droid: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent] },
 	pistolLaser: {
 		components: [_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_4__.Object3DComponent, _components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PistolLaser],
@@ -60472,6 +60829,9 @@ class DroidSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSyst
 	}
 
 	updateDroids(delta) {
+		const playerComponent = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.getOnlyEntity)(
+			this.queries.player,
+		)?.getMutableComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PlayerComponent);
 		this.queries.droid.results.forEach((entity) => {
 			let droidComponent = entity.getMutableComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidComponent);
 			let droidObject = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value;
@@ -60480,6 +60840,7 @@ class DroidSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSyst
 				let particleCloud = new _lib_ExpandingParticleCloud__WEBPACK_IMPORTED_MODULE_2__.ExpandingParticleCloud(20, new three__WEBPACK_IMPORTED_MODULE_5__.Vector3());
 				this.gameStateComponent.scene.add(particleCloud);
 				particleCloud.position.copy(droidObject.position);
+				playerComponent.score += 1;
 			} else {
 				if (droidComponent.state === _components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DROID_STATE.MOVING) {
 					this._helperVec3.subVectors(
@@ -60499,7 +60860,7 @@ class DroidSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSyst
 				} else if (droidComponent.state === _components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DROID_STATE.IN_PLACE) {
 					droidComponent.attackTimer -= delta;
 					if (droidComponent.attackTimer <= 0) {
-						this.shoot(droidObject);
+						this.shoot(entity);
 						droidComponent.attackTimer = 3;
 					}
 				}
@@ -60507,7 +60868,9 @@ class DroidSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSyst
 		});
 	}
 
-	shoot(droidObject) {
+	shoot(droidEntity) {
+		const droidComponent = droidEntity.getComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidComponent);
+		const droidObject = droidEntity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value;
 		const position = droidObject.getWorldPosition(this._helperVec3);
 		const direction = this.gameStateComponent.renderer.xr
 			.getCamera()
@@ -60520,40 +60883,47 @@ class DroidSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.GameSyst
 			this.world,
 			position,
 			direction,
-			{ color: 0x00e000, speed: 10, timeToLive: 1 },
+			{
+				color: 0x00e000,
+				speed: droidComponent.laserSpeed,
+				timeToLive: 10 / droidComponent.laserSpeed,
+			},
 		);
 		laserEntity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidLaser);
 	}
 }
 
 DroidSystem.addQueries({
+	player: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.PlayerComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent] },
 	droid: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_0__.DroidComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent] },
 });
 
 
 /***/ }),
 
-/***/ "./src/js/systems/droidsGame/DroidsGameSystem.js":
-/*!*******************************************************!*\
-  !*** ./src/js/systems/droidsGame/DroidsGameSystem.js ***!
-  \*******************************************************/
+/***/ "./src/js/systems/droidsGame/MiniGameSystem.js":
+/*!*****************************************************!*\
+  !*** ./src/js/systems/droidsGame/MiniGameSystem.js ***!
+  \*****************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DroidsGameSystem": () => (/* binding */ DroidsGameSystem)
+/* harmony export */   "MiniGameSystem": () => (/* binding */ MiniGameSystem)
 /* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../components/SwitchComponent */ "./src/js/components/SwitchComponent.js");
-/* harmony import */ var _components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/DroidsGameComponents */ "./src/js/components/DroidsGameComponents.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
-/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../Constants */ "./src/js/Constants.js");
-/* harmony import */ var _DamageSystem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./DamageSystem */ "./src/js/systems/droidsGame/DamageSystem.js");
-/* harmony import */ var _DroidSystem__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./DroidSystem */ "./src/js/systems/droidsGame/DroidSystem.js");
-/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
-/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
-/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/AssetLoaderComponent */ "./src/js/components/AssetLoaderComponent.js");
+/* harmony import */ var _components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../components/DroidsGameComponents */ "./src/js/components/DroidsGameComponents.js");
+/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../components/MiniGamesComponent */ "./src/js/components/MiniGamesComponent.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../Constants */ "./src/js/Constants.js");
+/* harmony import */ var _DamageSystem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DamageSystem */ "./src/js/systems/droidsGame/DamageSystem.js");
+/* harmony import */ var _DroidSystem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./DroidSystem */ "./src/js/systems/droidsGame/DroidSystem.js");
+/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ../../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _lib_TextPanel__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ../../lib/TextPanel */ "./src/js/lib/TextPanel.js");
 
 
 
@@ -60568,125 +60938,258 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class DroidsGameSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.GameSystem {
+
+
+class MiniGameSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.GameSystem {
 	init() {
 		this.assetLoaded = false;
+
+		// assets
 		this.droidSpawnBox = null;
 		this.droidAttackBox = null;
 		this.droidPrototype = null;
-		this._helperVec3 = new three__WEBPACK_IMPORTED_MODULE_10__.Vector3();
-		this._helperQuat = new three__WEBPACK_IMPORTED_MODULE_10__.Quaternion();
-		this.raycaster = new three__WEBPACK_IMPORTED_MODULE_10__.Raycaster();
+		this.crateBase = null;
+		this.crateBaseDefaultY = null;
+		this.crateLid = null;
+		this.pistolPrototype = null;
+		this.pistolEntities = null;
+		this.pistolMounts = null;
+
+		// game variables
+		this.isActiveMiniGame = false;
+		this.wasActiveMiniGame = false;
+		this.game = null;
+		this.welcomePanel = null;
+		this.statsPanel = null;
 		this.droidEntities = new Set();
+		this.playerEntity = null;
+		this.playerHeadCollider = null;
+
+		// helper
+		this._helperVec3 = new three__WEBPACK_IMPORTED_MODULE_12__.Vector3();
+		this._helperQuat = new three__WEBPACK_IMPORTED_MODULE_12__.Quaternion();
+		this.raycaster = new three__WEBPACK_IMPORTED_MODULE_12__.Raycaster();
 	}
 
 	onExecute(delta, _time) {
 		if (!this.assetLoaded) {
-			this.loadGameAssets(this.gameStateComponent.scene);
-			this.assetLoaded = true;
+			const assetLoader = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.getOnlyEntity)(this.queries.assetLoader)?.getComponent(
+				_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_1__.AssetLoaderComponent,
+			);
+
+			if (assetLoader && assetLoader.allLoaded) {
+				this.loadGameAssets(assetLoader.models[_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_1__.GLTF_MODELS.DROIDS_MINI_GAME]);
+				this.assetLoaded = true;
+			}
 		}
 
-		let game = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.getOnlyEntity)(
+		this.game = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.getOnlyEntity)(
 			this.queries.droidsGame,
 			false,
-		)?.getMutableComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_1__.DroidsGameComponent);
+		)?.getMutableComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.DroidsGameComponent);
 
-		if (!game) return;
+		const miniGame = (0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.getOnlyEntity)(this.queries.miniGame, false)?.getComponent(
+			_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MiniGamesComponent,
+		);
 
-		this.queries.arcadeSwitch.results.forEach((entity) => {
-			let switchComponent = entity.getComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.SwitchComponent);
-			if (switchComponent.valueJustChanged) {
-				if (game.gameActive && game.gameTimer > 5) {
-					this.onGameEnd(game);
-				} else if (!game.gameActive) {
-					this.onGameStart(game);
-				}
-			}
-		});
+		if (!this.game || !miniGame) return;
 
-		if (game.gameActive) {
-			this.executeGame(delta, game);
+		this.isActiveMiniGame = miniGame.activeGame === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_TYPE.DROIDS;
+		if (!this.isActiveMiniGame && !this.wasActiveMiniGame) {
+			this.disappear(2);
 		}
+
+		if (this.isActiveMiniGame && !this.wasActiveMiniGame) {
+			console.log('droids game activated');
+		}
+
+		if (!this.isActiveMiniGame && this.wasActiveMiniGame) {
+			this.createNewPistols();
+			this.onGameEnd();
+			this.resetGame();
+			console.log('droids game deactivated');
+		}
+
+		if (
+			miniGame.previousGame === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_TYPE.DROIDS &&
+			miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_STATE.CLEARING_PREV
+		) {
+			this.disappear(miniGame.transitionTimer);
+		}
+
+		if (
+			miniGame.activeGame === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_TYPE.DROIDS &&
+			miniGame.state === _components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MINI_GAME_STATE.CREATING_NEXT
+		) {
+			this.appear(miniGame.transitionTimer);
+		}
+
+		this.welcomePanel.visible = !this.game.gameActive && this.isActiveMiniGame;
+		this.statsPanel.visible = this.isActiveMiniGame;
+
+		if (this.isActiveMiniGame) {
+			this.queries.arcadeSwitch.results.forEach((entity) => {
+				let switchComponent = entity.getComponent(_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.SwitchComponent);
+				if (switchComponent.valueJustChanged) {
+					if (this.game.gameActive && this.game.gameTimer > 5) {
+						this.onGameEnd();
+					} else if (!this.game.gameActive) {
+						this.onGameStart();
+					}
+				}
+			});
+
+			if (this.game.gameActive) {
+				this.executeGame(delta);
+			}
+		}
+
+		this.wasActiveMiniGame = this.isActiveMiniGame;
 	}
 
-	loadGameAssets(scene) {
-		let loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_7__.GLTFLoader();
-		let crateBase, crateLid, droidPrototype, pistolPrototype;
-		let pistolMounts = [];
+	loadGameAssets(object) {
+		this.pistolEntities = [];
+		this.pistolMounts = [];
 
-		loader.load(_Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.GLTF_PATH, (gltf) => {
-			let object = gltf.scene;
-			object.children.forEach((node) => {
-				switch (node.name) {
-					case _Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.CRATE_BASE_NAME:
-						crateBase = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.CRATE_LID_NAME:
-						crateLid = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.DROID_NAME:
-						droidPrototype = node;
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.DROID_SPAWN_ZONE:
-						this.droidSpawnBox = new three__WEBPACK_IMPORTED_MODULE_10__.Box3();
-						this.droidSpawnBox.setFromObject(node);
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.DROID_ATTACK_ZONE:
-						this.droidAttackBox = new three__WEBPACK_IMPORTED_MODULE_10__.Box3();
-						this.droidAttackBox.setFromObject(node);
-						break;
-					case _Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.PISTOL_NAME:
-						pistolPrototype = node;
-						break;
-					default:
-						if (node.name.startsWith(_Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.PISTOL_MOUNT_PREFIX)) {
-							pistolMounts.push(node);
-						}
-						break;
-				}
-			});
-			scene.attach(crateBase);
-			// crateBase.attach(crateLid);
-			pistolMounts.forEach((pistolMount) => {
-				crateBase.attach(pistolMount);
-				const pistolObject = pistolPrototype.clone();
-				pistolObject.position.copy(
-					pistolMount.getWorldPosition(this._helperVec3),
-				);
-				pistolObject.quaternion.copy(
-					pistolMount.getWorldQuaternion(this._helperQuat),
-				);
-				const entity = this.world.createEntity();
-				entity.addComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_8__.GrabbableComponent, {
-					grabSpaceTransformOverride:
-						_Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.PISTOL_GRAB_SPACE_TRANSFORM,
-				});
-				entity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__.RigidBodyComponent, (0,_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__.createDefaultRigidBodySchema)());
-				entity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_9__.Object3DComponent, { value: pistolObject });
-				entity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_1__.PistolComponent, {
-					muzzle: pistolObject.getObjectByName(
-						_Constants__WEBPACK_IMPORTED_MODULE_4__.DROIDS_CONSTANTS.PISTOL_MUZZLE_NAME,
-					),
-				});
-				scene.attach(pistolObject);
-			});
-			this.droidPrototype = droidPrototype;
-
-			const playerHeadCollider = new three__WEBPACK_IMPORTED_MODULE_10__.Mesh(
-				new three__WEBPACK_IMPORTED_MODULE_10__.SphereGeometry(0.2, 8, 8),
-				new three__WEBPACK_IMPORTED_MODULE_10__.MeshBasicMaterial(),
-			);
-			playerHeadCollider.visible = false;
-			scene.add(playerHeadCollider);
-
-			const entity = this.world.createEntity();
-			entity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_1__.DroidsGameComponent, {
-				crateBase,
-				crateLid,
-				droidPrototype,
-				playerHeadCollider,
-			});
+		object.model.children.forEach((node) => {
+			switch (node.name) {
+				case _Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.CRATE_BASE_NAME:
+					this.crateBase = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.CRATE_LID_NAME:
+					this.crateLid = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.DROID_NAME:
+					this.droidPrototype = node;
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.DROID_SPAWN_ZONE:
+					this.droidSpawnBox = new three__WEBPACK_IMPORTED_MODULE_12__.Box3();
+					this.droidSpawnBox.setFromObject(node);
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.DROID_ATTACK_ZONE:
+					this.droidAttackBox = new three__WEBPACK_IMPORTED_MODULE_12__.Box3();
+					this.droidAttackBox.setFromObject(node);
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.PISTOL_NAME:
+					this.pistolPrototype = node;
+					break;
+				default:
+					if (node.name.startsWith(_Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.PISTOL_MOUNT_PREFIX)) {
+						this.pistolMounts.push(node);
+					}
+					break;
+			}
 		});
+		this.gameStateComponent.scene.attach(this.crateBase);
+		this.crateBaseDefaultY = this.crateBase.position.y;
+		// crateBase.attach(crateLid);
+		this.createNewPistols();
+
+		this.playerHeadCollider = new three__WEBPACK_IMPORTED_MODULE_12__.Mesh(
+			new three__WEBPACK_IMPORTED_MODULE_12__.SphereGeometry(0.2, 8, 8),
+			new three__WEBPACK_IMPORTED_MODULE_12__.MeshBasicMaterial(),
+		);
+		this.playerHeadCollider.visible = false;
+		this.gameStateComponent.scene.add(this.playerHeadCollider);
+
+		const entity = this.world.createEntity();
+		entity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.DroidsGameComponent, {});
+
+		this.playerEntity = this.world.createEntity();
+		this.playerEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent, {
+			value: this.playerHeadCollider,
+		});
+		this.playerEntity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.PlayerComponent);
+
+		const map = new three__WEBPACK_IMPORTED_MODULE_12__.TextureLoader().load(
+			'assets/images/droids_welcome_panel.png',
+		);
+		const material = new three__WEBPACK_IMPORTED_MODULE_12__.MeshBasicMaterial({
+			map: map,
+			transparent: true,
+		});
+
+		this.welcomePanel = new three__WEBPACK_IMPORTED_MODULE_12__.Mesh(new three__WEBPACK_IMPORTED_MODULE_12__.PlaneGeometry(1, 1), material);
+		this.welcomePanel.rotateY(Math.PI);
+		this.welcomePanel.position.set(4.2, 1.6, 10);
+		this.gameStateComponent.scene.add(this.welcomePanel);
+
+		this.statsPanel = new _lib_TextPanel__WEBPACK_IMPORTED_MODULE_11__.TextPanel({
+			text: this.generateStatsText(),
+			fontOpacity: 0.5,
+			backgroundOpacity: 0.3,
+			padding: 0.01,
+			cornerRadius: 0.02,
+			zOffset: 0.005,
+		});
+		this.statsPanel.position.copy(
+			this.crateBase.getWorldPosition(this._helperVec3),
+		);
+		this.statsPanel.rotateY(Math.PI);
+		this.statsPanel.position.y += 0.5;
+		this.crateBase.attach(this.statsPanel);
+	}
+
+	createNewPistols() {
+		this.pistolEntities.forEach(_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.deleteEntity);
+		this.pistolEntities = [];
+		this.pistolMounts.forEach((pistolMount) => {
+			this.crateBase.attach(pistolMount);
+			const pistolObject = this.pistolPrototype.clone();
+			pistolObject.position.copy(
+				pistolMount.getWorldPosition(this._helperVec3),
+			);
+			pistolObject.quaternion.copy(
+				pistolMount.getWorldQuaternion(this._helperQuat),
+			);
+			const entity = this.world.createEntity();
+			entity.addComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_9__.GrabbableComponent, {
+				grabSpaceTransformOverride:
+					_Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.PISTOL_GRAB_SPACE_TRANSFORM,
+			});
+			entity.addComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, (0,_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.createDefaultRigidBodySchema)());
+			entity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent, { value: pistolObject });
+			entity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.PistolComponent, {
+				muzzle: pistolObject.getObjectByName(
+					_Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.PISTOL_MUZZLE_NAME,
+				),
+			});
+			this.gameStateComponent.scene.attach(pistolObject);
+			this.pistolEntities.push(entity);
+		});
+	}
+
+	appear(transitionTimer) {
+		const deltaY =
+			this.crateBaseDefaultY -
+			(2 - transitionTimer) * 1 -
+			this.crateBase.position.y;
+		this.crateBase.position.y += deltaY;
+		this.pistolEntities.forEach((entity) => {
+			entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent).value.position.y += deltaY;
+		});
+	}
+
+	disappear(transitionTimer) {
+		const deltaY =
+			this.crateBaseDefaultY - transitionTimer * 1 - this.crateBase.position.y;
+		this.crateBase.position.y += deltaY;
+		this.pistolEntities.forEach((entity) => {
+			entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent).value.position.y += deltaY;
+		});
+	}
+
+	generateStatsText() {
+		const playerComponent = this.playerEntity.getComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.PlayerComponent);
+		return (
+			'Health: ' +
+			formatNumber(Math.floor((playerComponent.hitPoints / 10) * 100), 3) +
+			'%\nScore:  ' +
+			formatNumber(playerComponent.score, 4) +
+			'\nTimer:  ' +
+			formatNumber(Math.floor(this.game ? this.game.gameTimer : 0), 3) +
+			's'
+		);
 	}
 
 	spawnDroid() {
@@ -60695,61 +61198,85 @@ class DroidsGameSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Gam
 		this.gameStateComponent.scene.add(droidObject);
 
 		const droidEntity = this.world.createEntity();
-		droidEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_9__.Object3DComponent, { value: droidObject });
-		droidEntity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_1__.DroidComponent, {
+		droidEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_10__.Object3DComponent, { value: droidObject });
+		droidEntity.addComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.DroidComponent, {
 			targetPosition: randomPointInBox3(this.droidAttackBox),
+			speed:
+				_Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.DROID_BASE_MOVEMENT_SPEED *
+				this.game.droidMovementSpeedMultiplier,
+			laserSpeed:
+				_Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.DROID_BASE_LASER_SPEED *
+				this.game.droidLaserSpeedMultiplier,
 		});
 		this.droidEntities.add(droidEntity);
 	}
 
-	onGameEnd(game) {
+	onGameEnd() {
 		console.log('game over');
-		game.resetGame();
-		this.world.getSystem(_DamageSystem__WEBPACK_IMPORTED_MODULE_5__.DamageSystem).stop();
-		this.world.getSystem(_DroidSystem__WEBPACK_IMPORTED_MODULE_6__.DroidSystem).stop();
+		this.game.gameActive = false;
+		this.world.getSystem(_DamageSystem__WEBPACK_IMPORTED_MODULE_7__.DamageSystem).stop();
+		this.world.getSystem(_DroidSystem__WEBPACK_IMPORTED_MODULE_8__.DroidSystem).stop();
 	}
 
-	onGameStart(game) {
-		this.droidEntities.forEach((entity) => {
-			if (entity) {
-				(0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.deleteEntity)(entity);
-			}
-		});
+	onGameStart() {
+		this.resetGame();
+		this.game.gameActive = true;
+		this.world.getSystem(_DamageSystem__WEBPACK_IMPORTED_MODULE_7__.DamageSystem).play();
+		this.world.getSystem(_DroidSystem__WEBPACK_IMPORTED_MODULE_8__.DroidSystem).play();
+	}
+
+	resetGame() {
+		this.game.gameActive = false;
+		this.game.gameTimer = 0;
+		this.game.droidSpawnTimer = 5;
+		this.game.droidSpawnMultiplier = 1;
+		this.playerEntity.getMutableComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.PlayerComponent).hitPoints = 10;
+		this.droidEntities.forEach(_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_3__.deleteEntity);
 		this.droidEntities.clear();
-		game.gameActive = true;
-		this.world.getSystem(_DamageSystem__WEBPACK_IMPORTED_MODULE_5__.DamageSystem).play();
-		this.world.getSystem(_DroidSystem__WEBPACK_IMPORTED_MODULE_6__.DroidSystem).play();
 	}
 
-	executeGame(delta, game) {
-		game.playerHeadCollider.position.copy(
+	executeGame(delta) {
+		this.playerHeadCollider.position.copy(
 			this.gameStateComponent.renderer.xr
 				.getCamera()
 				.getWorldPosition(this._helperVec3),
 		);
-		game.gameTimer += delta;
-		game.droidSpawnTimer -= delta;
-		game.droidSpawnMultiplier = 1 + (game.gameTimer / 2) * 0.1;
-		if (game.droidSpawnTimer <= 0) {
+		this.game.gameTimer += delta;
+		this.game.droidSpawnTimer -= delta;
+		this.game.droidSpawnMultiplier = 1 + (this.game.gameTimer / 10) * 0.1;
+		this.game.droidMovementSpeedMultiplier =
+			1 + (this.game.gameTimer / 10) * 0.1;
+		this.game.droidLaserSpeedMultiplier = 1 + (this.game.gameTimer / 10) * 0.1;
+		if (this.game.droidSpawnTimer <= 0) {
 			this.spawnDroid();
-			game.droidSpawnTimer = 5 / game.droidSpawnMultiplier;
+			this.game.droidSpawnTimer =
+				_Constants__WEBPACK_IMPORTED_MODULE_6__.DROIDS_CONSTANTS.DROID_BASE_SPAWN_TIME / this.game.droidSpawnMultiplier;
 		}
-		if (game.playerHitPoints <= 0) {
-			this.onGameEnd(game);
+		if (this.playerEntity.getComponent(_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.PlayerComponent).hitPoints <= 0) {
+			this.onGameEnd();
 		}
+		this.statsPanel.setText(this.generateStatsText());
 	}
 }
 
-DroidsGameSystem.addQueries({
+MiniGameSystem.addQueries({
+	miniGame: { components: [_components_MiniGamesComponent__WEBPACK_IMPORTED_MODULE_4__.MiniGamesComponent] },
 	arcadeSwitch: { components: [_components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.SwitchComponent, _components_SwitchComponent__WEBPACK_IMPORTED_MODULE_0__.ArcadeSwitch] },
-	droidsGame: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_1__.DroidsGameComponent] },
+	droidsGame: { components: [_components_DroidsGameComponents__WEBPACK_IMPORTED_MODULE_2__.DroidsGameComponent] },
+	assetLoader: { components: [_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_1__.AssetLoaderComponent] },
 });
 
 const randomPointInBox3 = (box3) => {
 	const x = Math.random() * (box3.max.x - box3.min.x) + box3.min.x;
 	const y = Math.random() * (box3.max.y - box3.min.y) + box3.min.y;
 	const z = Math.random() * (box3.max.z - box3.min.z) + box3.min.z;
-	return new three__WEBPACK_IMPORTED_MODULE_10__.Vector3(x, y, z);
+	return new three__WEBPACK_IMPORTED_MODULE_12__.Vector3(x, y, z);
+};
+
+const formatNumber = (number, digits) => {
+	let numberString = number.toString();
+	while (numberString.length < digits) numberString = '0' + numberString;
+	return numberString;
 };
 
 
@@ -60878,6 +61405,7 @@ const getOnlyEntity = (query, strict = true) => {
 };
 
 const deleteEntity = (entity) => {
+	if (!entity) return;
 	// make sure that any refs on the entity are cleaned up.
 	if (entity.hasComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_2__.Object3DComponent)) {
 		let mesh = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_2__.Object3DComponent).value;
@@ -60898,7 +61426,7 @@ const deleteEntity = (entity) => {
 		mesh.parent.remove(mesh);
 	}
 
-	entity.remove(true);
+	if (entity.alive) entity.remove(true);
 };
 
 class InteractionSystem extends ecsy__WEBPACK_IMPORTED_MODULE_3__.System {
@@ -61036,156 +61564,6 @@ GameSystem.queries = {
  */
 GameSystem.addQueries = function (additionalQueries) {
 	this.queries = Object.assign(this.queries, additionalQueries);
-};
-
-
-/***/ }),
-
-/***/ "./src/js/utils/modelProcessingUtils.js":
-/*!**********************************************!*\
-  !*** ./src/js/utils/modelProcessingUtils.js ***!
-  \**********************************************/
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "processModel": () => (/* binding */ processModel)
-/* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-
-
-const getInstanceName = (object) => {
-	// The instanced objects are named in the format of <instName>__xxx
-	return object.name.split('__')[0];
-};
-
-const createInstancedMeshesMap = (
-	model,
-	meshNodes,
-	colliderNodes,
-	grabbableNodes,
-	switchNodes,
-) => {
-	let objects = {};
-	let total = 0;
-	model.children.forEach(function (node) {
-		if (!node.isMesh) {
-			return;
-		}
-		node.material.metalness *= 0.98;
-		if (node.userData.collider) {
-			colliderNodes.push(node);
-		} else if (node.userData.interactive) {
-			grabbableNodes.push(node);
-		} else if (node.userData.switch) {
-			switchNodes.push(node);
-		} else {
-			meshNodes.push(node);
-		}
-	});
-	for (let node of meshNodes) {
-		total += 1;
-		let instName = getInstanceName(node);
-		if (objects[instName]) {
-			objects[instName] += 1;
-		} else {
-			objects[instName] = 1;
-		}
-	}
-	let instancedMeshes = {};
-	for (let instName in objects) {
-		if (objects[instName] > 1) {
-			instancedMeshes[instName] = {
-				mesh: null,
-				cur_idx: 0,
-				count: objects[instName],
-			};
-		}
-	}
-	let numUniqueObjects =
-		Object.keys(objects).length - Object.keys(instancedMeshes).length;
-	let numInstancedObjects = Object.keys(instancedMeshes).length;
-	let numInstancedCopies = total - numUniqueObjects;
-	console.log(
-		'[Environment Optimization] ' +
-			total +
-			' total environment objects: ' +
-			numUniqueObjects +
-			' unique environment objects and ' +
-			numInstancedCopies +
-			' instances of ' +
-			numInstancedObjects +
-			' instanced environment objects',
-	);
-
-	console.log(
-		'[Collider Objects] ' + colliderNodes.length + ' collider objects',
-	);
-	console.log(
-		'[Grabbable Objects] ' + grabbableNodes.length + ' grabbable objects',
-	);
-	console.log('[Switch Objects] ' + switchNodes.length + ' switch objects');
-	return instancedMeshes;
-};
-
-const processModel = (
-	model,
-	colliderNodes,
-	grabbableNodes,
-	switchNodes,
-) => {
-	let meshNodes = [];
-	let instancedMeshesMap = createInstancedMeshesMap(
-		model,
-		meshNodes,
-		colliderNodes,
-		grabbableNodes,
-		switchNodes,
-	);
-
-	// disable instancedMesh process for baked environment
-	instancedMeshesMap = {};
-
-	let envGroup = new three__WEBPACK_IMPORTED_MODULE_0__.Group();
-	let matrix = new three__WEBPACK_IMPORTED_MODULE_0__.Matrix4();
-
-	for (let node of meshNodes) {
-		node.castShadow = false;
-		node.receiveShadow = false;
-
-		let instName = getInstanceName(node);
-		let instMesh = instancedMeshesMap[instName];
-		if (instMesh) {
-			// create an InstancedMesh (and process geometry) if there are no meshes yet
-			// that match the name we preprocessed
-			if (instMesh.cur_idx == 0) {
-				let mesh = new three__WEBPACK_IMPORTED_MODULE_0__.InstancedMesh(
-					node.geometry,
-					node.material,
-					instMesh.count,
-				);
-				mesh.name = 'InstancedMesh: ' + instName;
-				mesh.castShadow = node.castShadow;
-				mesh.receiveShadow = node.receiveShadow;
-				instMesh.mesh = mesh;
-				instancedMeshesMap[instName] = instMesh;
-			}
-			matrix.compose(node.position, node.quaternion, node.scale);
-			instMesh.mesh.setMatrixAt(instMesh.cur_idx++, matrix);
-		} else {
-			envGroup.add(node);
-		}
-	}
-
-	for (let instName in instancedMeshesMap) {
-		let item = instancedMeshesMap[instName];
-
-		envGroup.add(item.mesh);
-		item.mesh.instanceMatrix.needsUpdate = true;
-		item.mesh.count = item.count;
-	}
-
-	return envGroup;
 };
 
 
@@ -66625,6 +67003,133 @@ function getTriangleHitPointInfo( point, geometry, triangleIndex, target ) {
 
 /***/ }),
 
+/***/ "./node_modules/three/examples/jsm/libs/meshopt_decoder.module.js":
+/*!************************************************************************!*\
+  !*** ./node_modules/three/examples/jsm/libs/meshopt_decoder.module.js ***!
+  \************************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MeshoptDecoder": () => (/* binding */ MeshoptDecoder)
+/* harmony export */ });
+// This file is part of meshoptimizer library and is distributed under the terms of MIT License.
+// Copyright (C) 2016-2020, by Arseny Kapoulkine (arseny.kapoulkine@gmail.com)
+var MeshoptDecoder = (function() {
+	"use strict";
+
+	// Built with clang version 11.0.0 (https://github.com/llvm/llvm-project.git 0160ad802e899c2922bc9b29564080c22eb0908c)
+	// Built from meshoptimizer 0.14
+	var wasm_base = "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";
+	var wasm_simd = "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";
+
+	// Uses bulk-memory and simd extensions
+	var detector = new Uint8Array([0,97,115,109,1,0,0,0,1,4,1,96,0,0,3,3,2,0,0,5,3,1,0,1,12,1,0,10,22,2,12,0,65,0,65,0,65,0,252,10,0,0,11,7,0,65,0,253,15,26,11]);
+
+	// Used to unpack wasm
+	var wasmpack = new Uint8Array([32,0,65,253,3,1,2,34,4,106,6,5,11,8,7,20,13,33,12,16,128,9,116,64,19,113,127,15,10,21,22,14,255,66,24,54,136,107,18,23,192,26,114,118,132,17,77,101,130,144,27,87,131,44,45,74,156,154,70,167]);
+
+	if (typeof WebAssembly !== 'object') {
+		// This module requires WebAssembly to function
+		return {
+			supported: false,
+		};
+	}
+
+	var wasm = wasm_base;
+
+	if (WebAssembly.validate(detector)) {
+		wasm = wasm_simd;
+		console.log("Warning: meshopt_decoder is using experimental SIMD support");
+	}
+
+	var instance;
+
+	var promise =
+		WebAssembly.instantiate(unpack(wasm), {})
+		.then(function(result) {
+			instance = result.instance;
+			instance.exports.__wasm_call_ctors();
+		});
+
+	function unpack(data) {
+		var result = new Uint8Array(data.length);
+		for (var i = 0; i < data.length; ++i) {
+			var ch = data.charCodeAt(i);
+			result[i] = ch > 96 ? ch - 71 : ch > 64 ? ch - 65 : ch > 47 ? ch + 4 : ch > 46 ? 63 : 62;
+		}
+		var write = 0;
+		for (var i = 0; i < data.length; ++i) {
+			result[write++] = (result[i] < 60) ? wasmpack[result[i]] : (result[i] - 60) * 64 + result[++i];
+		}
+		return result.buffer.slice(0, write);
+	}
+
+	function decode(fun, target, count, size, source, filter) {
+		var sbrk = instance.exports.sbrk;
+		var count4 = (count + 3) & ~3; // pad for SIMD filter
+		var tp = sbrk(count4 * size);
+		var sp = sbrk(source.length);
+		var heap = new Uint8Array(instance.exports.memory.buffer);
+		heap.set(source, sp);
+		var res = fun(tp, count, size, sp, source.length);
+		if (res == 0 && filter) {
+			filter(tp, count4, size);
+		}
+		target.set(heap.subarray(tp, tp + count * size));
+		sbrk(tp - sbrk(0));
+		if (res != 0) {
+			throw new Error("Malformed buffer data: " + res);
+		}
+	};
+
+	var filters = {
+		// legacy index-based enums for glTF
+		0: "",
+		1: "meshopt_decodeFilterOct",
+		2: "meshopt_decodeFilterQuat",
+		3: "meshopt_decodeFilterExp",
+		// string-based enums for glTF
+		NONE: "",
+		OCTAHEDRAL: "meshopt_decodeFilterOct",
+		QUATERNION: "meshopt_decodeFilterQuat",
+		EXPONENTIAL: "meshopt_decodeFilterExp",
+	};
+
+	var decoders = {
+		// legacy index-based enums for glTF
+		0: "meshopt_decodeVertexBuffer",
+		1: "meshopt_decodeIndexBuffer",
+		2: "meshopt_decodeIndexSequence",
+		// string-based enums for glTF
+		ATTRIBUTES: "meshopt_decodeVertexBuffer",
+		TRIANGLES: "meshopt_decodeIndexBuffer",
+		INDICES: "meshopt_decodeIndexSequence",
+	};
+
+	return {
+		ready: promise,
+		supported: true,
+		decodeVertexBuffer: function(target, count, size, source, filter) {
+			decode(instance.exports.meshopt_decodeVertexBuffer, target, count, size, source, instance.exports[filters[filter]]);
+		},
+		decodeIndexBuffer: function(target, count, size, source) {
+			decode(instance.exports.meshopt_decodeIndexBuffer, target, count, size, source);
+		},
+		decodeIndexSequence: function(target, count, size, source) {
+			decode(instance.exports.meshopt_decodeIndexSequence, target, count, size, source);
+		},
+		decodeGltfBuffer: function(target, count, size, source, mode, filter) {
+			decode(instance.exports[decoders[mode]], target, count, size, source, instance.exports[filters[filter]]);
+		}
+	};
+})();
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/three/examples/jsm/libs/motion-controllers.module.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/three/examples/jsm/libs/motion-controllers.module.js ***!
@@ -71328,6 +71833,710 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 /***/ }),
 
+/***/ "./node_modules/three/examples/jsm/loaders/KTX2Loader.js":
+/*!***************************************************************!*\
+  !*** ./node_modules/three/examples/jsm/loaders/KTX2Loader.js ***!
+  \***************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "KTX2Loader": () => (/* binding */ KTX2Loader)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _utils_WorkerPool_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/WorkerPool.js */ "./node_modules/three/examples/jsm/utils/WorkerPool.js");
+/**
+ * Loader for KTX 2.0 GPU Texture containers.
+ *
+ * KTX 2.0 is a container format for various GPU texture formats. The loader
+ * supports Basis Universal GPU textures, which can be quickly transcoded to
+ * a wide variety of GPU texture compression formats. While KTX 2.0 also allows
+ * other hardware-specific formats, this loader does not yet parse them.
+ *
+ * References:
+ * - KTX: http://github.khronos.org/KTX-Specification/
+ * - DFD: https://www.khronos.org/registry/DataFormat/specs/1.3/dataformat.1.3.html#basicdescriptor
+ */
+
+
+
+
+const KTX2TransferSRGB = 2;
+const KTX2_ALPHA_PREMULTIPLIED = 1;
+const _taskCache = new WeakMap();
+
+let _activeLoaders = 0;
+
+class KTX2Loader extends three__WEBPACK_IMPORTED_MODULE_1__.Loader {
+
+	constructor( manager ) {
+
+		super( manager );
+
+		this.transcoderPath = '';
+		this.transcoderBinary = null;
+		this.transcoderPending = null;
+
+		this.workerPool = new _utils_WorkerPool_js__WEBPACK_IMPORTED_MODULE_0__.WorkerPool();
+		this.workerSourceURL = '';
+		this.workerConfig = null;
+
+		if ( typeof MSC_TRANSCODER !== 'undefined' ) {
+
+			console.warn(
+
+				'THREE.KTX2Loader: Please update to latest "basis_transcoder".'
+				+ ' "msc_basis_transcoder" is no longer supported in three.js r125+.'
+
+			);
+
+		}
+
+	}
+
+	setTranscoderPath( path ) {
+
+		this.transcoderPath = path;
+
+		return this;
+
+	}
+
+	setWorkerLimit( num ) {
+
+		this.workerPool.setWorkerLimit( num );
+
+		return this;
+
+	}
+
+	detectSupport( renderer ) {
+
+		this.workerConfig = {
+			astcSupported: renderer.extensions.has( 'WEBGL_compressed_texture_astc' ),
+			etc1Supported: renderer.extensions.has( 'WEBGL_compressed_texture_etc1' ),
+			etc2Supported: renderer.extensions.has( 'WEBGL_compressed_texture_etc' ),
+			dxtSupported: renderer.extensions.has( 'WEBGL_compressed_texture_s3tc' ),
+			bptcSupported: renderer.extensions.has( 'EXT_texture_compression_bptc' ),
+			pvrtcSupported: renderer.extensions.has( 'WEBGL_compressed_texture_pvrtc' )
+				|| renderer.extensions.has( 'WEBKIT_WEBGL_compressed_texture_pvrtc' )
+		};
+
+		return this;
+
+	}
+
+	dispose() {
+
+		this.workerPool.dispose();
+		if ( this.workerSourceURL ) URL.revokeObjectURL( this.workerSourceURL );
+
+		return this;
+
+	}
+
+	init() {
+
+		if ( ! this.transcoderPending ) {
+
+			// Load transcoder wrapper.
+			const jsLoader = new three__WEBPACK_IMPORTED_MODULE_1__.FileLoader( this.manager );
+			jsLoader.setPath( this.transcoderPath );
+			jsLoader.setWithCredentials( this.withCredentials );
+			const jsContent = jsLoader.loadAsync( 'basis_transcoder.js' );
+
+			// Load transcoder WASM binary.
+			const binaryLoader = new three__WEBPACK_IMPORTED_MODULE_1__.FileLoader( this.manager );
+			binaryLoader.setPath( this.transcoderPath );
+			binaryLoader.setResponseType( 'arraybuffer' );
+			binaryLoader.setWithCredentials( this.withCredentials );
+			const binaryContent = binaryLoader.loadAsync( 'basis_transcoder.wasm' );
+
+			this.transcoderPending = Promise.all( [ jsContent, binaryContent ] )
+				.then( ( [ jsContent, binaryContent ] ) => {
+
+					const fn = KTX2Loader.BasisWorker.toString();
+
+					const body = [
+						'/* constants */',
+						'let _EngineFormat = ' + JSON.stringify( KTX2Loader.EngineFormat ),
+						'let _TranscoderFormat = ' + JSON.stringify( KTX2Loader.TranscoderFormat ),
+						'let _BasisFormat = ' + JSON.stringify( KTX2Loader.BasisFormat ),
+						'/* basis_transcoder.js */',
+						jsContent,
+						'/* worker */',
+						fn.substring( fn.indexOf( '{' ) + 1, fn.lastIndexOf( '}' ) )
+					].join( '\n' );
+
+					this.workerSourceURL = URL.createObjectURL( new Blob( [ body ] ) );
+					this.transcoderBinary = binaryContent;
+
+					this.workerPool.setWorkerCreator( () => {
+
+						const worker = new Worker( this.workerSourceURL );
+						const transcoderBinary = this.transcoderBinary.slice( 0 );
+
+						worker.postMessage( { type: 'init', config: this.workerConfig, transcoderBinary }, [ transcoderBinary ] );
+
+						return worker;
+
+					} );
+
+				} );
+
+			if ( _activeLoaders > 0 ) {
+
+				// Each instance loads a transcoder and allocates workers, increasing network and memory cost.
+
+				console.warn(
+
+					'THREE.KTX2Loader: Multiple active KTX2 loaders may cause performance issues.'
+					+ ' Use a single KTX2Loader instance, or call .dispose() on old instances.'
+
+				);
+
+			}
+
+			_activeLoaders++;
+
+		}
+
+		return this.transcoderPending;
+
+	}
+
+	load( url, onLoad, onProgress, onError ) {
+
+		if ( this.workerConfig === null ) {
+
+			throw new Error( 'THREE.KTX2Loader: Missing initialization with `.detectSupport( renderer )`.' );
+
+		}
+
+		const loader = new three__WEBPACK_IMPORTED_MODULE_1__.FileLoader( this.manager );
+
+		loader.setResponseType( 'arraybuffer' );
+		loader.setWithCredentials( this.withCredentials );
+
+		const texture = new three__WEBPACK_IMPORTED_MODULE_1__.CompressedTexture();
+
+		loader.load( url, ( buffer ) => {
+
+			// Check for an existing task using this buffer. A transferred buffer cannot be transferred
+			// again from this thread.
+			if ( _taskCache.has( buffer ) ) {
+
+				const cachedTask = _taskCache.get( buffer );
+
+				return cachedTask.promise.then( onLoad ).catch( onError );
+
+			}
+
+			this._createTexture( [ buffer ] )
+				.then( function ( _texture ) {
+
+					texture.copy( _texture );
+					texture.needsUpdate = true;
+
+					if ( onLoad ) onLoad( texture );
+
+				} )
+				.catch( onError );
+
+		}, onProgress, onError );
+
+		return texture;
+
+	}
+
+	_createTextureFrom( transcodeResult ) {
+
+		const { mipmaps, width, height, format, type, error, dfdTransferFn, dfdFlags } = transcodeResult;
+
+		if ( type === 'error' ) return Promise.reject( error );
+
+		const texture = new three__WEBPACK_IMPORTED_MODULE_1__.CompressedTexture( mipmaps, width, height, format, three__WEBPACK_IMPORTED_MODULE_1__.UnsignedByteType );
+		texture.minFilter = mipmaps.length === 1 ? three__WEBPACK_IMPORTED_MODULE_1__.LinearFilter : three__WEBPACK_IMPORTED_MODULE_1__.LinearMipmapLinearFilter;
+		texture.magFilter = three__WEBPACK_IMPORTED_MODULE_1__.LinearFilter;
+		texture.generateMipmaps = false;
+		texture.needsUpdate = true;
+		texture.encoding = dfdTransferFn === KTX2TransferSRGB ? three__WEBPACK_IMPORTED_MODULE_1__.sRGBEncoding : three__WEBPACK_IMPORTED_MODULE_1__.LinearEncoding;
+		texture.premultiplyAlpha = !! ( dfdFlags & KTX2_ALPHA_PREMULTIPLIED );
+
+		return texture;
+
+	}
+
+	/**
+	 * @param {ArrayBuffer[]} buffers
+	 * @param {object?} config
+	 * @return {Promise<CompressedTexture>}
+	 */
+	_createTexture( buffers, config = {} ) {
+
+		const taskConfig = config;
+		const texturePending = this.init().then( () => {
+
+			return this.workerPool.postMessage( { type: 'transcode', buffers, taskConfig: taskConfig }, buffers );
+
+		} ).then( ( e ) => this._createTextureFrom( e.data ) );
+
+		// Cache the task result.
+		_taskCache.set( buffers[ 0 ], { promise: texturePending } );
+
+		return texturePending;
+
+	}
+
+	dispose() {
+
+		URL.revokeObjectURL( this.workerSourceURL );
+		this.workerPool.dispose();
+
+		_activeLoaders--;
+
+		return this;
+
+	}
+
+}
+
+
+/* CONSTANTS */
+
+KTX2Loader.BasisFormat = {
+	ETC1S: 0,
+	UASTC_4x4: 1,
+};
+
+KTX2Loader.TranscoderFormat = {
+	ETC1: 0,
+	ETC2: 1,
+	BC1: 2,
+	BC3: 3,
+	BC4: 4,
+	BC5: 5,
+	BC7_M6_OPAQUE_ONLY: 6,
+	BC7_M5: 7,
+	PVRTC1_4_RGB: 8,
+	PVRTC1_4_RGBA: 9,
+	ASTC_4x4: 10,
+	ATC_RGB: 11,
+	ATC_RGBA_INTERPOLATED_ALPHA: 12,
+	RGBA32: 13,
+	RGB565: 14,
+	BGR565: 15,
+	RGBA4444: 16,
+};
+
+KTX2Loader.EngineFormat = {
+	RGBAFormat: three__WEBPACK_IMPORTED_MODULE_1__.RGBAFormat,
+	RGBA_ASTC_4x4_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGBA_ASTC_4x4_Format,
+	RGBA_BPTC_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGBA_BPTC_Format,
+	RGBA_ETC2_EAC_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGBA_ETC2_EAC_Format,
+	RGBA_PVRTC_4BPPV1_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGBA_PVRTC_4BPPV1_Format,
+	RGBA_S3TC_DXT5_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGBA_S3TC_DXT5_Format,
+	RGB_ETC1_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGB_ETC1_Format,
+	RGB_ETC2_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGB_ETC2_Format,
+	RGB_PVRTC_4BPPV1_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGB_PVRTC_4BPPV1_Format,
+	RGB_S3TC_DXT1_Format: three__WEBPACK_IMPORTED_MODULE_1__.RGB_S3TC_DXT1_Format,
+};
+
+
+/* WEB WORKER */
+
+KTX2Loader.BasisWorker = function () {
+
+	let config;
+	let transcoderPending;
+	let BasisModule;
+
+	const EngineFormat = _EngineFormat; // eslint-disable-line no-undef
+	const TranscoderFormat = _TranscoderFormat; // eslint-disable-line no-undef
+	const BasisFormat = _BasisFormat; // eslint-disable-line no-undef
+
+	self.addEventListener( 'message', function ( e ) {
+
+		const message = e.data;
+
+		switch ( message.type ) {
+
+			case 'init':
+				config = message.config;
+				init( message.transcoderBinary );
+				break;
+
+			case 'transcode':
+				transcoderPending.then( () => {
+
+					try {
+
+						const { width, height, hasAlpha, mipmaps, format, dfdTransferFn, dfdFlags } = transcode( message.buffers[ 0 ] );
+
+						const buffers = [];
+
+						for ( let i = 0; i < mipmaps.length; ++ i ) {
+
+							buffers.push( mipmaps[ i ].data.buffer );
+
+						}
+
+						self.postMessage( { type: 'transcode', id: message.id, width, height, hasAlpha, mipmaps, format, dfdTransferFn, dfdFlags }, buffers );
+
+					} catch ( error ) {
+
+						console.error( error );
+
+						self.postMessage( { type: 'error', id: message.id, error: error.message } );
+
+					}
+
+				} );
+				break;
+
+		}
+
+	} );
+
+	function init( wasmBinary ) {
+
+		transcoderPending = new Promise( ( resolve ) => {
+
+			BasisModule = { wasmBinary, onRuntimeInitialized: resolve };
+			BASIS( BasisModule ); // eslint-disable-line no-undef
+
+		} ).then( () => {
+
+			BasisModule.initializeBasis();
+
+			if ( BasisModule.KTX2File === undefined ) {
+
+				console.warn( 'THREE.KTX2Loader: Please update Basis Universal transcoder.' );
+
+			}
+
+		} );
+
+	}
+
+	function transcode( buffer ) {
+
+		const ktx2File = new BasisModule.KTX2File( new Uint8Array( buffer ) );
+
+		function cleanup() {
+
+			ktx2File.close();
+			ktx2File.delete();
+
+		}
+
+		if ( ! ktx2File.isValid() ) {
+
+			cleanup();
+			throw new Error( 'THREE.KTX2Loader:	Invalid or unsupported .ktx2 file' );
+
+		}
+
+		const basisFormat = ktx2File.isUASTC() ? BasisFormat.UASTC_4x4 : BasisFormat.ETC1S;
+		const width = ktx2File.getWidth();
+		const height = ktx2File.getHeight();
+		const levels = ktx2File.getLevels();
+		const hasAlpha = ktx2File.getHasAlpha();
+		const dfdTransferFn = ktx2File.getDFDTransferFunc();
+		const dfdFlags = ktx2File.getDFDFlags();
+
+		const { transcoderFormat, engineFormat } = getTranscoderFormat( basisFormat, width, height, hasAlpha );
+
+		if ( ! width || ! height || ! levels ) {
+
+			cleanup();
+			throw new Error( 'THREE.KTX2Loader:	Invalid texture' );
+
+		}
+
+		if ( ! ktx2File.startTranscoding() ) {
+
+			cleanup();
+			throw new Error( 'THREE.KTX2Loader: .startTranscoding failed' );
+
+		}
+
+		const mipmaps = [];
+
+		for ( let mip = 0; mip < levels; mip ++ ) {
+
+			const levelInfo = ktx2File.getImageLevelInfo( mip, 0, 0 );
+			const mipWidth = levelInfo.origWidth;
+			const mipHeight = levelInfo.origHeight;
+			const dst = new Uint8Array( ktx2File.getImageTranscodedSizeInBytes( mip, 0, 0, transcoderFormat ) );
+
+			const status = ktx2File.transcodeImage(
+				dst,
+				mip,
+				0,
+				0,
+				transcoderFormat,
+				0,
+				- 1,
+				- 1,
+			);
+
+			if ( ! status ) {
+
+				cleanup();
+				throw new Error( 'THREE.KTX2Loader: .transcodeImage failed.' );
+
+			}
+
+			mipmaps.push( { data: dst, width: mipWidth, height: mipHeight } );
+
+		}
+
+		cleanup();
+
+		return { width, height, hasAlpha, mipmaps, format: engineFormat, dfdTransferFn, dfdFlags };
+
+	}
+
+	//
+
+	// Optimal choice of a transcoder target format depends on the Basis format (ETC1S or UASTC),
+	// device capabilities, and texture dimensions. The list below ranks the formats separately
+	// for ETC1S and UASTC.
+	//
+	// In some cases, transcoding UASTC to RGBA32 might be preferred for higher quality (at
+	// significant memory cost) compared to ETC1/2, BC1/3, and PVRTC. The transcoder currently
+	// chooses RGBA32 only as a last resort and does not expose that option to the caller.
+	const FORMAT_OPTIONS = [
+		{
+			if: 'astcSupported',
+			basisFormat: [ BasisFormat.UASTC_4x4 ],
+			transcoderFormat: [ TranscoderFormat.ASTC_4x4, TranscoderFormat.ASTC_4x4 ],
+			engineFormat: [ EngineFormat.RGBA_ASTC_4x4_Format, EngineFormat.RGBA_ASTC_4x4_Format ],
+			priorityETC1S: Infinity,
+			priorityUASTC: 1,
+			needsPowerOfTwo: false,
+		},
+		{
+			if: 'bptcSupported',
+			basisFormat: [ BasisFormat.ETC1S, BasisFormat.UASTC_4x4 ],
+			transcoderFormat: [ TranscoderFormat.BC7_M5, TranscoderFormat.BC7_M5 ],
+			engineFormat: [ EngineFormat.RGBA_BPTC_Format, EngineFormat.RGBA_BPTC_Format ],
+			priorityETC1S: 3,
+			priorityUASTC: 2,
+			needsPowerOfTwo: false,
+		},
+		{
+			if: 'dxtSupported',
+			basisFormat: [ BasisFormat.ETC1S, BasisFormat.UASTC_4x4 ],
+			transcoderFormat: [ TranscoderFormat.BC1, TranscoderFormat.BC3 ],
+			engineFormat: [ EngineFormat.RGB_S3TC_DXT1_Format, EngineFormat.RGBA_S3TC_DXT5_Format ],
+			priorityETC1S: 4,
+			priorityUASTC: 5,
+			needsPowerOfTwo: false,
+		},
+		{
+			if: 'etc2Supported',
+			basisFormat: [ BasisFormat.ETC1S, BasisFormat.UASTC_4x4 ],
+			transcoderFormat: [ TranscoderFormat.ETC1, TranscoderFormat.ETC2 ],
+			engineFormat: [ EngineFormat.RGB_ETC2_Format, EngineFormat.RGBA_ETC2_EAC_Format ],
+			priorityETC1S: 1,
+			priorityUASTC: 3,
+			needsPowerOfTwo: false,
+		},
+		{
+			if: 'etc1Supported',
+			basisFormat: [ BasisFormat.ETC1S, BasisFormat.UASTC_4x4 ],
+			transcoderFormat: [ TranscoderFormat.ETC1, TranscoderFormat.ETC1 ],
+			engineFormat: [ EngineFormat.RGB_ETC1_Format, EngineFormat.RGB_ETC1_Format ],
+			priorityETC1S: 2,
+			priorityUASTC: 4,
+			needsPowerOfTwo: false,
+		},
+		{
+			if: 'pvrtcSupported',
+			basisFormat: [ BasisFormat.ETC1S, BasisFormat.UASTC_4x4 ],
+			transcoderFormat: [ TranscoderFormat.PVRTC1_4_RGB, TranscoderFormat.PVRTC1_4_RGBA ],
+			engineFormat: [ EngineFormat.RGB_PVRTC_4BPPV1_Format, EngineFormat.RGBA_PVRTC_4BPPV1_Format ],
+			priorityETC1S: 5,
+			priorityUASTC: 6,
+			needsPowerOfTwo: true,
+		},
+	];
+
+	const ETC1S_OPTIONS = FORMAT_OPTIONS.sort( function ( a, b ) {
+
+		return a.priorityETC1S - b.priorityETC1S;
+
+	} );
+	const UASTC_OPTIONS = FORMAT_OPTIONS.sort( function ( a, b ) {
+
+		return a.priorityUASTC - b.priorityUASTC;
+
+	} );
+
+	function getTranscoderFormat( basisFormat, width, height, hasAlpha ) {
+
+		let transcoderFormat;
+		let engineFormat;
+
+		const options = basisFormat === BasisFormat.ETC1S ? ETC1S_OPTIONS : UASTC_OPTIONS;
+
+		for ( let i = 0; i < options.length; i ++ ) {
+
+			const opt = options[ i ];
+
+			if ( ! config[ opt.if ] ) continue;
+			if ( ! opt.basisFormat.includes( basisFormat ) ) continue;
+			if ( opt.needsPowerOfTwo && ! ( isPowerOfTwo( width ) && isPowerOfTwo( height ) ) ) continue;
+
+			transcoderFormat = opt.transcoderFormat[ hasAlpha ? 1 : 0 ];
+			engineFormat = opt.engineFormat[ hasAlpha ? 1 : 0 ];
+
+			return { transcoderFormat, engineFormat };
+
+		}
+
+		console.warn( 'THREE.KTX2Loader: No suitable compressed texture format found. Decoding to RGBA32.' );
+
+		transcoderFormat = TranscoderFormat.RGBA32;
+		engineFormat = EngineFormat.RGBAFormat;
+
+		return { transcoderFormat, engineFormat };
+
+	}
+
+	function isPowerOfTwo( value ) {
+
+		if ( value <= 2 ) return true;
+
+		return ( value & ( value - 1 ) ) === 0 && value !== 0;
+
+	}
+
+};
+
+
+
+
+/***/ }),
+
+/***/ "./node_modules/three/examples/jsm/utils/WorkerPool.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/three/examples/jsm/utils/WorkerPool.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "WorkerPool": () => (/* binding */ WorkerPool)
+/* harmony export */ });
+/**
+ * @author Deepkolos / https://github.com/deepkolos
+ */
+
+class WorkerPool {
+
+	constructor ( pool = 4 ) {
+
+		this.pool = pool;
+		this.queue = [];
+		this.workers = [];
+		this.workersResolve = [];
+		this.workerStatus = 0;
+
+	}
+
+	_initWorker ( workerId ) {
+
+		if ( !this.workers[ workerId ] ) {
+
+			const worker = this.workerCreator();
+			worker.addEventListener( 'message', this._onMessage.bind( this, workerId ) );
+			this.workers[ workerId ] = worker;
+
+		}
+
+	}
+
+	_getIdleWorker () {
+
+		for ( let i = 0 ; i < this.pool ; i ++ ) 
+			if ( ! ( this.workerStatus & ( 1 << i ) ) ) return i;
+
+		return -1;
+
+	}
+
+	_onMessage( workerId, msg ) {
+
+		const resolve = this.workersResolve[ workerId ];
+		resolve && resolve( msg );
+
+		if ( this.queue.length ) {
+
+			const { resolve, msg, transfer } = this.queue.shift();
+			this.workersResolve[ workerId ] = resolve;
+			this.workers[ workerId ].postMessage( msg, transfer );
+
+		} else {
+
+			this.workerStatus ^= 1 << workerId;
+
+		}
+
+	}
+
+	setWorkerCreator ( workerCreator ) {
+
+		this.workerCreator = workerCreator;
+
+	}
+
+	setWorkerLimit ( pool ) {
+
+		this.pool = pool;
+
+	}
+
+	postMessage ( msg, transfer ) {
+
+		return new Promise( ( resolve ) => {
+
+			const workerId = this._getIdleWorker();
+
+			if ( workerId !== -1 ) {
+
+				this._initWorker( workerId );
+				this.workerStatus |= 1 << workerId;
+				this.workersResolve[ workerId ] = resolve;
+				this.workers[ workerId ].postMessage( msg, transfer );
+
+			} else {
+
+				this.queue.push( { resolve, msg, transfer } );
+
+			}
+
+		} );
+
+	}
+
+	dispose () {
+
+		this.workers.forEach( ( worker ) => worker.terminate() );
+		this.workersResolve.length = 0;
+		this.workers.length = 0;
+		this.queue.length = 0;
+		this.workerStatus = 0;
+
+	}
+
+}
+
+
+/***/ }),
+
 /***/ "./node_modules/three/examples/jsm/webxr/VRButton.js":
 /*!***********************************************************!*\
   !*** ./node_modules/three/examples/jsm/webxr/VRButton.js ***!
@@ -71881,12 +73090,13 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var _js_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./js/components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three-mesh-bvh */ "./node_modules/three-mesh-bvh/src/utils/ExtensionUtilities.js");
-/* harmony import */ var three_examples_jsm_webxr_VRButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three/examples/jsm/webxr/VRButton */ "./node_modules/three/examples/jsm/webxr/VRButton.js");
-/* harmony import */ var troika_three_text__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! troika-three-text */ "./node_modules/troika-three-text/dist/troika-three-text.esm.js");
-/* harmony import */ var _js_ECSYConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/ECSYConfig */ "./src/js/ECSYConfig.js");
+/* harmony import */ var three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! three-mesh-bvh */ "./node_modules/three-mesh-bvh/src/utils/ExtensionUtilities.js");
+/* harmony import */ var _js_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./js/components/AssetLoaderComponent */ "./src/js/components/AssetLoaderComponent.js");
+/* harmony import */ var three_examples_jsm_webxr_VRButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three/examples/jsm/webxr/VRButton */ "./node_modules/three/examples/jsm/webxr/VRButton.js");
+/* harmony import */ var troika_three_text__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! troika-three-text */ "./node_modules/troika-three-text/dist/troika-three-text.esm.js");
+/* harmony import */ var _js_ECSYConfig__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/ECSYConfig */ "./src/js/ECSYConfig.js");
 
 
 
@@ -71896,18 +73106,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const world = (0,_js_ECSYConfig__WEBPACK_IMPORTED_MODULE_2__.setupECSY)();
-const clock = new three__WEBPACK_IMPORTED_MODULE_3__.Clock();
+
+const world = (0,_js_ECSYConfig__WEBPACK_IMPORTED_MODULE_3__.setupECSY)();
+const clock = new three__WEBPACK_IMPORTED_MODULE_4__.Clock();
 
 // three-mesh-bvh initialization
-three__WEBPACK_IMPORTED_MODULE_3__.BufferGeometry.prototype.computeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__.computeBoundsTree;
-three__WEBPACK_IMPORTED_MODULE_3__.BufferGeometry.prototype.disposeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__.disposeBoundsTree;
-three__WEBPACK_IMPORTED_MODULE_3__.Mesh.prototype.raycast = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__.acceleratedRaycast;
+three__WEBPACK_IMPORTED_MODULE_4__.BufferGeometry.prototype.computeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__.computeBoundsTree;
+three__WEBPACK_IMPORTED_MODULE_4__.BufferGeometry.prototype.disposeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__.disposeBoundsTree;
+three__WEBPACK_IMPORTED_MODULE_4__.Mesh.prototype.raycast = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__.acceleratedRaycast;
 
 init();
 
 function init() {
-	(0,troika_three_text__WEBPACK_IMPORTED_MODULE_5__.preloadFont)(
+	(0,troika_three_text__WEBPACK_IMPORTED_MODULE_6__.preloadFont)(
 		{
 			font: 'assets/fonts/SpaceMono-Regular.ttf',
 			characters: 'abcdefghijklmnopqrstuvwxyz',
@@ -71916,33 +73127,36 @@ function init() {
 	);
 	let container = document.getElementById('scene-container');
 
-	let scene = new three__WEBPACK_IMPORTED_MODULE_3__.Scene();
-	scene.background = new three__WEBPACK_IMPORTED_MODULE_3__.Color(0x000000);
+	let scene = new three__WEBPACK_IMPORTED_MODULE_4__.Scene();
+	scene.background = new three__WEBPACK_IMPORTED_MODULE_4__.Color(0x000000);
 
-	let camera = new three__WEBPACK_IMPORTED_MODULE_3__.PerspectiveCamera(
+	let camera = new three__WEBPACK_IMPORTED_MODULE_4__.PerspectiveCamera(
 		50,
 		window.innerWidth / window.innerHeight,
 		0.1,
 		100,
 	);
 	camera.position.set(0, 1.5, 2);
-	camera.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(7, 2, -10));
+	camera.lookAt(new three__WEBPACK_IMPORTED_MODULE_4__.Vector3(7, 2, -10));
 
-	let renderer = new three__WEBPACK_IMPORTED_MODULE_3__.WebGLRenderer({ antialias: true });
+	let renderer = new three__WEBPACK_IMPORTED_MODULE_4__.WebGLRenderer({ antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.outputEncoding = three__WEBPACK_IMPORTED_MODULE_3__.sRGBEncoding;
+	renderer.outputEncoding = three__WEBPACK_IMPORTED_MODULE_4__.sRGBEncoding;
 	renderer.xr.enabled = true;
 	container.appendChild(renderer.domElement);
-	document.body.appendChild(three_examples_jsm_webxr_VRButton__WEBPACK_IMPORTED_MODULE_1__.VRButton.createButton(renderer));
+	document.body.appendChild(three_examples_jsm_webxr_VRButton__WEBPACK_IMPORTED_MODULE_2__.VRButton.createButton(renderer));
 
-	let gameManager = world.createEntity();
+	const gameManager = world.createEntity();
 	gameManager.addComponent(_js_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__.GameStateComponent, {
 		renderer: renderer,
 		scene: scene,
 		camera: camera,
 		viewerTransform: (0,_js_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__.createPlayerTransform)(scene, camera),
 	});
+
+	const assetLoader = world.createEntity();
+	assetLoader.addComponent(_js_components_AssetLoaderComponent__WEBPACK_IMPORTED_MODULE_1__.AssetLoaderComponent);
 
 	renderer.xr.addEventListener('sessionstart', function () {
 		console.log('session start');
