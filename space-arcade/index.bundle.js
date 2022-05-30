@@ -58763,9 +58763,6 @@ class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 		this.indicatorRing.renderOrder = 999;
 		this.indicatorRing.material.depthTest = false;
 		this.indicatorRing.material.depthWrite = false;
-		this.indicatorRing.onBeforeRender = function (renderer) {
-			renderer.clearDepth();
-		};
 	}
 
 	grabObject(entity, handKey) {
