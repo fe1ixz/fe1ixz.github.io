@@ -3329,6 +3329,266 @@ const parabolicCurve = (p0, v0, a, t, out) => {
 
 /***/ }),
 
+/***/ "./src/js/lib/RTCPeer.js":
+/*!*******************************!*\
+  !*** ./src/js/lib/RTCPeer.js ***!
+  \*******************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "RTCPeer": () => (/* binding */ RTCPeer)
+/* harmony export */ });
+/* harmony import */ var randomatic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! randomatic */ "./node_modules/randomatic/index.js");
+/* harmony import */ var randomatic__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(randomatic__WEBPACK_IMPORTED_MODULE_0__);
+
+
+const SimplePeer = window.SimplePeer;
+const SIGNALING_SERVER = 'https://connect.inboxgo.org/inbox';
+
+class RTCPeer {
+	constructor() {
+		this._sessionId = randomatic__WEBPACK_IMPORTED_MODULE_0___default()('A0', 5);
+		this._password = randomatic__WEBPACK_IMPORTED_MODULE_0___default()('*', 20);
+		this._peer = null;
+		this._connecting = false;
+		this._connected = false;
+		this._onConnect = () => {};
+		this._onData = (_) => {};
+		this._decoder = new TextDecoder('utf-8');
+	}
+
+	get sessionId() {
+		return this._sessionId;
+	}
+
+	get connected() {
+		return this._connected;
+	}
+
+	async initiateConnection(peerSessionId) {
+		this._setupPeer(peerSessionId);
+	}
+
+	async waitForConnection() {
+		this._setupPeer();
+	}
+
+	async _setupPeer(peerSessionId = null) {
+		this._peer = new SimplePeer({ initiator: peerSessionId != null });
+		this._connecting = true;
+
+		this._peer.on('signal', (data) => {
+			if (peerSessionId) {
+				SignalSend(this._sessionId, this._password, peerSessionId, data);
+			}
+		});
+		this._peer.on('connect', () => {
+			this._connecting = false;
+			this._connected = true;
+			console.log('connected');
+			this._onConnect();
+		});
+		this._peer.on('data', (data) => {
+			const decodedData = this._decoder.decode(data);
+			this._onData(decodedData);
+		});
+		this._peer.on('error', (err) => {
+			this._connected = false;
+			console.log(err);
+		});
+
+		while (this._connecting) {
+			console.log('waiting');
+			try {
+				const message = await SignalReceive(this._sessionId, this._password);
+				peerSessionId = message.from;
+				this._peer.signal(message.data);
+			} catch (e) {
+				console.log("didn't receive a message or an error, retrying...", e);
+			}
+		}
+	}
+
+	onConnect(connectAction) {
+		this._onConnect = connectAction;
+	}
+
+	onData(dataAction) {
+		this._onData = dataAction;
+	}
+
+	send(data) {
+		this._peer.send(data);
+	}
+
+	cancelConnectionAttempt() {
+		this._connecting = false;
+		this._peer.destroy();
+	}
+}
+
+async function SignalReceive(username, password) {
+	const headers = new Headers({
+		Authorization: 'Basic ' + window.btoa(username + ':' + password),
+	});
+
+	const response = await fetch(SIGNALING_SERVER, {
+		method: 'GET',
+		cache: 'no-cache',
+		headers: headers,
+	});
+
+	try {
+		var data = await response.json();
+		const from = response.headers.get('X-From');
+		console.log('Received', data);
+		return { from: from, data: data };
+	} catch (e) {
+		return null;
+	}
+}
+
+async function SignalSend(username, password, to, message) {
+	console.log('Sending', message);
+
+	const headers = new Headers({
+		Authorization: 'Basic ' + window.btoa(username + ':' + password),
+	});
+
+	await fetch(`${SIGNALING_SERVER}?to=${to}`, {
+		method: 'POST',
+		cache: 'no-cache',
+		headers: headers,
+		body: JSON.stringify(message),
+	});
+}
+
+
+/***/ }),
+
+/***/ "./src/js/lib/VRButton.js":
+/*!********************************!*\
+  !*** ./src/js/lib/VRButton.js ***!
+  \********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "VRButton": () => (/* binding */ VRButton)
+/* harmony export */ });
+class VRButton {
+	static createButton(button, renderer, options) {
+		console.log(renderer);
+		if (options) {
+			console.error(
+				'THREE.VRButton: The "options" parameter has been removed. Please set the reference space type via renderer.xr.setReferenceSpaceType() instead.',
+			);
+		}
+
+		function showEnterVR(/*device*/) {
+			let currentSession = null;
+
+			async function onSessionStarted(session) {
+				session.addEventListener('end', onSessionEnded);
+
+				await renderer.xr.setSession(session);
+				button.textContent = 'EXIT VR';
+
+				currentSession = session;
+			}
+
+			function onSessionEnded(/*event*/) {
+				currentSession.removeEventListener('end', onSessionEnded);
+
+				button.textContent = 'ENTER VR';
+
+				currentSession = null;
+			}
+
+			button.onclick = function () {
+				if (currentSession === null) {
+					// WebXR's requestReferenceSpace only works if the corresponding feature
+					// was requested at session creation time. For simplicity, just ask for
+					// the interesting ones as optional features, but be aware that the
+					// requestReferenceSpace call will fail if it turns out to be unavailable.
+					// ('local' is always available for immersive sessions and doesn't need to
+					// be requested separately.)
+
+					const sessionInit = {
+						optionalFeatures: [
+							'local-floor',
+							'bounded-floor',
+							'hand-tracking',
+							'layers',
+						],
+					};
+					navigator.xr
+						.requestSession('immersive-vr', sessionInit)
+						.then(onSessionStarted);
+				} else {
+					currentSession.end();
+				}
+			};
+		}
+
+		function disableButton() {
+			button.disabled = true;
+			button.onclick = null;
+		}
+
+		function showWebXRNotFound() {
+			disableButton();
+		}
+
+		function showVRNotAllowed(exception) {
+			disableButton();
+
+			console.warn(
+				'Exception when trying to call xr.isSessionSupported',
+				exception,
+			);
+		}
+
+		if ('xr' in navigator) {
+			navigator.xr
+				.isSessionSupported('immersive-vr')
+				.then(function (supported) {
+					supported ? showEnterVR() : showWebXRNotFound();
+
+					if (supported && VRButton.xrSessionIsGranted) {
+						button.click();
+					}
+				})
+				.catch(showVRNotAllowed);
+		} else {
+			button.disabled = true;
+		}
+	}
+
+	static registerSessionGrantedListener() {
+		if ('xr' in navigator) {
+			// WebXRViewer (based on Firefox) has a bug where addEventListener
+			// throws a silent exception and aborts execution entirely.
+			if (/WebXRViewer\//i.test(navigator.userAgent)) return;
+
+			navigator.xr.addEventListener('sessiongranted', () => {
+				VRButton.xrSessionIsGranted = true;
+			});
+		}
+	}
+}
+
+VRButton.xrSessionIsGranted = false;
+VRButton.registerSessionGrantedListener();
+
+
+
+
+/***/ }),
+
 /***/ "./src/js/systems/HandAnimationSystem.js":
 /*!***********************************************!*\
   !*** ./src/js/systems/HandAnimationSystem.js ***!
@@ -3673,148 +3933,170 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RTCSystem": () => (/* binding */ RTCSystem)
 /* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
-/* harmony import */ var randomatic__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! randomatic */ "./node_modules/randomatic/index.js");
-/* harmony import */ var randomatic__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(randomatic__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
+/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
+/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
+/* harmony import */ var _lib_RTCPeer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/RTCPeer */ "./src/js/lib/RTCPeer.js");
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
 
 
 
 
 
 
-const SIGNALING_SERVER = 'https://connect.inboxgo.org/inbox';
-const SimplePeer = window.SimplePeer;
 
-class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_1__.System {
+
+
+class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_4__.System {
 	init() {
-		this.username = randomatic__WEBPACK_IMPORTED_MODULE_2___default()('a0', 6);
-		this.password = randomatic__WEBPACK_IMPORTED_MODULE_2___default()('*', 10);
-		document.getElementById('session-id').innerHTML = this.username;
-		this.peer = null;
-		this.connected = false;
-		const self = this;
+		this.peer = new _lib_RTCPeer__WEBPACK_IMPORTED_MODULE_3__.RTCPeer();
 
-		this.peerAvatarHead = new three__WEBPACK_IMPORTED_MODULE_3__.Mesh(
-			new three__WEBPACK_IMPORTED_MODULE_3__.SphereGeometry(0.2, 4, 4),
-			new three__WEBPACK_IMPORTED_MODULE_3__.MeshBasicMaterial({ color: 0xffff00 }),
+		document.getElementById('create-session').addEventListener('click', () => {
+			document.getElementById('session-menu').style.display = 'block';
+			document.getElementById('action-menu').style.display = 'none';
+			document.getElementById('my-session-id').style.display = 'inline-block';
+			document.getElementById('peer-session-id').style.display = 'none';
+			document.getElementById('welcome-text').style.display = 'none';
+			document.getElementById('create-session-text').style.display = 'block';
+			setConnectionStatus('connecting');
+		});
+
+		document.getElementById('join-session').addEventListener('click', () => {
+			document.getElementById('session-menu').style.display = 'block';
+			document.getElementById('action-menu').style.display = 'none';
+			document.getElementById('my-session-id').style.display = 'none';
+			document.getElementById('peer-session-id').style.display = 'inline-block';
+			document.getElementById('welcome-text').style.display = 'none';
+			document.getElementById('join-session-text').style.display = 'block';
+			setConnectionStatus('idle');
+		});
+
+		document.getElementById('my-session-id').innerHTML = this.peer.sessionId;
+		document.getElementById('peer-session-id').oninput = function () {
+			document.getElementById('connect').disabled = this.value.length != 5;
+		};
+		const setupPeerDataAction = () => {
+			this.peer.onData((data) => {
+				const deviceTransform = JSON.parse(data);
+				deserializeTransform(deviceTransform['headset'], this.peerAvatarHead);
+				deserializeTransform(deviceTransform['left'], this.peerLeftHand);
+				deserializeTransform(deviceTransform['right'], this.peerRightHand);
+			});
+			this.peer.onConnect(() => {
+				setConnectionStatus('connected');
+			});
+		};
+		document.getElementById('create-session').onclick = () => {
+			setupPeerDataAction();
+			this.peer.waitForConnection();
+		};
+		document.getElementById('connect').onclick = () => {
+			const peerSessionId = document
+				.getElementById('peer-session-id')
+				.value.toUpperCase();
+			setConnectionStatus('connecting');
+			setupPeerDataAction();
+			this.peer.initiateConnection(peerSessionId);
+		};
+		document.getElementById('run-inline').onclick = () => {
+			document.getElementById('ui-panel').style.display = 'none';
+		};
+
+		this.peerAvatarHead = new three__WEBPACK_IMPORTED_MODULE_5__.Mesh(
+			new three__WEBPACK_IMPORTED_MODULE_5__.SphereGeometry(0.2, 4, 4),
+			new three__WEBPACK_IMPORTED_MODULE_5__.MeshBasicMaterial({ color: 0xffff00 }),
+		);
+
+		this.peerLeftHand = new three__WEBPACK_IMPORTED_MODULE_5__.Mesh(
+			new three__WEBPACK_IMPORTED_MODULE_5__.SphereGeometry(0.05, 4, 4),
+			new three__WEBPACK_IMPORTED_MODULE_5__.MeshBasicMaterial({ color: 0xffff00 }),
+		);
+
+		this.peerRightHand = new three__WEBPACK_IMPORTED_MODULE_5__.Mesh(
+			new three__WEBPACK_IMPORTED_MODULE_5__.SphereGeometry(0.05, 4, 4),
+			new three__WEBPACK_IMPORTED_MODULE_5__.MeshBasicMaterial({ color: 0xffff00 }),
 		);
 		this.renderer = null;
-
-		async function CreateUser() {
-			const enc = new TextDecoder('utf-8');
-			let to = document.getElementById('to').value;
-			let poll = true;
-			document.getElementById('userform').style.display = 'none';
-
-			const peer = new SimplePeer({ initiator: to.length > 0 });
-			self.peer = peer;
-
-			peer.on('signal', (data) => {
-				if (to.length > 0) SignalSend(self.username, self.password, to, data);
-			});
-
-			peer.on('connect', () => {
-				poll = false;
-				self.connected = true;
-				peer.send('Hello ' + to);
-			});
-
-			peer.on('data', (data) => {
-				// const array = JSON.parse(enc.decode(data));
-				// console.log(array);
-				deserializeTransform(enc.decode(data), self.peerAvatarHead);
-			});
-
-			peer.on('error', (err) => console.log('error', err));
-
-			while (poll) {
-				try {
-					let message = await SignalReceive(self.username, self.password);
-					to = message.from;
-					peer.signal(message.data);
-				} catch (e) {
-					console.log("didn't receive a message or an error, retrying...", e);
-				}
-			}
-		}
-
-		function sendMessage() {
-			const message = document.getElementById('message').value;
-			self.peer.send(message);
-		}
-
-		document.getElementById('create').onclick = CreateUser;
-		document.getElementById('send').onclick = sendMessage;
 	}
 
 	execute() {
 		this.queries.gameManager.added.forEach((entity) => {
-			let gameStateComponent = entity.getComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__.GameStateComponent);
-			gameStateComponent.scene.add(this.peerAvatarHead);
+			let gameStateComponent = entity.getComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__.GameStateComponent);
+			const loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_1__.GLTFLoader();
+			loader.load('assets/bearhead.glb', (gltf) => {
+				this.peerAvatarHead = gltf.scene;
+				gameStateComponent.scene.add(this.peerAvatarHead);
+			});
+			loader.load('assets/bearclaw-right.glb', (gltf) => {
+				this.peerRightHand = gltf.scene;
+				gameStateComponent.scene.add(this.peerRightHand);
+			});
+			loader.load('assets/bearclaw-left.glb', (gltf) => {
+				this.peerLeftHand = gltf.scene;
+				gameStateComponent.scene.add(this.peerLeftHand);
+			});
 			this.renderer = gameStateComponent.renderer;
 		});
 
-		if (this.connected && this.renderer && this.renderer.xr.isPresenting) {
+		document.getElementById('enter-vr').disabled = !this.peer.connected;
+		document.getElementById('run-inline').disabled = !this.peer.connected;
+
+		if (this.peer.connected && this.renderer && this.renderer.xr.isPresenting) {
 			const camera = this.renderer.xr.getCamera();
-			this.peer.send(serializeTransform(camera));
+			const deviceTransform = {
+				headset: serializeTransform(camera),
+			};
+			this.queries.controllers.results.forEach((entity) => {
+				const controllerInterface = entity.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.VrControllerComponent)
+					.controllerInterface;
+				let handKey = '';
+				if (entity.hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.LeftController)) {
+					handKey = 'left';
+				} else if (entity.hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.RightController)) {
+					handKey = 'right';
+				}
+				deviceTransform[handKey] = serializeControllerTransform(
+					controllerInterface,
+				);
+			});
+			this.peer.send(JSON.stringify(deviceTransform));
 		}
 	}
 }
 
 RTCSystem.queries = {
-	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__.GameStateComponent], listen: { added: true } },
+	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__.GameStateComponent], listen: { added: true } },
+	controllers: { components: [_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.VrControllerComponent] },
 };
-
-async function SignalReceive(username, password) {
-	const headers = new Headers({
-		Authorization: 'Basic ' + window.btoa(username + ':' + password),
-	});
-
-	const response = await fetch(SIGNALING_SERVER, {
-		method: 'GET',
-		cache: 'no-cache',
-		headers: headers,
-	});
-
-	try {
-		var data = await response.json();
-		const from = response.headers.get('X-From');
-		console.log('Received', data);
-		return { from: from, data: data };
-	} catch (e) {
-		return null;
-	}
-}
-
-async function SignalSend(username, password, to, message) {
-	console.log('Sending', message);
-
-	const headers = new Headers({
-		Authorization: 'Basic ' + window.btoa(username + ':' + password),
-	});
-
-	await fetch(`${SIGNALING_SERVER}?to=${to}`, {
-		method: 'POST',
-		cache: 'no-cache',
-		headers: headers,
-		body: JSON.stringify(message),
-	});
-}
 
 const serializeTransform = (object) => {
-	const transform = {
-		position: object.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3()).toArray(),
-		quaternion: object.getWorldQuaternion(new three__WEBPACK_IMPORTED_MODULE_3__.Quaternion()).toArray(),
+	return {
+		position: object.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_5__.Vector3()).toArray(),
+		quaternion: object.getWorldQuaternion(new three__WEBPACK_IMPORTED_MODULE_5__.Quaternion()).toArray(),
 	};
-	return JSON.stringify(transform);
 };
 
-const deserializeTransform = (transformString, object) => {
-	const transform = JSON.parse(transformString);
+const serializeControllerTransform = (controllerInterface) => {
+	return {
+		position: controllerInterface.getPosition().toArray(),
+		quaternion: controllerInterface.getQuaternion().toArray(),
+	};
+};
+
+const deserializeTransform = (transform, object) => {
 	object.position.fromArray(transform.position);
 	object.quaternion.fromArray(transform.quaternion);
+};
+
+const setConnectionStatus = (status) => {
+	[...document.getElementsByClassName('status-row')].forEach((element) => {
+		if (element.id == 'status-' + status) {
+			element.style.display = 'block';
+		} else {
+			element.style.display = 'none';
+		}
+	});
 };
 
 
@@ -58987,6 +59269,1267 @@ if ( typeof window !== 'undefined' ) {
 
 /***/ }),
 
+/***/ "./node_modules/three/examples/jsm/controls/OrbitControls.js":
+/*!*******************************************************************!*\
+  !*** ./node_modules/three/examples/jsm/controls/OrbitControls.js ***!
+  \*******************************************************************/
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "OrbitControls": () => (/* binding */ OrbitControls),
+/* harmony export */   "MapControls": () => (/* binding */ MapControls)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+
+// This set of controls performs orbiting, dollying (zooming), and panning.
+// Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
+//
+//    Orbit - left mouse / touch: one-finger move
+//    Zoom - middle mouse, or mousewheel / touch: two-finger spread or squish
+//    Pan - right mouse, or left mouse + ctrl/meta/shiftKey, or arrow keys / touch: two-finger move
+
+const _changeEvent = { type: 'change' };
+const _startEvent = { type: 'start' };
+const _endEvent = { type: 'end' };
+
+class OrbitControls extends three__WEBPACK_IMPORTED_MODULE_0__.EventDispatcher {
+
+	constructor( object, domElement ) {
+
+		super();
+
+		if ( domElement === undefined ) console.warn( 'THREE.OrbitControls: The second parameter "domElement" is now mandatory.' );
+		if ( domElement === document ) console.error( 'THREE.OrbitControls: "document" should not be used as the target "domElement". Please use "renderer.domElement" instead.' );
+
+		this.object = object;
+		this.domElement = domElement;
+		this.domElement.style.touchAction = 'none'; // disable touch scroll
+
+		// Set to false to disable this control
+		this.enabled = true;
+
+		// "target" sets the location of focus, where the object orbits around
+		this.target = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+
+		// How far you can dolly in and out ( PerspectiveCamera only )
+		this.minDistance = 0;
+		this.maxDistance = Infinity;
+
+		// How far you can zoom in and out ( OrthographicCamera only )
+		this.minZoom = 0;
+		this.maxZoom = Infinity;
+
+		// How far you can orbit vertically, upper and lower limits.
+		// Range is 0 to Math.PI radians.
+		this.minPolarAngle = 0; // radians
+		this.maxPolarAngle = Math.PI; // radians
+
+		// How far you can orbit horizontally, upper and lower limits.
+		// If set, the interval [ min, max ] must be a sub-interval of [ - 2 PI, 2 PI ], with ( max - min < 2 PI )
+		this.minAzimuthAngle = - Infinity; // radians
+		this.maxAzimuthAngle = Infinity; // radians
+
+		// Set to true to enable damping (inertia)
+		// If damping is enabled, you must call controls.update() in your animation loop
+		this.enableDamping = false;
+		this.dampingFactor = 0.05;
+
+		// This option actually enables dollying in and out; left as "zoom" for backwards compatibility.
+		// Set to false to disable zooming
+		this.enableZoom = true;
+		this.zoomSpeed = 1.0;
+
+		// Set to false to disable rotating
+		this.enableRotate = true;
+		this.rotateSpeed = 1.0;
+
+		// Set to false to disable panning
+		this.enablePan = true;
+		this.panSpeed = 1.0;
+		this.screenSpacePanning = true; // if false, pan orthogonal to world-space direction camera.up
+		this.keyPanSpeed = 7.0;	// pixels moved per arrow key push
+
+		// Set to true to automatically rotate around the target
+		// If auto-rotate is enabled, you must call controls.update() in your animation loop
+		this.autoRotate = false;
+		this.autoRotateSpeed = 2.0; // 30 seconds per orbit when fps is 60
+
+		// The four arrow keys
+		this.keys = { LEFT: 'ArrowLeft', UP: 'ArrowUp', RIGHT: 'ArrowRight', BOTTOM: 'ArrowDown' };
+
+		// Mouse buttons
+		this.mouseButtons = { LEFT: three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.ROTATE, MIDDLE: three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.DOLLY, RIGHT: three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.PAN };
+
+		// Touch fingers
+		this.touches = { ONE: three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.ROTATE, TWO: three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.DOLLY_PAN };
+
+		// for reset
+		this.target0 = this.target.clone();
+		this.position0 = this.object.position.clone();
+		this.zoom0 = this.object.zoom;
+
+		// the target DOM element for key events
+		this._domElementKeyEvents = null;
+
+		//
+		// public methods
+		//
+
+		this.getPolarAngle = function () {
+
+			return spherical.phi;
+
+		};
+
+		this.getAzimuthalAngle = function () {
+
+			return spherical.theta;
+
+		};
+
+		this.getDistance = function () {
+
+			return this.object.position.distanceTo( this.target );
+
+		};
+
+		this.listenToKeyEvents = function ( domElement ) {
+
+			domElement.addEventListener( 'keydown', onKeyDown );
+			this._domElementKeyEvents = domElement;
+
+		};
+
+		this.saveState = function () {
+
+			scope.target0.copy( scope.target );
+			scope.position0.copy( scope.object.position );
+			scope.zoom0 = scope.object.zoom;
+
+		};
+
+		this.reset = function () {
+
+			scope.target.copy( scope.target0 );
+			scope.object.position.copy( scope.position0 );
+			scope.object.zoom = scope.zoom0;
+
+			scope.object.updateProjectionMatrix();
+			scope.dispatchEvent( _changeEvent );
+
+			scope.update();
+
+			state = STATE.NONE;
+
+		};
+
+		// this method is exposed, but perhaps it would be better if we can make it private...
+		this.update = function () {
+
+			const offset = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+
+			// so camera.up is the orbit axis
+			const quat = new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion().setFromUnitVectors( object.up, new three__WEBPACK_IMPORTED_MODULE_0__.Vector3( 0, 1, 0 ) );
+			const quatInverse = quat.clone().invert();
+
+			const lastPosition = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+			const lastQuaternion = new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion();
+
+			const twoPI = 2 * Math.PI;
+
+			return function update() {
+
+				const position = scope.object.position;
+
+				offset.copy( position ).sub( scope.target );
+
+				// rotate offset to "y-axis-is-up" space
+				offset.applyQuaternion( quat );
+
+				// angle from z-axis around y-axis
+				spherical.setFromVector3( offset );
+
+				if ( scope.autoRotate && state === STATE.NONE ) {
+
+					rotateLeft( getAutoRotationAngle() );
+
+				}
+
+				if ( scope.enableDamping ) {
+
+					spherical.theta += sphericalDelta.theta * scope.dampingFactor;
+					spherical.phi += sphericalDelta.phi * scope.dampingFactor;
+
+				} else {
+
+					spherical.theta += sphericalDelta.theta;
+					spherical.phi += sphericalDelta.phi;
+
+				}
+
+				// restrict theta to be between desired limits
+
+				let min = scope.minAzimuthAngle;
+				let max = scope.maxAzimuthAngle;
+
+				if ( isFinite( min ) && isFinite( max ) ) {
+
+					if ( min < - Math.PI ) min += twoPI; else if ( min > Math.PI ) min -= twoPI;
+
+					if ( max < - Math.PI ) max += twoPI; else if ( max > Math.PI ) max -= twoPI;
+
+					if ( min <= max ) {
+
+						spherical.theta = Math.max( min, Math.min( max, spherical.theta ) );
+
+					} else {
+
+						spherical.theta = ( spherical.theta > ( min + max ) / 2 ) ?
+							Math.max( min, spherical.theta ) :
+							Math.min( max, spherical.theta );
+
+					}
+
+				}
+
+				// restrict phi to be between desired limits
+				spherical.phi = Math.max( scope.minPolarAngle, Math.min( scope.maxPolarAngle, spherical.phi ) );
+
+				spherical.makeSafe();
+
+
+				spherical.radius *= scale;
+
+				// restrict radius to be between desired limits
+				spherical.radius = Math.max( scope.minDistance, Math.min( scope.maxDistance, spherical.radius ) );
+
+				// move target to panned location
+
+				if ( scope.enableDamping === true ) {
+
+					scope.target.addScaledVector( panOffset, scope.dampingFactor );
+
+				} else {
+
+					scope.target.add( panOffset );
+
+				}
+
+				offset.setFromSpherical( spherical );
+
+				// rotate offset back to "camera-up-vector-is-up" space
+				offset.applyQuaternion( quatInverse );
+
+				position.copy( scope.target ).add( offset );
+
+				scope.object.lookAt( scope.target );
+
+				if ( scope.enableDamping === true ) {
+
+					sphericalDelta.theta *= ( 1 - scope.dampingFactor );
+					sphericalDelta.phi *= ( 1 - scope.dampingFactor );
+
+					panOffset.multiplyScalar( 1 - scope.dampingFactor );
+
+				} else {
+
+					sphericalDelta.set( 0, 0, 0 );
+
+					panOffset.set( 0, 0, 0 );
+
+				}
+
+				scale = 1;
+
+				// update condition is:
+				// min(camera displacement, camera rotation in radians)^2 > EPS
+				// using small-angle approximation cos(x/2) = 1 - x^2 / 8
+
+				if ( zoomChanged ||
+					lastPosition.distanceToSquared( scope.object.position ) > EPS ||
+					8 * ( 1 - lastQuaternion.dot( scope.object.quaternion ) ) > EPS ) {
+
+					scope.dispatchEvent( _changeEvent );
+
+					lastPosition.copy( scope.object.position );
+					lastQuaternion.copy( scope.object.quaternion );
+					zoomChanged = false;
+
+					return true;
+
+				}
+
+				return false;
+
+			};
+
+		}();
+
+		this.dispose = function () {
+
+			scope.domElement.removeEventListener( 'contextmenu', onContextMenu );
+
+			scope.domElement.removeEventListener( 'pointerdown', onPointerDown );
+			scope.domElement.removeEventListener( 'pointercancel', onPointerCancel );
+			scope.domElement.removeEventListener( 'wheel', onMouseWheel );
+
+			scope.domElement.removeEventListener( 'pointermove', onPointerMove );
+			scope.domElement.removeEventListener( 'pointerup', onPointerUp );
+
+
+			if ( scope._domElementKeyEvents !== null ) {
+
+				scope._domElementKeyEvents.removeEventListener( 'keydown', onKeyDown );
+
+			}
+
+			//scope.dispatchEvent( { type: 'dispose' } ); // should this be added here?
+
+		};
+
+		//
+		// internals
+		//
+
+		const scope = this;
+
+		const STATE = {
+			NONE: - 1,
+			ROTATE: 0,
+			DOLLY: 1,
+			PAN: 2,
+			TOUCH_ROTATE: 3,
+			TOUCH_PAN: 4,
+			TOUCH_DOLLY_PAN: 5,
+			TOUCH_DOLLY_ROTATE: 6
+		};
+
+		let state = STATE.NONE;
+
+		const EPS = 0.000001;
+
+		// current position in spherical coordinates
+		const spherical = new three__WEBPACK_IMPORTED_MODULE_0__.Spherical();
+		const sphericalDelta = new three__WEBPACK_IMPORTED_MODULE_0__.Spherical();
+
+		let scale = 1;
+		const panOffset = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+		let zoomChanged = false;
+
+		const rotateStart = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+		const rotateEnd = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+		const rotateDelta = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+
+		const panStart = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+		const panEnd = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+		const panDelta = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+
+		const dollyStart = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+		const dollyEnd = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+		const dollyDelta = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+
+		const pointers = [];
+		const pointerPositions = {};
+
+		function getAutoRotationAngle() {
+
+			return 2 * Math.PI / 60 / 60 * scope.autoRotateSpeed;
+
+		}
+
+		function getZoomScale() {
+
+			return Math.pow( 0.95, scope.zoomSpeed );
+
+		}
+
+		function rotateLeft( angle ) {
+
+			sphericalDelta.theta -= angle;
+
+		}
+
+		function rotateUp( angle ) {
+
+			sphericalDelta.phi -= angle;
+
+		}
+
+		const panLeft = function () {
+
+			const v = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+
+			return function panLeft( distance, objectMatrix ) {
+
+				v.setFromMatrixColumn( objectMatrix, 0 ); // get X column of objectMatrix
+				v.multiplyScalar( - distance );
+
+				panOffset.add( v );
+
+			};
+
+		}();
+
+		const panUp = function () {
+
+			const v = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+
+			return function panUp( distance, objectMatrix ) {
+
+				if ( scope.screenSpacePanning === true ) {
+
+					v.setFromMatrixColumn( objectMatrix, 1 );
+
+				} else {
+
+					v.setFromMatrixColumn( objectMatrix, 0 );
+					v.crossVectors( scope.object.up, v );
+
+				}
+
+				v.multiplyScalar( distance );
+
+				panOffset.add( v );
+
+			};
+
+		}();
+
+		// deltaX and deltaY are in pixels; right and down are positive
+		const pan = function () {
+
+			const offset = new three__WEBPACK_IMPORTED_MODULE_0__.Vector3();
+
+			return function pan( deltaX, deltaY ) {
+
+				const element = scope.domElement;
+
+				if ( scope.object.isPerspectiveCamera ) {
+
+					// perspective
+					const position = scope.object.position;
+					offset.copy( position ).sub( scope.target );
+					let targetDistance = offset.length();
+
+					// half of the fov is center to top of screen
+					targetDistance *= Math.tan( ( scope.object.fov / 2 ) * Math.PI / 180.0 );
+
+					// we use only clientHeight here so aspect ratio does not distort speed
+					panLeft( 2 * deltaX * targetDistance / element.clientHeight, scope.object.matrix );
+					panUp( 2 * deltaY * targetDistance / element.clientHeight, scope.object.matrix );
+
+				} else if ( scope.object.isOrthographicCamera ) {
+
+					// orthographic
+					panLeft( deltaX * ( scope.object.right - scope.object.left ) / scope.object.zoom / element.clientWidth, scope.object.matrix );
+					panUp( deltaY * ( scope.object.top - scope.object.bottom ) / scope.object.zoom / element.clientHeight, scope.object.matrix );
+
+				} else {
+
+					// camera neither orthographic nor perspective
+					console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - pan disabled.' );
+					scope.enablePan = false;
+
+				}
+
+			};
+
+		}();
+
+		function dollyOut( dollyScale ) {
+
+			if ( scope.object.isPerspectiveCamera ) {
+
+				scale /= dollyScale;
+
+			} else if ( scope.object.isOrthographicCamera ) {
+
+				scope.object.zoom = Math.max( scope.minZoom, Math.min( scope.maxZoom, scope.object.zoom * dollyScale ) );
+				scope.object.updateProjectionMatrix();
+				zoomChanged = true;
+
+			} else {
+
+				console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.' );
+				scope.enableZoom = false;
+
+			}
+
+		}
+
+		function dollyIn( dollyScale ) {
+
+			if ( scope.object.isPerspectiveCamera ) {
+
+				scale *= dollyScale;
+
+			} else if ( scope.object.isOrthographicCamera ) {
+
+				scope.object.zoom = Math.max( scope.minZoom, Math.min( scope.maxZoom, scope.object.zoom / dollyScale ) );
+				scope.object.updateProjectionMatrix();
+				zoomChanged = true;
+
+			} else {
+
+				console.warn( 'WARNING: OrbitControls.js encountered an unknown camera type - dolly/zoom disabled.' );
+				scope.enableZoom = false;
+
+			}
+
+		}
+
+		//
+		// event callbacks - update the object state
+		//
+
+		function handleMouseDownRotate( event ) {
+
+			rotateStart.set( event.clientX, event.clientY );
+
+		}
+
+		function handleMouseDownDolly( event ) {
+
+			dollyStart.set( event.clientX, event.clientY );
+
+		}
+
+		function handleMouseDownPan( event ) {
+
+			panStart.set( event.clientX, event.clientY );
+
+		}
+
+		function handleMouseMoveRotate( event ) {
+
+			rotateEnd.set( event.clientX, event.clientY );
+
+			rotateDelta.subVectors( rotateEnd, rotateStart ).multiplyScalar( scope.rotateSpeed );
+
+			const element = scope.domElement;
+
+			rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientHeight ); // yes, height
+
+			rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );
+
+			rotateStart.copy( rotateEnd );
+
+			scope.update();
+
+		}
+
+		function handleMouseMoveDolly( event ) {
+
+			dollyEnd.set( event.clientX, event.clientY );
+
+			dollyDelta.subVectors( dollyEnd, dollyStart );
+
+			if ( dollyDelta.y > 0 ) {
+
+				dollyOut( getZoomScale() );
+
+			} else if ( dollyDelta.y < 0 ) {
+
+				dollyIn( getZoomScale() );
+
+			}
+
+			dollyStart.copy( dollyEnd );
+
+			scope.update();
+
+		}
+
+		function handleMouseMovePan( event ) {
+
+			panEnd.set( event.clientX, event.clientY );
+
+			panDelta.subVectors( panEnd, panStart ).multiplyScalar( scope.panSpeed );
+
+			pan( panDelta.x, panDelta.y );
+
+			panStart.copy( panEnd );
+
+			scope.update();
+
+		}
+
+		function handleMouseWheel( event ) {
+
+			if ( event.deltaY < 0 ) {
+
+				dollyIn( getZoomScale() );
+
+			} else if ( event.deltaY > 0 ) {
+
+				dollyOut( getZoomScale() );
+
+			}
+
+			scope.update();
+
+		}
+
+		function handleKeyDown( event ) {
+
+			let needsUpdate = false;
+
+			switch ( event.code ) {
+
+				case scope.keys.UP:
+					pan( 0, scope.keyPanSpeed );
+					needsUpdate = true;
+					break;
+
+				case scope.keys.BOTTOM:
+					pan( 0, - scope.keyPanSpeed );
+					needsUpdate = true;
+					break;
+
+				case scope.keys.LEFT:
+					pan( scope.keyPanSpeed, 0 );
+					needsUpdate = true;
+					break;
+
+				case scope.keys.RIGHT:
+					pan( - scope.keyPanSpeed, 0 );
+					needsUpdate = true;
+					break;
+
+			}
+
+			if ( needsUpdate ) {
+
+				// prevent the browser from scrolling on cursor keys
+				event.preventDefault();
+
+				scope.update();
+
+			}
+
+
+		}
+
+		function handleTouchStartRotate() {
+
+			if ( pointers.length === 1 ) {
+
+				rotateStart.set( pointers[ 0 ].pageX, pointers[ 0 ].pageY );
+
+			} else {
+
+				const x = 0.5 * ( pointers[ 0 ].pageX + pointers[ 1 ].pageX );
+				const y = 0.5 * ( pointers[ 0 ].pageY + pointers[ 1 ].pageY );
+
+				rotateStart.set( x, y );
+
+			}
+
+		}
+
+		function handleTouchStartPan() {
+
+			if ( pointers.length === 1 ) {
+
+				panStart.set( pointers[ 0 ].pageX, pointers[ 0 ].pageY );
+
+			} else {
+
+				const x = 0.5 * ( pointers[ 0 ].pageX + pointers[ 1 ].pageX );
+				const y = 0.5 * ( pointers[ 0 ].pageY + pointers[ 1 ].pageY );
+
+				panStart.set( x, y );
+
+			}
+
+		}
+
+		function handleTouchStartDolly() {
+
+			const dx = pointers[ 0 ].pageX - pointers[ 1 ].pageX;
+			const dy = pointers[ 0 ].pageY - pointers[ 1 ].pageY;
+
+			const distance = Math.sqrt( dx * dx + dy * dy );
+
+			dollyStart.set( 0, distance );
+
+		}
+
+		function handleTouchStartDollyPan() {
+
+			if ( scope.enableZoom ) handleTouchStartDolly();
+
+			if ( scope.enablePan ) handleTouchStartPan();
+
+		}
+
+		function handleTouchStartDollyRotate() {
+
+			if ( scope.enableZoom ) handleTouchStartDolly();
+
+			if ( scope.enableRotate ) handleTouchStartRotate();
+
+		}
+
+		function handleTouchMoveRotate( event ) {
+
+			if ( pointers.length == 1 ) {
+
+				rotateEnd.set( event.pageX, event.pageY );
+
+			} else {
+
+				const position = getSecondPointerPosition( event );
+
+				const x = 0.5 * ( event.pageX + position.x );
+				const y = 0.5 * ( event.pageY + position.y );
+
+				rotateEnd.set( x, y );
+
+			}
+
+			rotateDelta.subVectors( rotateEnd, rotateStart ).multiplyScalar( scope.rotateSpeed );
+
+			const element = scope.domElement;
+
+			rotateLeft( 2 * Math.PI * rotateDelta.x / element.clientHeight ); // yes, height
+
+			rotateUp( 2 * Math.PI * rotateDelta.y / element.clientHeight );
+
+			rotateStart.copy( rotateEnd );
+
+		}
+
+		function handleTouchMovePan( event ) {
+
+			if ( pointers.length === 1 ) {
+
+				panEnd.set( event.pageX, event.pageY );
+
+			} else {
+
+				const position = getSecondPointerPosition( event );
+
+				const x = 0.5 * ( event.pageX + position.x );
+				const y = 0.5 * ( event.pageY + position.y );
+
+				panEnd.set( x, y );
+
+			}
+
+			panDelta.subVectors( panEnd, panStart ).multiplyScalar( scope.panSpeed );
+
+			pan( panDelta.x, panDelta.y );
+
+			panStart.copy( panEnd );
+
+		}
+
+		function handleTouchMoveDolly( event ) {
+
+			const position = getSecondPointerPosition( event );
+
+			const dx = event.pageX - position.x;
+			const dy = event.pageY - position.y;
+
+			const distance = Math.sqrt( dx * dx + dy * dy );
+
+			dollyEnd.set( 0, distance );
+
+			dollyDelta.set( 0, Math.pow( dollyEnd.y / dollyStart.y, scope.zoomSpeed ) );
+
+			dollyOut( dollyDelta.y );
+
+			dollyStart.copy( dollyEnd );
+
+		}
+
+		function handleTouchMoveDollyPan( event ) {
+
+			if ( scope.enableZoom ) handleTouchMoveDolly( event );
+
+			if ( scope.enablePan ) handleTouchMovePan( event );
+
+		}
+
+		function handleTouchMoveDollyRotate( event ) {
+
+			if ( scope.enableZoom ) handleTouchMoveDolly( event );
+
+			if ( scope.enableRotate ) handleTouchMoveRotate( event );
+
+		}
+
+		//
+		// event handlers - FSM: listen for events and reset state
+		//
+
+		function onPointerDown( event ) {
+
+			if ( scope.enabled === false ) return;
+
+			if ( pointers.length === 0 ) {
+
+				scope.domElement.setPointerCapture( event.pointerId );
+
+				scope.domElement.addEventListener( 'pointermove', onPointerMove );
+				scope.domElement.addEventListener( 'pointerup', onPointerUp );
+
+			}
+
+			//
+
+			addPointer( event );
+
+			if ( event.pointerType === 'touch' ) {
+
+				onTouchStart( event );
+
+			} else {
+
+				onMouseDown( event );
+
+			}
+
+		}
+
+		function onPointerMove( event ) {
+
+			if ( scope.enabled === false ) return;
+
+			if ( event.pointerType === 'touch' ) {
+
+				onTouchMove( event );
+
+			} else {
+
+				onMouseMove( event );
+
+			}
+
+		}
+
+		function onPointerUp( event ) {
+
+		    removePointer( event );
+
+		    if ( pointers.length === 0 ) {
+
+		        scope.domElement.releasePointerCapture( event.pointerId );
+
+		        scope.domElement.removeEventListener( 'pointermove', onPointerMove );
+		        scope.domElement.removeEventListener( 'pointerup', onPointerUp );
+
+		    }
+
+		    scope.dispatchEvent( _endEvent );
+
+		    state = STATE.NONE;
+
+		}
+
+		function onPointerCancel( event ) {
+
+			removePointer( event );
+
+		}
+
+		function onMouseDown( event ) {
+
+			let mouseAction;
+
+			switch ( event.button ) {
+
+				case 0:
+
+					mouseAction = scope.mouseButtons.LEFT;
+					break;
+
+				case 1:
+
+					mouseAction = scope.mouseButtons.MIDDLE;
+					break;
+
+				case 2:
+
+					mouseAction = scope.mouseButtons.RIGHT;
+					break;
+
+				default:
+
+					mouseAction = - 1;
+
+			}
+
+			switch ( mouseAction ) {
+
+				case three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.DOLLY:
+
+					if ( scope.enableZoom === false ) return;
+
+					handleMouseDownDolly( event );
+
+					state = STATE.DOLLY;
+
+					break;
+
+				case three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.ROTATE:
+
+					if ( event.ctrlKey || event.metaKey || event.shiftKey ) {
+
+						if ( scope.enablePan === false ) return;
+
+						handleMouseDownPan( event );
+
+						state = STATE.PAN;
+
+					} else {
+
+						if ( scope.enableRotate === false ) return;
+
+						handleMouseDownRotate( event );
+
+						state = STATE.ROTATE;
+
+					}
+
+					break;
+
+				case three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.PAN:
+
+					if ( event.ctrlKey || event.metaKey || event.shiftKey ) {
+
+						if ( scope.enableRotate === false ) return;
+
+						handleMouseDownRotate( event );
+
+						state = STATE.ROTATE;
+
+					} else {
+
+						if ( scope.enablePan === false ) return;
+
+						handleMouseDownPan( event );
+
+						state = STATE.PAN;
+
+					}
+
+					break;
+
+				default:
+
+					state = STATE.NONE;
+
+			}
+
+			if ( state !== STATE.NONE ) {
+
+				scope.dispatchEvent( _startEvent );
+
+			}
+
+		}
+
+		function onMouseMove( event ) {
+
+			if ( scope.enabled === false ) return;
+
+			switch ( state ) {
+
+				case STATE.ROTATE:
+
+					if ( scope.enableRotate === false ) return;
+
+					handleMouseMoveRotate( event );
+
+					break;
+
+				case STATE.DOLLY:
+
+					if ( scope.enableZoom === false ) return;
+
+					handleMouseMoveDolly( event );
+
+					break;
+
+				case STATE.PAN:
+
+					if ( scope.enablePan === false ) return;
+
+					handleMouseMovePan( event );
+
+					break;
+
+			}
+
+		}
+
+		function onMouseWheel( event ) {
+
+			if ( scope.enabled === false || scope.enableZoom === false || state !== STATE.NONE ) return;
+
+			event.preventDefault();
+
+			scope.dispatchEvent( _startEvent );
+
+			handleMouseWheel( event );
+
+			scope.dispatchEvent( _endEvent );
+
+		}
+
+		function onKeyDown( event ) {
+
+			if ( scope.enabled === false || scope.enablePan === false ) return;
+
+			handleKeyDown( event );
+
+		}
+
+		function onTouchStart( event ) {
+
+			trackPointer( event );
+
+			switch ( pointers.length ) {
+
+				case 1:
+
+					switch ( scope.touches.ONE ) {
+
+						case three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.ROTATE:
+
+							if ( scope.enableRotate === false ) return;
+
+							handleTouchStartRotate();
+
+							state = STATE.TOUCH_ROTATE;
+
+							break;
+
+						case three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.PAN:
+
+							if ( scope.enablePan === false ) return;
+
+							handleTouchStartPan();
+
+							state = STATE.TOUCH_PAN;
+
+							break;
+
+						default:
+
+							state = STATE.NONE;
+
+					}
+
+					break;
+
+				case 2:
+
+					switch ( scope.touches.TWO ) {
+
+						case three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.DOLLY_PAN:
+
+							if ( scope.enableZoom === false && scope.enablePan === false ) return;
+
+							handleTouchStartDollyPan();
+
+							state = STATE.TOUCH_DOLLY_PAN;
+
+							break;
+
+						case three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.DOLLY_ROTATE:
+
+							if ( scope.enableZoom === false && scope.enableRotate === false ) return;
+
+							handleTouchStartDollyRotate();
+
+							state = STATE.TOUCH_DOLLY_ROTATE;
+
+							break;
+
+						default:
+
+							state = STATE.NONE;
+
+					}
+
+					break;
+
+				default:
+
+					state = STATE.NONE;
+
+			}
+
+			if ( state !== STATE.NONE ) {
+
+				scope.dispatchEvent( _startEvent );
+
+			}
+
+		}
+
+		function onTouchMove( event ) {
+
+			trackPointer( event );
+
+			switch ( state ) {
+
+				case STATE.TOUCH_ROTATE:
+
+					if ( scope.enableRotate === false ) return;
+
+					handleTouchMoveRotate( event );
+
+					scope.update();
+
+					break;
+
+				case STATE.TOUCH_PAN:
+
+					if ( scope.enablePan === false ) return;
+
+					handleTouchMovePan( event );
+
+					scope.update();
+
+					break;
+
+				case STATE.TOUCH_DOLLY_PAN:
+
+					if ( scope.enableZoom === false && scope.enablePan === false ) return;
+
+					handleTouchMoveDollyPan( event );
+
+					scope.update();
+
+					break;
+
+				case STATE.TOUCH_DOLLY_ROTATE:
+
+					if ( scope.enableZoom === false && scope.enableRotate === false ) return;
+
+					handleTouchMoveDollyRotate( event );
+
+					scope.update();
+
+					break;
+
+				default:
+
+					state = STATE.NONE;
+
+			}
+
+		}
+
+		function onContextMenu( event ) {
+
+			if ( scope.enabled === false ) return;
+
+			event.preventDefault();
+
+		}
+
+		function addPointer( event ) {
+
+			pointers.push( event );
+
+		}
+
+		function removePointer( event ) {
+
+			delete pointerPositions[ event.pointerId ];
+
+			for ( let i = 0; i < pointers.length; i ++ ) {
+
+				if ( pointers[ i ].pointerId == event.pointerId ) {
+
+					pointers.splice( i, 1 );
+					return;
+
+				}
+
+			}
+
+		}
+
+		function trackPointer( event ) {
+
+			let position = pointerPositions[ event.pointerId ];
+
+			if ( position === undefined ) {
+
+				position = new three__WEBPACK_IMPORTED_MODULE_0__.Vector2();
+				pointerPositions[ event.pointerId ] = position;
+
+			}
+
+			position.set( event.pageX, event.pageY );
+
+		}
+
+		function getSecondPointerPosition( event ) {
+
+			const pointer = ( event.pointerId === pointers[ 0 ].pointerId ) ? pointers[ 1 ] : pointers[ 0 ];
+
+			return pointerPositions[ pointer.pointerId ];
+
+		}
+
+		//
+
+		scope.domElement.addEventListener( 'contextmenu', onContextMenu );
+
+		scope.domElement.addEventListener( 'pointerdown', onPointerDown );
+		scope.domElement.addEventListener( 'pointercancel', onPointerCancel );
+		scope.domElement.addEventListener( 'wheel', onMouseWheel, { passive: false } );
+
+		// force an update at start
+
+		this.update();
+
+	}
+
+}
+
+
+// This set of controls performs orbiting, dollying (zooming), and panning.
+// Unlike TrackballControls, it maintains the "up" direction object.up (+Y by default).
+// This is very similar to OrbitControls, another set of touch behavior
+//
+//    Orbit - right mouse, or left mouse + ctrl/meta/shiftKey / touch: two-finger rotate
+//    Zoom - middle mouse, or mousewheel / touch: two-finger spread or squish
+//    Pan - left mouse, or arrow keys / touch: one-finger move
+
+class MapControls extends OrbitControls {
+
+	constructor( object, domElement ) {
+
+		super( object, domElement );
+
+		this.screenSpacePanning = false; // pan orthogonal to world-space direction camera.up
+
+		this.mouseButtons.LEFT = three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.PAN;
+		this.mouseButtons.RIGHT = three__WEBPACK_IMPORTED_MODULE_0__.MOUSE.ROTATE;
+
+		this.touches.ONE = three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.PAN;
+		this.touches.TWO = three__WEBPACK_IMPORTED_MODULE_0__.TOUCH.DOLLY_ROTATE;
+
+	}
+
+}
+
+
+
+
+/***/ }),
+
 /***/ "./node_modules/three/examples/jsm/geometries/BoxLineGeometry.js":
 /*!***********************************************************************!*\
   !*** ./node_modules/three/examples/jsm/geometries/BoxLineGeometry.js ***!
@@ -63981,228 +65524,6 @@ function toTrianglesDrawMode( geometry, drawMode ) {
 
 /***/ }),
 
-/***/ "./node_modules/three/examples/jsm/webxr/VRButton.js":
-/*!***********************************************************!*\
-  !*** ./node_modules/three/examples/jsm/webxr/VRButton.js ***!
-  \***********************************************************/
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "VRButton": () => (/* binding */ VRButton)
-/* harmony export */ });
-class VRButton {
-
-	static createButton( renderer, options ) {
-
-		if ( options ) {
-
-			console.error( 'THREE.VRButton: The "options" parameter has been removed. Please set the reference space type via renderer.xr.setReferenceSpaceType() instead.' );
-
-		}
-
-		const button = document.createElement( 'button' );
-
-		function showEnterVR( /*device*/ ) {
-
-			let currentSession = null;
-
-			async function onSessionStarted( session ) {
-
-				session.addEventListener( 'end', onSessionEnded );
-
-				await renderer.xr.setSession( session );
-				button.textContent = 'EXIT VR';
-
-				currentSession = session;
-
-			}
-
-			function onSessionEnded( /*event*/ ) {
-
-				currentSession.removeEventListener( 'end', onSessionEnded );
-
-				button.textContent = 'ENTER VR';
-
-				currentSession = null;
-
-			}
-
-			//
-
-			button.style.display = '';
-
-			button.style.cursor = 'pointer';
-			button.style.left = 'calc(50% - 50px)';
-			button.style.width = '100px';
-
-			button.textContent = 'ENTER VR';
-
-			button.onmouseenter = function () {
-
-				button.style.opacity = '1.0';
-
-			};
-
-			button.onmouseleave = function () {
-
-				button.style.opacity = '0.5';
-
-			};
-
-			button.onclick = function () {
-
-				if ( currentSession === null ) {
-
-					// WebXR's requestReferenceSpace only works if the corresponding feature
-					// was requested at session creation time. For simplicity, just ask for
-					// the interesting ones as optional features, but be aware that the
-					// requestReferenceSpace call will fail if it turns out to be unavailable.
-					// ('local' is always available for immersive sessions and doesn't need to
-					// be requested separately.)
-
-					const sessionInit = { optionalFeatures: [ 'local-floor', 'bounded-floor', 'hand-tracking', 'layers' ] };
-					navigator.xr.requestSession( 'immersive-vr', sessionInit ).then( onSessionStarted );
-
-				} else {
-
-					currentSession.end();
-
-				}
-
-			};
-
-		}
-
-		function disableButton() {
-
-			button.style.display = '';
-
-			button.style.cursor = 'auto';
-			button.style.left = 'calc(50% - 75px)';
-			button.style.width = '150px';
-
-			button.onmouseenter = null;
-			button.onmouseleave = null;
-
-			button.onclick = null;
-
-		}
-
-		function showWebXRNotFound() {
-
-			disableButton();
-
-			button.textContent = 'VR NOT SUPPORTED';
-
-		}
-
-		function showVRNotAllowed( exception ) {
-
-			disableButton();
-
-			console.warn( 'Exception when trying to call xr.isSessionSupported', exception );
-
-			button.textContent = 'VR NOT ALLOWED';
-
-		}
-
-		function stylizeElement( element ) {
-
-			element.style.position = 'absolute';
-			element.style.bottom = '20px';
-			element.style.padding = '12px 6px';
-			element.style.border = '1px solid #fff';
-			element.style.borderRadius = '4px';
-			element.style.background = 'rgba(0,0,0,0.1)';
-			element.style.color = '#fff';
-			element.style.font = 'normal 13px sans-serif';
-			element.style.textAlign = 'center';
-			element.style.opacity = '0.5';
-			element.style.outline = 'none';
-			element.style.zIndex = '999';
-
-		}
-
-		if ( 'xr' in navigator ) {
-
-			button.id = 'VRButton';
-			button.style.display = 'none';
-
-			stylizeElement( button );
-
-			navigator.xr.isSessionSupported( 'immersive-vr' ).then( function ( supported ) {
-
-				supported ? showEnterVR() : showWebXRNotFound();
-
-				if ( supported && VRButton.xrSessionIsGranted ) {
-
-					button.click();
-
-				}
-
-			} ).catch( showVRNotAllowed );
-
-			return button;
-
-		} else {
-
-			const message = document.createElement( 'a' );
-
-			if ( window.isSecureContext === false ) {
-
-				message.href = document.location.href.replace( /^http:/, 'https:' );
-				message.innerHTML = 'WEBXR NEEDS HTTPS'; // TODO Improve message
-
-			} else {
-
-				message.href = 'https://immersiveweb.dev/';
-				message.innerHTML = 'WEBXR NOT AVAILABLE';
-
-			}
-
-			message.style.left = 'calc(50% - 90px)';
-			message.style.width = '180px';
-			message.style.textDecoration = 'none';
-
-			stylizeElement( message );
-
-			return message;
-
-		}
-
-	}
-
-	static xrSessionIsGranted = false;
-
-	static registerSessionGrantedListener() {
-
-		if ( 'xr' in navigator ) {
-
-			// WebXRViewer (based on Firefox) has a bug where addEventListener
-			// throws a silent exception and aborts execution entirely.
-			if ( /WebXRViewer\//i.test( navigator.userAgent ) ) return;
-
-			navigator.xr.addEventListener( 'sessiongranted', () => {
-
-				VRButton.xrSessionIsGranted = true;
-
-			} );
-
-		}
-
-	}
-
-}
-
-VRButton.registerSessionGrantedListener();
-
-
-
-
-/***/ }),
-
 /***/ "./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js":
 /*!***************************************************************************!*\
   !*** ./node_modules/three/examples/jsm/webxr/XRControllerModelFactory.js ***!
@@ -64587,11 +65908,12 @@ var __webpack_exports__ = {};
   !*** ./src/index.js ***!
   \**********************/
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var _js_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./js/components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three-mesh-bvh */ "./node_modules/three-mesh-bvh/src/utils/ExtensionUtilities.js");
-/* harmony import */ var three_examples_jsm_webxr_VRButton__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three/examples/jsm/webxr/VRButton */ "./node_modules/three/examples/jsm/webxr/VRButton.js");
-/* harmony import */ var _js_ECSYConfig__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/ECSYConfig */ "./src/js/ECSYConfig.js");
+/* harmony import */ var three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! three-mesh-bvh */ "./node_modules/three-mesh-bvh/src/utils/ExtensionUtilities.js");
+/* harmony import */ var three_examples_jsm_controls_OrbitControls__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three/examples/jsm/controls/OrbitControls */ "./node_modules/three/examples/jsm/controls/OrbitControls.js");
+/* harmony import */ var _js_lib_VRButton__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./js/lib/VRButton */ "./src/js/lib/VRButton.js");
+/* harmony import */ var _js_ECSYConfig__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./js/ECSYConfig */ "./src/js/ECSYConfig.js");
 
 
 
@@ -64600,38 +65922,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const world = (0,_js_ECSYConfig__WEBPACK_IMPORTED_MODULE_2__.setupECSY)();
-const clock = new three__WEBPACK_IMPORTED_MODULE_3__.Clock();
+
+const world = (0,_js_ECSYConfig__WEBPACK_IMPORTED_MODULE_3__.setupECSY)();
+const clock = new three__WEBPACK_IMPORTED_MODULE_4__.Clock();
+let controls = null;
 
 // three-mesh-bvh initialization
-three__WEBPACK_IMPORTED_MODULE_3__.BufferGeometry.prototype.computeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__.computeBoundsTree;
-three__WEBPACK_IMPORTED_MODULE_3__.BufferGeometry.prototype.disposeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__.disposeBoundsTree;
-three__WEBPACK_IMPORTED_MODULE_3__.Mesh.prototype.raycast = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_4__.acceleratedRaycast;
+three__WEBPACK_IMPORTED_MODULE_4__.BufferGeometry.prototype.computeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__.computeBoundsTree;
+three__WEBPACK_IMPORTED_MODULE_4__.BufferGeometry.prototype.disposeBoundsTree = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__.disposeBoundsTree;
+three__WEBPACK_IMPORTED_MODULE_4__.Mesh.prototype.raycast = three_mesh_bvh__WEBPACK_IMPORTED_MODULE_5__.acceleratedRaycast;
 
 init();
 
 function init() {
 	let container = document.getElementById('scene-container');
 
-	let scene = new three__WEBPACK_IMPORTED_MODULE_3__.Scene();
-	scene.background = new three__WEBPACK_IMPORTED_MODULE_3__.Color(0x000000);
+	let scene = new three__WEBPACK_IMPORTED_MODULE_4__.Scene();
+	scene.background = new three__WEBPACK_IMPORTED_MODULE_4__.Color(0x000000);
 
-	let camera = new three__WEBPACK_IMPORTED_MODULE_3__.PerspectiveCamera(
+	let camera = new three__WEBPACK_IMPORTED_MODULE_4__.PerspectiveCamera(
 		50,
 		window.innerWidth / window.innerHeight,
 		0.1,
 		100,
 	);
-	camera.position.set(0, 1.5, 2);
-	camera.lookAt(new three__WEBPACK_IMPORTED_MODULE_3__.Vector3(7, 2, -10));
 
-	let renderer = new three__WEBPACK_IMPORTED_MODULE_3__.WebGLRenderer({ antialias: true });
+	let renderer = new three__WEBPACK_IMPORTED_MODULE_4__.WebGLRenderer({ antialias: true });
 	renderer.setPixelRatio(window.devicePixelRatio);
 	renderer.setSize(window.innerWidth, window.innerHeight);
-	renderer.outputEncoding = three__WEBPACK_IMPORTED_MODULE_3__.sRGBEncoding;
+	renderer.outputEncoding = three__WEBPACK_IMPORTED_MODULE_4__.sRGBEncoding;
 	renderer.xr.enabled = true;
 	container.appendChild(renderer.domElement);
-	document.body.appendChild(three_examples_jsm_webxr_VRButton__WEBPACK_IMPORTED_MODULE_1__.VRButton.createButton(renderer));
+
+	// controls
+
+	controls = new three_examples_jsm_controls_OrbitControls__WEBPACK_IMPORTED_MODULE_1__.MapControls(camera, renderer.domElement);
+
+	controls.enableDamping = true;
+	controls.dampingFactor = 0.05;
+
+	controls.screenSpacePanning = true;
+
+	controls.minDistance = 0.1;
+	controls.maxDistance = 5;
+
+	controls.maxPolarAngle = Math.PI / 2;
+	camera.position.set(0, 1.5, 2);
+	camera.lookAt(new three__WEBPACK_IMPORTED_MODULE_4__.Vector3(7, 2, -10));
+	// document.body.appendChild(VRButton.createButton(renderer));
+	_js_lib_VRButton__WEBPACK_IMPORTED_MODULE_2__.VRButton.createButton(document.getElementById('enter-vr'), renderer);
 
 	const gameManager = world.createEntity();
 	gameManager.addComponent(_js_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_0__.GameStateComponent, {
@@ -64661,6 +66000,7 @@ function render() {
 	const delta = clock.getDelta();
 	const elapsedTime = clock.elapsedTime;
 	world.execute(delta, elapsedTime);
+	controls.update();
 }
 
 })();

@@ -7,25 +7,248 @@
 			content="width=device-width, initial-scale=1, shrink-to-fit=no"
 		/>
 		<title>Duo</title>
+		<!-- CSS only -->
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor"
+			crossorigin="anonymous"
+		/>
+		<!-- JavaScript Bundle with Popper -->
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2"
+			crossorigin="anonymous"
+		></script>
+		<style>
+			@font-face {
+				font-family: SpaceMono;
+				src: url(assets/fonts/SpaceMono-Regular.ttf);
+			}
+
+			#ui-panel {
+				width: 300px;
+				/* height: 200px; */
+				position: absolute;
+				left: calc(50% - 150px);
+				top: calc(50% - 160px);
+				background-color: #252526;
+				color: #e4e6eb;
+				border-radius: 20px;
+			}
+
+			.col {
+				padding: 5px;
+			}
+
+			.row {
+				padding: 5px 0px 0px 0px;
+			}
+
+			.card-body {
+				padding-bottom: 5px;
+			}
+
+			.action-button {
+				height: 40px;
+				font-size: medium;
+				color: #e4e6eb;
+				background-color: #3b3b3c;
+				border-style: none;
+				border-radius: 10px;
+				padding: 6px;
+				vertical-align: middle;
+			}
+
+			.button-rightmost {
+				border-radius: 4px 10px 10px 4px !important;
+				margin-left: 4px;
+			}
+
+			.button-leftmost {
+				border-radius: 10px 4px 4px 10px !important;
+			}
+
+			.button-middle {
+				border-radius: 4px !important;
+				margin-left: 4px;
+			}
+
+			.session-id {
+				height: 80px;
+				width: 280px;
+				font-size: 42px;
+				font-family: SpaceMono;
+				color: #e4e6eb;
+				background-color: #2a2a2b;
+				border-style: none;
+				border-radius: 10px;
+				padding: 6px;
+				vertical-align: middle;
+				letter-spacing: 0.5em;
+				text-align: center;
+				text-indent: 0.5em;
+				text-transform: uppercase;
+				border: none;
+				outline: none;
+				/* letter-spacing: 1em; */
+			}
+
+			.spinner {
+				width: 30px;
+				height: 30px;
+				padding: 0;
+				margin: 0 10px 0 0;
+			}
+
+			.id-label {
+				background-color: #2a2a2b;
+			}
+
+			.connection-status {
+				text-align: center;
+				color: #a7a7a7;
+				font-size: small;
+			}
+
+			.session-id:hover,
+			.action-button:hover {
+				background-color: #676767;
+			}
+
+			.action-button:disabled {
+				background-color: #2a2a2b;
+				color: #b0b0b0;
+			}
+		</style>
 	<script defer src="index.bundle.js"></script></head>
-	<body>
+	<body style="margin: 0">
 		<script
 			type="application/javascript"
 			src="https://cdnjs.cloudflare.com/ajax/libs/simple-peer/9.11.1/simplepeer.min.js"
 		></script>
-		<div style="position: absolute">
-			<div>My Session ID: <span id="session-id"></span></div>
-			<form id="userform">
-				<label>Join Session</label>
-				<input id="to" type="text" />
-				<button id="create" type="button">Create</button>
-			</form>
+		<div id="ui-panel" class="card">
+			<div class="card-body">
+				<div id="welcome-text">
+					<h3 class="card-title">Welcome to Duo</h3>
+					<p class="card-subtitle mb-2" style="color: #a7a7a7">
+						Duo is a real-time communication WebXR experience that also supports
+						inline mode.
+					</p>
+					<p class="card-subtitle mb-2" style="color: #a7a7a7">
+						Powered by WebRTC, Duo establishes a direct connection between
+						browsers for great performance while remaining essentially
+						serverless.
+					</p>
+				</div>
+				<div id="create-session-text" style="display: none">
+					<h3 class="card-title">Session Info</h3>
+					<p class="card-subtitle mb-2" style="color: #a7a7a7">
+						Share the following session code with a friend to start the
+						experience.
+					</p>
+				</div>
+				<div id="join-session-text" style="display: none">
+					<h3 class="card-title">Session Info</h3>
+					<p class="card-subtitle mb-2" style="color: #a7a7a7">
+						Enter the session code shared with you to start the experience.
+					</p>
+				</div>
+				<div id="action-menu" class="col">
+					<div class="row">
+						<div style="padding: 0; font-size: 0">
+							<button
+								id="create-session"
+								type="button"
+								class="btn action-button button-leftmost"
+								style="width: 138px"
+							>
+								Create Session
+							</button>
+							<button
+								id="join-session"
+								type="button"
+								class="btn action-button button-rightmost"
+								style="width: 138px"
+							>
+								Join Session
+							</button>
+						</div>
+					</div>
+				</div>
 
-			<div id="log"></div>
-			<p>
-				<input type="text" id="message" />
-				<button id="send" type="button">Send</button>
-			</p>
+				<div id="session-menu" class="col" style="display: none">
+					<div class="row">
+						<div style="padding: 0; font-size: 0">
+							<button id="my-session-id" class="btn session-id"></button>
+							<input
+								id="peer-session-id"
+								type="text"
+								class="session-id"
+								maxlength="5"
+							/>
+						</div>
+					</div>
+
+					<div
+						id="status-idle"
+						class="row status-row"
+						style="margin-top: 5px; margin-bottom: 5px"
+					>
+						<button
+							id="connect"
+							type="button"
+							class="btn action-button"
+							style="width: 280px"
+							disabled
+						>
+							Connect
+						</button>
+					</div>
+
+					<div
+						id="status-connecting"
+						class="row status-row"
+						style="margin: 10px 0"
+					>
+						<div class="connection-status">
+							<img src="assets/images/loading.gif" class="spinner" />
+							<span>Establishing connection ...</span>
+						</div>
+					</div>
+
+					<div
+						id="status-connected"
+						class="row status-row"
+						style="margin: 10px 0"
+					>
+						<div class="connection-status">
+							<img src="assets/images/connected.gif" class="spinner" />
+							<span>Connection established :-)</span>
+						</div>
+					</div>
+					<div class="row">
+						<div style="padding: 0; font-size: 0">
+							<button
+								id="run-inline"
+								type="button"
+								class="btn action-button button-leftmost"
+								style="width: 138px"
+							>
+								Run Inline
+							</button>
+							<button
+								id="enter-vr"
+								type="button"
+								class="btn action-button button-rightmost"
+								style="width: 138px"
+							>
+								Enter VR
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		<div id="scene-container" style="display: block"></div>
 	</body>
