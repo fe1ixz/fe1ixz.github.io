@@ -3387,7 +3387,6 @@ class RTCPeer {
 		this._peer.on('connect', () => {
 			this._connecting = false;
 			this._connected = true;
-			console.log('connected');
 			this._onConnect();
 		});
 		this._peer.on('data', (data) => {
@@ -3400,7 +3399,6 @@ class RTCPeer {
 		});
 
 		while (this._connecting) {
-			console.log('waiting');
 			try {
 				const message = await SignalReceive(this._sessionId, this._password);
 				peerSessionId = message.from;
@@ -3973,6 +3971,9 @@ class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_4__.System {
 		});
 
 		document.getElementById('my-session-id').innerHTML = this.peer.sessionId;
+		document.getElementById('my-session-id').onclick = function () {
+			navigator.clipboard.writeText(this.innerHTML);
+		};
 		document.getElementById('peer-session-id').oninput = function () {
 			document.getElementById('connect').disabled = this.value.length != 5;
 		};
