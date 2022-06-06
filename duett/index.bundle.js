@@ -4484,7 +4484,11 @@ class PeerAvatarSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__.Gam
 			if (!peerComponent.avatarModel) {
 				this._createPeerAvatar(peerComponent);
 			}
-			this._updatePeerAvatar(peerComponent);
+			try {
+				this._updatePeerAvatar(peerComponent);
+			} catch (e) {
+				console.log(e);
+			}
 		});
 	}
 
