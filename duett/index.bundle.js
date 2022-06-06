@@ -2538,6 +2538,161 @@ module.exports = function isNumber(num) {
 
 /***/ }),
 
+/***/ "./node_modules/uuid/dist/esm-browser/regex.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/regex.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (/^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/rng.js":
+/*!***************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/rng.js ***!
+  \***************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ rng)
+/* harmony export */ });
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+var getRandomValues;
+var rnds8 = new Uint8Array(16);
+function rng() {
+  // lazy load so that environments that need to polyfill have a chance to do so
+  if (!getRandomValues) {
+    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+    // find the complete implementation of crypto (msCrypto) on IE11.
+    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+
+    if (!getRandomValues) {
+      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+    }
+  }
+
+  return getRandomValues(rnds8);
+}
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/stringify.js":
+/*!*********************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/stringify.js ***!
+  \*********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _validate_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./validate.js */ "./node_modules/uuid/dist/esm-browser/validate.js");
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+var byteToHex = [];
+
+for (var i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr) {
+  var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  var uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!(0,_validate_js__WEBPACK_IMPORTED_MODULE_0__["default"])(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (stringify);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/v4.js":
+/*!**************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/v4.js ***!
+  \**************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _rng_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./rng.js */ "./node_modules/uuid/dist/esm-browser/rng.js");
+/* harmony import */ var _stringify_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./stringify.js */ "./node_modules/uuid/dist/esm-browser/stringify.js");
+
+
+
+function v4(options, buf, offset) {
+  options = options || {};
+  var rnds = options.random || (options.rng || _rng_js__WEBPACK_IMPORTED_MODULE_0__["default"])(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (var i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return (0,_stringify_js__WEBPACK_IMPORTED_MODULE_1__["default"])(rnds);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (v4);
+
+/***/ }),
+
+/***/ "./node_modules/uuid/dist/esm-browser/validate.js":
+/*!********************************************************!*\
+  !*** ./node_modules/uuid/dist/esm-browser/validate.js ***!
+  \********************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _regex_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./regex.js */ "./node_modules/uuid/dist/esm-browser/regex.js");
+
+
+function validate(uuid) {
+  return typeof uuid === 'string' && _regex_js__WEBPACK_IMPORTED_MODULE_0__["default"].test(uuid);
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (validate);
+
+/***/ }),
+
 /***/ "./src/js/Constants.js":
 /*!*****************************!*\
   !*** ./src/js/Constants.js ***!
@@ -2547,7 +2702,9 @@ module.exports = function isNumber(num) {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "LOCOMOTION_CONSTANTS": () => (/* binding */ LOCOMOTION_CONSTANTS)
+/* harmony export */   "LOCOMOTION_CONSTANTS": () => (/* binding */ LOCOMOTION_CONSTANTS),
+/* harmony export */   "ASSET_URLS": () => (/* binding */ ASSET_URLS),
+/* harmony export */   "RTC_CONSTANTS": () => (/* binding */ RTC_CONSTANTS)
 /* harmony export */ });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 
@@ -2570,6 +2727,23 @@ const LOCOMOTION_CONSTANTS = {
 	MOVEMENT_SPEED: 2.0,
 };
 
+const ASSET_URLS = {
+	AVATAR: {
+		BROWN_BEAR: 'assets/brown-bear.glb',
+	},
+};
+
+const RTC_CONSTANTS = {
+	MAX_BUFFER_SIZE: 5,
+	RETRY_INTERVAL: 0.05,
+	HEADER_LENGTH: 4,
+	SECURE_MESSAGE_HEADER: 'SMSG',
+	SECURE_ACK_HEADER: 'SACK',
+	DEVICE_TRANSFORM_HEADER: 'DVTF',
+	OBJECT_DATA_HEADER: 'OBJD',
+	OBJECT_SYNC_INTERVAL: 0.25,
+};
+
 
 /***/ }),
 
@@ -2586,22 +2760,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _components_TagComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components/TagComponents */ "./src/js/components/TagComponents.js");
 /* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
-/* harmony import */ var _systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./systems/HandAnimationSystem */ "./src/js/systems/HandAnimationSystem.js");
-/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/HandComponent */ "./src/js/components/HandComponent.js");
-/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
-/* harmony import */ var _systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./systems/ObjectGNTSystem */ "./src/js/systems/ObjectGNTSystem.js");
-/* harmony import */ var _systems_RTCSystem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./systems/RTCSystem */ "./src/js/systems/RTCSystem.js");
-/* harmony import */ var _systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./systems/RenderingSystem */ "./src/js/systems/RenderingSystem.js");
-/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var _systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./systems/RigidBodyPhysicsSystem */ "./src/js/systems/RigidBodyPhysicsSystem.js");
-/* harmony import */ var _systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./systems/SceneCreationSystem */ "./src/js/systems/SceneCreationSystem.js");
-/* harmony import */ var _systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./systems/SnapTurnSystem */ "./src/js/systems/SnapTurnSystem.js");
-/* harmony import */ var _systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./systems/TeleportSystem */ "./src/js/systems/TeleportSystem.js");
-/* harmony import */ var _systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./systems/VrInputSystem */ "./src/js/systems/VrInputSystem.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
-/* harmony import */ var _systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./systems/WristMenuSystem */ "./src/js/systems/WristMenuSystem.js");
+/* harmony import */ var _systems_DataStreamingSystem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./systems/DataStreamingSystem */ "./src/js/systems/DataStreamingSystem.js");
+/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
+/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
+/* harmony import */ var _systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./systems/HandAnimationSystem */ "./src/js/systems/HandAnimationSystem.js");
+/* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/HandComponent */ "./src/js/components/HandComponent.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./systems/ObjectGNTSystem */ "./src/js/systems/ObjectGNTSystem.js");
+/* harmony import */ var _systems_ObjectSyncSystem__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./systems/ObjectSyncSystem */ "./src/js/systems/ObjectSyncSystem.js");
+/* harmony import */ var _systems_PeerAvatarSystem__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./systems/PeerAvatarSystem */ "./src/js/systems/PeerAvatarSystem.js");
+/* harmony import */ var _components_PeerComponent__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./components/PeerComponent */ "./src/js/components/PeerComponent.js");
+/* harmony import */ var _systems_RTCSystem__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./systems/RTCSystem */ "./src/js/systems/RTCSystem.js");
+/* harmony import */ var _systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./systems/RenderingSystem */ "./src/js/systems/RenderingSystem.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./systems/RigidBodyPhysicsSystem */ "./src/js/systems/RigidBodyPhysicsSystem.js");
+/* harmony import */ var _systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./systems/SceneCreationSystem */ "./src/js/systems/SceneCreationSystem.js");
+/* harmony import */ var _systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./systems/SnapTurnSystem */ "./src/js/systems/SnapTurnSystem.js");
+/* harmony import */ var _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./components/StreamingComponent */ "./src/js/components/StreamingComponent.js");
+/* harmony import */ var _systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./systems/TeleportSystem */ "./src/js/systems/TeleportSystem.js");
+/* harmony import */ var _systems_TestSphereSystem__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(/*! ./systems/TestSphereSystem */ "./src/js/systems/TestSphereSystem.js");
+/* harmony import */ var _systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(/*! ./systems/VrInputSystem */ "./src/js/systems/VrInputSystem.js");
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var _systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(/*! ./systems/WristMenuSystem */ "./src/js/systems/WristMenuSystem.js");
+
+
+
+
+
+
 
 
 
@@ -2623,7 +2809,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const setupECSY = () => {
-	let world = new ecsy__WEBPACK_IMPORTED_MODULE_16__.World();
+	let world = new ecsy__WEBPACK_IMPORTED_MODULE_22__.World();
 
 	registerTagComponents(world);
 
@@ -2652,12 +2838,14 @@ const registerTagComponents = (world) => {
  * @param {World} world
  */
 const registerComponents = (world) => {
-	world.registerComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__.GameStateComponent);
-	world.registerComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_6__.Object3DComponent);
+	world.registerComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_3__.GameStateComponent);
+	world.registerComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_7__.Object3DComponent);
 	world.registerComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_1__.VrControllerComponent);
-	world.registerComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_10__.RigidBodyComponent);
-	world.registerComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_5__.HandComponent);
-	world.registerComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_3__.GrabbableComponent);
+	world.registerComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_14__.RigidBodyComponent);
+	world.registerComponent(_components_HandComponent__WEBPACK_IMPORTED_MODULE_6__.HandComponent);
+	world.registerComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_4__.GrabbableComponent);
+	world.registerComponent(_components_PeerComponent__WEBPACK_IMPORTED_MODULE_11__.PeerComponent);
+	world.registerComponent(_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_18__.StreamingComponent);
 };
 
 /**
@@ -2665,20 +2853,24 @@ const registerComponents = (world) => {
  * @param {World} world
  */
 const registerSystems = (world) => {
-	world.registerSystem(_systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_12__.SceneCreationSystem);
-	world.registerSystem(_systems_RTCSystem__WEBPACK_IMPORTED_MODULE_8__.RTCSystem);
+	world.registerSystem(_systems_SceneCreationSystem__WEBPACK_IMPORTED_MODULE_16__.SceneCreationSystem);
+	world.registerSystem(_systems_RTCSystem__WEBPACK_IMPORTED_MODULE_12__.RTCSystem);
+	world.registerSystem(_systems_PeerAvatarSystem__WEBPACK_IMPORTED_MODULE_10__.PeerAvatarSystem);
+	world.registerSystem(_systems_DataStreamingSystem__WEBPACK_IMPORTED_MODULE_2__.DataStreamingSystem);
+	world.registerSystem(_systems_ObjectSyncSystem__WEBPACK_IMPORTED_MODULE_9__.ObjectSyncSystem);
 	// input
-	world.registerSystem(_systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_15__.VrInputSystem);
-	world.registerSystem(_systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_4__.HandAnimationSystem);
+	world.registerSystem(_systems_VrInputSystem__WEBPACK_IMPORTED_MODULE_21__.VrInputSystem);
+	world.registerSystem(_systems_HandAnimationSystem__WEBPACK_IMPORTED_MODULE_5__.HandAnimationSystem);
 	// locomotion
-	world.registerSystem(_systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_14__.TeleportSystem);
-	world.registerSystem(_systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_13__.SnapTurnSystem);
+	world.registerSystem(_systems_TeleportSystem__WEBPACK_IMPORTED_MODULE_19__.TeleportSystem);
+	world.registerSystem(_systems_SnapTurnSystem__WEBPACK_IMPORTED_MODULE_17__.SnapTurnSystem);
 	// object manipulation
-	world.registerSystem(_systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_7__.ObjectGNTSystem);
-	world.registerSystem(_systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_11__.RigidBodyPhysicsSystem);
+	world.registerSystem(_systems_ObjectGNTSystem__WEBPACK_IMPORTED_MODULE_8__.ObjectGNTSystem);
+	world.registerSystem(_systems_RigidBodyPhysicsSystem__WEBPACK_IMPORTED_MODULE_15__.RigidBodyPhysicsSystem);
 
-	world.registerSystem(_systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_17__.WristMenuSystem);
-	world.registerSystem(_systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_9__.RenderingSystem);
+	world.registerSystem(_systems_TestSphereSystem__WEBPACK_IMPORTED_MODULE_20__.TestSphereSystem);
+	world.registerSystem(_systems_WristMenuSystem__WEBPACK_IMPORTED_MODULE_23__.WristMenuSystem);
+	world.registerSystem(_systems_RenderingSystem__WEBPACK_IMPORTED_MODULE_13__.RenderingSystem);
 };
 
 
@@ -2752,6 +2944,7 @@ GrabbableComponent.schema = {
 	state: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: GRAB_STATE.IDLE },
 	handKey: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.String, default: '' },
 	grabSpaceTransformOverride: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	stateJustChanged: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: false },
 };
 
 
@@ -2853,6 +3046,52 @@ Object3DComponent.schema = {
 
 /***/ }),
 
+/***/ "./src/js/components/PeerComponent.js":
+/*!********************************************!*\
+  !*** ./src/js/components/PeerComponent.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PeerComponent": () => (/* binding */ PeerComponent)
+/* harmony export */ });
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
+
+
+
+
+class PeerComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+PeerComponent.MODE = {
+	INLINE: 0,
+	IMMERSIVE: 1,
+};
+
+PeerComponent.AVATAR_TYPE = {
+	BROWN_BEAR: 'BROWN_BEAR',
+};
+
+PeerComponent.getAvatarModelUrl = (avatarType) => {
+	return _Constants__WEBPACK_IMPORTED_MODULE_1__.ASSET_URLS.AVATAR[avatarType];
+};
+
+PeerComponent.schema = {
+	mode: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: undefined },
+	sendBuffer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	sendBufferSecure: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	avatarType: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.String, default: undefined },
+	avatarModel: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	deviceTransform: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	streamingObjects: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+	receivedSecureMessages: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Ref, default: undefined },
+};
+
+
+/***/ }),
+
 /***/ "./src/js/components/RigidBodyComponent.js":
 /*!*************************************************!*\
   !*** ./src/js/components/RigidBodyComponent.js ***!
@@ -2862,8 +3101,7 @@ Object3DComponent.schema = {
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "RigidBodyComponent": () => (/* binding */ RigidBodyComponent),
-/* harmony export */   "createDefaultRigidBodySchema": () => (/* binding */ createDefaultRigidBodySchema)
+/* harmony export */   "RigidBodyComponent": () => (/* binding */ RigidBodyComponent)
 /* harmony export */ });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
@@ -2871,7 +3109,39 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class RigidBodyComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+class RigidBodyComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {
+	serialize() {
+		return {
+			active: this.active,
+			direction: this.direction.toArray(),
+			speed: this.speed,
+			dragDecel: this.dragDecel,
+			hasRotation: this.hasRotation,
+			rotationAxis: this.rotationAxis.toArray(),
+			rotationSpeed: this.rotationSpeed,
+			spinDown: this.spinDown,
+			perishable: this.perishable,
+			timeToLive: this.timeToLive,
+			ignoreRigidBodyCollision: this.ignoreRigidBodyCollision,
+			collisionSpeedReductionFactor: this.collisionSpeedReductionFactor,
+		};
+	}
+
+	deserialize(object) {
+		this.active = object.active;
+		this.direction = new three__WEBPACK_IMPORTED_MODULE_1__.Vector3().fromArray(object.direction);
+		this.speed = object.speed;
+		this.dragDecel = object.dragDecel;
+		this.hasRotation = object.hasRotation;
+		this.rotationAxis = new three__WEBPACK_IMPORTED_MODULE_1__.Vector3().fromArray(object.rotationAxis);
+		this.rotationSpeed = object.rotationAxis;
+		this.spinDown = object.spinDown;
+		this.perishable = object.perishable;
+		this.timeToLive = object.timeToLive;
+		this.ignoreRigidBodyCollision = object.ignoreRigidBodyCollision;
+		this.collisionSpeedReductionFactor = object.collisionSpeedReductionFactor;
+	}
+}
 
 RigidBodyComponent.schema = {
 	active: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Boolean, default: true },
@@ -2892,25 +3162,51 @@ RigidBodyComponent.schema = {
 	collisionSpeedReductionFactor: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
 };
 
-const createDefaultRigidBodySchema = () => {
+RigidBodyComponent.createDefaultSchema = () => {
 	return {
 		active: true,
-
-		direction: new three__WEBPACK_IMPORTED_MODULE_1__.Vector3(),
+		direction: new three__WEBPACK_IMPORTED_MODULE_1__.Vector3(0, 0, -1),
 		speed: 0,
 		dragDecel: -0.1,
-
 		hasRotation: true,
 		rotationAxis: new three__WEBPACK_IMPORTED_MODULE_1__.Vector3(),
 		rotationSpeed: 0,
 		spinDown: 0.2,
-
 		perishable: false,
 		timeToLive: 0,
-
 		ignoreRigidBodyCollision: false,
 		collisionSpeedReductionFactor: 0.3,
 	};
+};
+
+
+/***/ }),
+
+/***/ "./src/js/components/StreamingComponent.js":
+/*!*************************************************!*\
+  !*** ./src/js/components/StreamingComponent.js ***!
+  \*************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "StreamingComponent": () => (/* binding */ StreamingComponent)
+/* harmony export */ });
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+
+
+class StreamingComponent extends ecsy__WEBPACK_IMPORTED_MODULE_0__.Component {}
+
+StreamingComponent.OWNER = {
+	SELF: 0,
+	PEER: 1,
+};
+
+StreamingComponent.schema = {
+	id: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.String, default: undefined },
+	owner: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: undefined },
+	syncTimer: { type: ecsy__WEBPACK_IMPORTED_MODULE_0__.Types.Number, default: 0 },
 };
 
 
@@ -3349,14 +3645,12 @@ const SIGNALING_SERVER = 'https://connect.inboxgo.org/inbox';
 
 class RTCPeer {
 	constructor() {
-		this._sessionId = randomatic__WEBPACK_IMPORTED_MODULE_0___default()('A0', 5);
-		this._password = randomatic__WEBPACK_IMPORTED_MODULE_0___default()('*', 20);
-		this._peer = null;
-		this._connecting = false;
-		this._connected = false;
+		this.resetPeer();
 		this._onConnect = () => {};
 		this._onData = (_) => {};
 		this._decoder = new TextDecoder('utf-8');
+		// debug
+		window.resetRTCPeer = () => this.resetPeer();
 	}
 
 	get sessionId() {
@@ -3367,12 +3661,14 @@ class RTCPeer {
 		return this._connected;
 	}
 
-	async initiateConnection(peerSessionId) {
-		this._setupPeer(peerSessionId);
-	}
-
-	async waitForConnection() {
-		this._setupPeer();
+	resetPeer() {
+		this._sessionId = randomatic__WEBPACK_IMPORTED_MODULE_0___default()('A0', 5, { exclude: '0oOiIlL1' });
+		this._password = randomatic__WEBPACK_IMPORTED_MODULE_0___default()('*', 20);
+		this._connecting = false;
+		this._connected = false;
+		this._peer?.destroy();
+		this._peer = null;
+		this._abortController = new AbortController();
 	}
 
 	async _setupPeer(peerSessionId = null) {
@@ -3380,6 +3676,7 @@ class RTCPeer {
 		this._connecting = true;
 
 		this._peer.on('signal', (data) => {
+			console.log(data);
 			if (peerSessionId) {
 				SignalSend(this._sessionId, this._password, peerSessionId, data);
 			}
@@ -3399,14 +3696,27 @@ class RTCPeer {
 		});
 
 		while (this._connecting) {
+			console.log('hello');
 			try {
-				const message = await SignalReceive(this._sessionId, this._password);
+				const message = await SignalReceive(
+					this._sessionId,
+					this._password,
+					this._abortController.signal,
+				);
 				peerSessionId = message.from;
 				this._peer.signal(message.data);
 			} catch (e) {
 				console.log("didn't receive a message or an error, retrying...", e);
 			}
 		}
+	}
+
+	async initiateConnection(peerSessionId) {
+		this._setupPeer(peerSessionId);
+	}
+
+	async waitForConnection() {
+		this._setupPeer();
 	}
 
 	onConnect(connectAction) {
@@ -3418,16 +3728,15 @@ class RTCPeer {
 	}
 
 	send(data) {
-		this._peer.send(data);
-	}
-
-	cancelConnectionAttempt() {
-		this._connecting = false;
-		this._peer.destroy();
+		try {
+			this._peer.send(data);
+		} catch (e) {
+			this._connected = false;
+		}
 	}
 }
 
-async function SignalReceive(username, password) {
+async function SignalReceive(username, password, signal = undefined) {
 	const headers = new Headers({
 		Authorization: 'Basic ' + window.btoa(username + ':' + password),
 	});
@@ -3436,6 +3745,7 @@ async function SignalReceive(username, password) {
 		method: 'GET',
 		cache: 'no-cache',
 		headers: headers,
+		signal,
 	});
 
 	try {
@@ -3448,7 +3758,7 @@ async function SignalReceive(username, password) {
 	}
 }
 
-async function SignalSend(username, password, to, message) {
+async function SignalSend(username, password, to, message, signal = undefined) {
 	console.log('Sending', message);
 
 	const headers = new Headers({
@@ -3460,6 +3770,7 @@ async function SignalSend(username, password, to, message) {
 		cache: 'no-cache',
 		headers: headers,
 		body: JSON.stringify(message),
+		signal,
 	});
 }
 
@@ -3478,43 +3789,24 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "VRButton": () => (/* binding */ VRButton)
 /* harmony export */ });
 class VRButton {
-	static createButton(button, renderer, options) {
-		console.log(renderer);
-		if (options) {
-			console.error(
-				'THREE.VRButton: The "options" parameter has been removed. Please set the reference space type via renderer.xr.setReferenceSpaceType() instead.',
-			);
-		}
-
-		function showEnterVR(/*device*/) {
+	static createButton(button, renderer) {
+		function showEnterVR() {
+			button.vrSupported = true;
 			let currentSession = null;
 
 			async function onSessionStarted(session) {
 				session.addEventListener('end', onSessionEnded);
-
 				await renderer.xr.setSession(session);
-				button.textContent = 'EXIT VR';
-
 				currentSession = session;
 			}
 
 			function onSessionEnded(/*event*/) {
 				currentSession.removeEventListener('end', onSessionEnded);
-
-				button.textContent = 'ENTER VR';
-
 				currentSession = null;
 			}
 
 			button.onclick = function () {
 				if (currentSession === null) {
-					// WebXR's requestReferenceSpace only works if the corresponding feature
-					// was requested at session creation time. For simplicity, just ask for
-					// the interesting ones as optional features, but be aware that the
-					// requestReferenceSpace call will fail if it turns out to be unavailable.
-					// ('local' is always available for immersive sessions and doesn't need to
-					// be requested separately.)
-
 					const sessionInit = {
 						optionalFeatures: [
 							'local-floor',
@@ -3532,35 +3824,23 @@ class VRButton {
 			};
 		}
 
-		function disableButton() {
+		function showVRNotSupported() {
+			button.vrSupported = true;
 			button.disabled = true;
 			button.onclick = null;
-		}
-
-		function showWebXRNotFound() {
-			disableButton();
-		}
-
-		function showVRNotAllowed(exception) {
-			disableButton();
-
-			console.warn(
-				'Exception when trying to call xr.isSessionSupported',
-				exception,
-			);
 		}
 
 		if ('xr' in navigator) {
 			navigator.xr
 				.isSessionSupported('immersive-vr')
 				.then(function (supported) {
-					supported ? showEnterVR() : showWebXRNotFound();
+					supported ? showEnterVR() : showVRNotSupported();
 
 					if (supported && VRButton.xrSessionIsGranted) {
 						button.click();
 					}
 				})
-				.catch(showVRNotAllowed);
+				.catch(showVRNotSupported);
 		} else {
 			button.disabled = true;
 		}
@@ -3583,6 +3863,91 @@ VRButton.xrSessionIsGranted = false;
 VRButton.registerSessionGrantedListener();
 
 
+
+
+/***/ }),
+
+/***/ "./src/js/systems/DataStreamingSystem.js":
+/*!***********************************************!*\
+  !*** ./src/js/systems/DataStreamingSystem.js ***!
+  \***********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DataStreamingSystem": () => (/* binding */ DataStreamingSystem)
+/* harmony export */ });
+/* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/PeerComponent */ "./src/js/components/PeerComponent.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/StreamingComponent */ "./src/js/components/StreamingComponent.js");
+/* harmony import */ var _utils_threeUtils__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../utils/threeUtils */ "./src/js/utils/threeUtils.js");
+
+
+
+
+
+
+
+
+
+
+class DataStreamingSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_1__.GameSystem {
+	onExecute() {
+		if (this.gameStateComponent.renderer.xr.isPresenting) {
+			this.queries.peer.results.forEach((entity) => {
+				const peerComponent = entity.getComponent(_components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__.PeerComponent);
+				const deviceTransform = this._generateDeviceTransform();
+
+				peerComponent.sendBuffer.push(
+					_Constants__WEBPACK_IMPORTED_MODULE_4__.RTC_CONSTANTS.DEVICE_TRANSFORM_HEADER +
+						JSON.stringify(deviceTransform),
+				);
+			});
+		}
+	}
+
+	_generateDeviceTransform() {
+		const renderer = this.gameStateComponent.renderer;
+		const camera = renderer.xr.getCamera();
+		const deviceTransform = {
+			headset: (0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_7__.serializeTransform)(camera),
+		};
+		this.queries.controller.results.forEach((entity) => {
+			const controllerInterface = entity.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.VrControllerComponent)
+				.controllerInterface;
+			let handKey = '';
+			if (entity.hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.LeftController)) {
+				handKey = 'left';
+			} else if (entity.hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.RightController)) {
+				handKey = 'right';
+			}
+			deviceTransform[handKey] = serializeControllerTransform(
+				controllerInterface,
+			);
+		});
+		return deviceTransform;
+	}
+}
+
+DataStreamingSystem.addQueries({
+	controller: { components: [_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.VrControllerComponent] },
+	object: {
+		components: [_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_6__.StreamingComponent, _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_2__.Object3DComponent],
+	},
+	peer: { components: [_components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__.PeerComponent] },
+});
+
+const serializeControllerTransform = (controllerInterface) => {
+	return {
+		position: controllerInterface.getPosition().toArray(),
+		quaternion: controllerInterface.getQuaternion().toArray(),
+	};
+};
 
 
 /***/ }),
@@ -3670,7 +4035,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
 /* harmony import */ var _components_HandComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/HandComponent */ "./src/js/components/HandComponent.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
 /* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
 /* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
 /* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
@@ -3692,7 +4057,7 @@ const FLIGHT_SPEED = 8;
 const OBJECT_HIGHLIGHT_SCORE_DISTANCE_WEIGHT = 0.7;
 const NUM_FRAMES_TO_STORE = 10;
 
-class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.InteractionSystem {
+class ObjectGNTSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__.InteractionSystem {
 	init() {
 		this._helperVec3 = new three__WEBPACK_IMPORTED_MODULE_7__.Vector3();
 		this._helperQuat = new three__WEBPACK_IMPORTED_MODULE_7__.Quaternion();
@@ -3716,6 +4081,7 @@ class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 		let handOccupied = { LEFT: false, RIGHT: false };
 		this.queries.grabbable.results.forEach((entity) => {
 			let grabbableComponent = entity.getMutableComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_0__.GrabbableComponent);
+			grabbableComponent.stateJustChanged = false;
 			let object = entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value;
 			let handKey = grabbableComponent.handKey;
 			if (grabbableComponent.state === _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_0__.GRAB_STATE.IDLE) {
@@ -3760,8 +4126,9 @@ class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 						this._helperVec3.subVectors(endFrame[1], startFrame[1]);
 						let speed =
 							this._helperVec3.length() / (endFrame[0] - startFrame[0]);
-						rigidBodyComponent.direction.copy(this._helperVec3.normalize());
-						rigidBodyComponent.speed = speed;
+						// rigidBodyComponent.direction.copy(this._helperVec3.normalize());
+						rigidBodyComponent.direction.copy(new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(0, 0, -1));
+						rigidBodyComponent.speed = speed + 1;
 
 						let deltaQuat = startFrame[2].invert().multiply(endFrame[2]);
 						let [axis, angle] = getAxisAndAngelFromQuaternion(deltaQuat);
@@ -3851,6 +4218,7 @@ class ObjectGNTSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 		);
 		let grabbableComponent = entity.getMutableComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_0__.GrabbableComponent);
 		grabbableComponent.state = _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_0__.GRAB_STATE.IN_FLIGHT;
+		grabbableComponent.stateJustChanged = true;
 		grabbableComponent.handKey = handKey;
 		this.controllerEntities[handKey].addComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_4__.Occupied);
 	}
@@ -3920,6 +4288,261 @@ const getAxisAndAngelFromQuaternion = (q) => {
 
 /***/ }),
 
+/***/ "./src/js/systems/ObjectSyncSystem.js":
+/*!********************************************!*\
+  !*** ./src/js/systems/ObjectSyncSystem.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ObjectSyncSystem": () => (/* binding */ ObjectSyncSystem)
+/* harmony export */ });
+/* harmony import */ var _utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/threeUtils */ "./src/js/utils/threeUtils.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
+/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_PeerComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/PeerComponent */ "./src/js/components/PeerComponent.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../components/StreamingComponent */ "./src/js/components/StreamingComponent.js");
+/* harmony import */ var _TestSphereSystem__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./TestSphereSystem */ "./src/js/systems/TestSphereSystem.js");
+
+
+
+
+
+
+
+
+
+
+
+class ObjectSyncSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_1__.GameSystem {
+	onExecute(delta, _time) {
+		this.queries.peer.results.forEach((entity) => {
+			const peerComponent = entity.getMutableComponent(_components_PeerComponent__WEBPACK_IMPORTED_MODULE_4__.PeerComponent);
+			this._sendObjectsData(delta, peerComponent);
+			this._syncObjects(peerComponent);
+			this._processOutgoingCriticalEvents(peerComponent);
+			this._processIncomingCriticalEvents(peerComponent);
+		});
+	}
+
+	_sendObjectsData(delta, peerComponent) {
+		const objectsData = {};
+		this.queries.object.results.forEach((entity) => {
+			const streamingComponent = entity.getMutableComponent(_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent);
+			if (streamingComponent.owner === _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.SELF) {
+				streamingComponent.syncTimer -= delta;
+				if (streamingComponent.syncTimer <= 0) {
+					streamingComponent.syncTimer = _Constants__WEBPACK_IMPORTED_MODULE_5__.RTC_CONSTANTS.OBJECT_SYNC_INTERVAL;
+					objectsData[streamingComponent.id] = {
+						objectTransform: (0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__.serializeTransform)(
+							entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value,
+						),
+						rigidBodyData: entity.getComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent).serialize(),
+					};
+				}
+			}
+		});
+		if (Object.keys(objectsData) != 0) {
+			peerComponent.sendBuffer.push(
+				_Constants__WEBPACK_IMPORTED_MODULE_5__.RTC_CONSTANTS.OBJECT_DATA_HEADER + JSON.stringify(objectsData),
+			);
+		}
+	}
+
+	_syncObjects(peerComponent) {
+		const objectsData = peerComponent.streamingObjects;
+		if (!objectsData) return;
+		const localObjectIds = [];
+		const syncObjectEntity = (entity) => {
+			const streamingComponent = entity.getMutableComponent(_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent);
+			const { objectTransform, rigidBodyData } = objectsData[
+				streamingComponent.id
+			];
+			(0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__.deserializeTransform)(
+				objectTransform,
+				entity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value,
+			);
+			entity.getMutableComponent(_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent).deserialize(rigidBodyData);
+		};
+		this.queries.object.results.forEach((entity) => {
+			const streamingComponent = entity.getMutableComponent(_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent);
+			localObjectIds.push(streamingComponent.id);
+			if (
+				objectsData[streamingComponent.id] != null &&
+				streamingComponent.owner === _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.PEER
+			) {
+				syncObjectEntity(entity);
+			}
+		});
+
+		const newObjectIds = Object.keys(objectsData).filter(
+			(id) => !localObjectIds.includes(id),
+		);
+		newObjectIds.forEach((id) => {
+			const sphereEntity = (0,_TestSphereSystem__WEBPACK_IMPORTED_MODULE_8__.createNewTestSphere)(
+				this.world,
+				id,
+				_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.PEER,
+				this.gameStateComponent.scene,
+			);
+			syncObjectEntity(sphereEntity);
+		});
+
+		peerComponent.streamingObjects = null;
+	}
+
+	_processOutgoingCriticalEvents(peerComponent) {
+		this.queries.object.results.forEach((entity) => {
+			const grabbableComponent = entity.getComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_2__.GrabbableComponent);
+			if (grabbableComponent.stateJustChanged) {
+				const streamingComponent = entity.getMutableComponent(
+					_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent,
+				);
+				if (streamingComponent.owner === _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.PEER) {
+					// commandeer this object
+					streamingComponent.owner = _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.SELF;
+					peerComponent.sendBufferSecure.push({
+						eventType: 'commandeer',
+						content: streamingComponent.id,
+					});
+					console.log('requested to commandeer object:', streamingComponent.id);
+				}
+			}
+		});
+	}
+
+	_processIncomingCriticalEvents(peerComponent) {
+		if (!peerComponent.receivedSecureMessages['commandeer']) return;
+		peerComponent.receivedSecureMessages['commandeer'].forEach((id) => {
+			this.queries.object.results.forEach((entity) => {
+				const streamingComponent = entity.getMutableComponent(
+					_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent,
+				);
+				if (
+					streamingComponent.id == id &&
+					streamingComponent.owner === _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.SELF
+				) {
+					// transfer ownership of this object to peer
+					streamingComponent.owner = _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent.OWNER.PEER;
+					console.log(
+						'object ownership transferred to peer:',
+						streamingComponent.id,
+					);
+				}
+			});
+		});
+		peerComponent.receivedSecureMessages['commandeer'].length = 0;
+	}
+}
+
+ObjectSyncSystem.addQueries({
+	object: {
+		components: [_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_7__.StreamingComponent, _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_6__.RigidBodyComponent, _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent],
+	},
+	peer: { components: [_components_PeerComponent__WEBPACK_IMPORTED_MODULE_4__.PeerComponent] },
+});
+
+
+/***/ }),
+
+/***/ "./src/js/systems/PeerAvatarSystem.js":
+/*!********************************************!*\
+  !*** ./src/js/systems/PeerAvatarSystem.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PeerAvatarSystem": () => (/* binding */ PeerAvatarSystem)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/threeUtils */ "./src/js/utils/threeUtils.js");
+/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
+/* harmony import */ var _components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/PeerComponent */ "./src/js/components/PeerComponent.js");
+
+
+
+
+
+
+
+
+class PeerAvatarSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__.GameSystem {
+	init() {
+		this._loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_1__.GLTFLoader();
+	}
+
+	onExecute(_delta, _time) {
+		this.queries.peer.results.forEach((entity) => {
+			const peerComponent = entity.getMutableComponent(_components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__.PeerComponent);
+			if (!peerComponent.avatarModel) {
+				this._createPeerAvatar(peerComponent);
+			}
+			this._updatePeerAvatar(peerComponent);
+		});
+	}
+
+	_createPeerAvatar(peerComponent) {
+		// create placeholder models
+		peerComponent.avatarModel = {
+			head: new three__WEBPACK_IMPORTED_MODULE_4__.Object3D(),
+			leftHand: new three__WEBPACK_IMPORTED_MODULE_4__.Object3D(),
+			rightHand: new three__WEBPACK_IMPORTED_MODULE_4__.Object3D(),
+			body: new three__WEBPACK_IMPORTED_MODULE_4__.Object3D(),
+		};
+		const assetUrl = _components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__.PeerComponent.getAvatarModelUrl(peerComponent.avatarType);
+		this._loader.load(assetUrl, (gltf) => {
+			const object = gltf.scene;
+			const avatarModel = {
+				head: object.getObjectByName('head'),
+				leftHand: object.getObjectByName('hand-left'),
+				rightHand: object.getObjectByName('hand-right'),
+				body: object.getObjectByName('body'),
+			};
+			Object.entries(avatarModel).forEach(([key, object]) => {
+				(0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__.swapModel)(peerComponent.avatarModel[key], object);
+				this.gameStateComponent.scene.add(object);
+			});
+			peerComponent.avatarModel = avatarModel;
+			this._setAvatarVisibility(avatarModel, false);
+		});
+	}
+
+	_updatePeerAvatar(peerComponent) {
+		const deviceTransform = peerComponent.deviceTransform;
+		if (deviceTransform) {
+			const avatar = peerComponent.avatarModel;
+			(0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__.deserializeTransform)(deviceTransform['headset'], avatar.head);
+			(0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__.deserializeTransform)(deviceTransform['left'], avatar.leftHand);
+			(0,_utils_threeUtils__WEBPACK_IMPORTED_MODULE_0__.deserializeTransform)(deviceTransform['right'], avatar.rightHand);
+			avatar.body.position.copy(avatar.head.position);
+			avatar.body.position.y -= 0.6;
+			this._setAvatarVisibility(avatar, true);
+		}
+	}
+
+	_setAvatarVisibility(avatar, visible) {
+		avatar.head.visible = visible;
+		avatar.body.visible = visible;
+		avatar.leftHand.visible = visible;
+		avatar.rightHand.visible = visible;
+	}
+}
+
+PeerAvatarSystem.addQueries({
+	peer: { components: [_components_PeerComponent__WEBPACK_IMPORTED_MODULE_3__.PeerComponent] },
+});
+
+
+/***/ }),
+
 /***/ "./src/js/systems/RTCSystem.js":
 /*!*************************************!*\
   !*** ./src/js/systems/RTCSystem.js ***!
@@ -3931,25 +4554,142 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "RTCSystem": () => (/* binding */ RTCSystem)
 /* harmony export */ });
-/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
-/* harmony import */ var _components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/VrControllerComponent */ "./src/js/components/VrControllerComponent.js");
-/* harmony import */ var three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! three/examples/jsm/loaders/GLTFLoader */ "./node_modules/three/examples/jsm/loaders/GLTFLoader.js");
-/* harmony import */ var _components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/GameStateComponent */ "./src/js/components/GameStateComponent.js");
-/* harmony import */ var _lib_RTCPeer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../lib/RTCPeer */ "./src/js/lib/RTCPeer.js");
-/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
+/* harmony import */ var _components_PeerComponent__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/PeerComponent */ "./src/js/components/PeerComponent.js");
+/* harmony import */ var _lib_RTCPeer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/RTCPeer */ "./src/js/lib/RTCPeer.js");
+/* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
+/* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
 
 
 
 
 
-
-
-
-
-class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_4__.System {
+class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_3__.System {
 	init() {
-		this.peer = new _lib_RTCPeer__WEBPACK_IMPORTED_MODULE_3__.RTCPeer();
+		this.peer = new _lib_RTCPeer__WEBPACK_IMPORTED_MODULE_1__.RTCPeer();
+		this.sendBuffer = [];
+		this.sendBufferSecure = [];
+		this.secureMessages = {};
+		this.securePacketSendCounter = 0;
+		this.securePacketReceiveCounter = 0;
+		this.securePacketPending = {};
+		this.receivedSecureMessages = {};
+		this.peerComponent = null;
+		this._setupUI();
+	}
 
+	execute(delta, _time) {
+		const vrButton = document.getElementById('enter-vr');
+		vrButton.disabled = !(this.peer.connected && vrButton.vrSupported);
+		document.getElementById('run-inline').disabled = !this.peer.connected;
+
+		this.sendBuffer.forEach((message) => {
+			this.peer.send(message);
+		});
+		this.sendBuffer.length = 0;
+
+		while (this.sendBufferSecure.length != 0) {
+			const packet = this.sendBufferSecure.shift();
+			this._packageOutgoingSecureMessage(packet);
+		}
+
+		Object.values(this.secureMessages).forEach((messageObject) => {
+			messageObject.retryTimer -= delta;
+			if (messageObject.retryTimer <= 0) {
+				this.peer.send(messageObject.content);
+				messageObject.retryTimer = _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.RETRY_INTERVAL;
+			}
+		});
+	}
+
+	_setupPeerDataAction() {
+		this.peer.onData((data) => {
+			const header = data.substring(0, _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.HEADER_LENGTH);
+			const message = data.substring(_Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.HEADER_LENGTH);
+			switch (header) {
+				case _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.SECURE_MESSAGE_HEADER:
+					this._processIncomingSecureMessage(message);
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.SECURE_ACK_HEADER:
+					this._processIncomingSecureACK(message);
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.DEVICE_TRANSFORM_HEADER:
+					this.peerComponent.deviceTransform = JSON.parse(message);
+					break;
+				case _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.OBJECT_DATA_HEADER:
+					this.peerComponent.streamingObjects = JSON.parse(message);
+			}
+		});
+		this.peer.onConnect(() => {
+			setConnectionStatus('connected');
+			const peerEntity = this.world.createEntity();
+			peerEntity.addComponent(_components_PeerComponent__WEBPACK_IMPORTED_MODULE_0__.PeerComponent, {
+				mode: _components_PeerComponent__WEBPACK_IMPORTED_MODULE_0__.PeerComponent.MODE.IMMERSIVE,
+				sendBuffer: this.sendBuffer,
+				sendBufferSecure: this.sendBufferSecure,
+				avatarType: _components_PeerComponent__WEBPACK_IMPORTED_MODULE_0__.PeerComponent.AVATAR_TYPE.BROWN_BEAR,
+				receivedSecureMessages: this.receivedSecureMessages,
+			});
+			this.peerComponent = peerEntity.getMutableComponent(_components_PeerComponent__WEBPACK_IMPORTED_MODULE_0__.PeerComponent);
+			// setInterval(() => {
+			// 	this.sendBufferSecure.push({
+			// 		eventType: 'debug',
+			// 		content: 'test message',
+			// 	});
+			// }, 500);
+		});
+	}
+
+	_packageOutgoingSecureMessage(packet) {
+		const payload = {
+			id: this.securePacketSendCounter,
+			eventType: packet.eventType,
+			message: packet.content,
+		};
+		this.secureMessages[payload.id] = {
+			retryTimer: 0,
+			content: _Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.SECURE_MESSAGE_HEADER + JSON.stringify(payload),
+		};
+		this.securePacketSendCounter++;
+		console.log('sent secure message', payload);
+	}
+
+	_processIncomingSecureMessage(packet) {
+		const payload = JSON.parse(packet);
+		// send ack for receiving this message
+		const ackPayload = { id: payload.id, message: 'ack' };
+		this.peer.send(
+			_Constants__WEBPACK_IMPORTED_MODULE_2__.RTC_CONSTANTS.SECURE_ACK_HEADER + JSON.stringify(ackPayload),
+		);
+
+		if (payload.id < this.securePacketReceiveCounter) {
+			return;
+		} else {
+			this.securePacketPending[payload.id] = true;
+			while (this.securePacketReceiveCounter <= payload.id) {
+				if (this.securePacketPending[this.securePacketReceiveCounter]) {
+					delete this.securePacketPending[this.securePacketReceiveCounter];
+					this.securePacketReceiveCounter += 1;
+				} else {
+					break;
+				}
+			}
+		}
+		// process secure message
+		if (!this.receivedSecureMessages[payload.eventType]) {
+			this.receivedSecureMessages[payload.eventType] = [];
+		}
+		this.receivedSecureMessages[payload.eventType].push(payload.message);
+	}
+
+	_processIncomingSecureACK(message) {
+		const payload = JSON.parse(message);
+		// received ack for this secure message
+		// removing secure message from send queue
+		console.log('received ack', payload.id);
+		delete this.secureMessages[payload.id];
+	}
+
+	_setupUI() {
 		document.getElementById('create-session').addEventListener('click', () => {
 			document.getElementById('session-menu').style.display = 'block';
 			document.getElementById('action-menu').style.display = 'none';
@@ -3977,19 +4717,9 @@ class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_4__.System {
 		document.getElementById('peer-session-id').oninput = function () {
 			document.getElementById('connect').disabled = this.value.length != 5;
 		};
-		const setupPeerDataAction = () => {
-			this.peer.onData((data) => {
-				const deviceTransform = JSON.parse(data);
-				deserializeTransform(deviceTransform['headset'], this.peerAvatarHead);
-				deserializeTransform(deviceTransform['left'], this.peerLeftHand);
-				deserializeTransform(deviceTransform['right'], this.peerRightHand);
-			});
-			this.peer.onConnect(() => {
-				setConnectionStatus('connected');
-			});
-		};
+
 		document.getElementById('create-session').onclick = () => {
-			setupPeerDataAction();
+			this._setupPeerDataAction();
 			this.peer.waitForConnection();
 		};
 		document.getElementById('connect').onclick = () => {
@@ -3997,98 +4727,24 @@ class RTCSystem extends ecsy__WEBPACK_IMPORTED_MODULE_4__.System {
 				.getElementById('peer-session-id')
 				.value.toUpperCase();
 			setConnectionStatus('connecting');
-			setupPeerDataAction();
+			this._setupPeerDataAction();
 			this.peer.initiateConnection(peerSessionId);
 		};
-		document.getElementById('run-inline').onclick = () => {
+		document.getElementById('run-inline').addEventListener('click', () => {
 			document.getElementById('ui-panel').style.display = 'none';
-		};
-
-		this.peerAvatarHead = new three__WEBPACK_IMPORTED_MODULE_5__.Mesh(
-			new three__WEBPACK_IMPORTED_MODULE_5__.SphereGeometry(0.2, 4, 4),
-			new three__WEBPACK_IMPORTED_MODULE_5__.MeshBasicMaterial({ color: 0xffff00 }),
-		);
-
-		this.peerLeftHand = new three__WEBPACK_IMPORTED_MODULE_5__.Mesh(
-			new three__WEBPACK_IMPORTED_MODULE_5__.SphereGeometry(0.05, 4, 4),
-			new three__WEBPACK_IMPORTED_MODULE_5__.MeshBasicMaterial({ color: 0xffff00 }),
-		);
-
-		this.peerRightHand = new three__WEBPACK_IMPORTED_MODULE_5__.Mesh(
-			new three__WEBPACK_IMPORTED_MODULE_5__.SphereGeometry(0.05, 4, 4),
-			new three__WEBPACK_IMPORTED_MODULE_5__.MeshBasicMaterial({ color: 0xffff00 }),
-		);
-		this.renderer = null;
-	}
-
-	execute() {
-		this.queries.gameManager.added.forEach((entity) => {
-			let gameStateComponent = entity.getComponent(_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__.GameStateComponent);
-			const loader = new three_examples_jsm_loaders_GLTFLoader__WEBPACK_IMPORTED_MODULE_1__.GLTFLoader();
-			loader.load('assets/bearhead.glb', (gltf) => {
-				this.peerAvatarHead = gltf.scene;
-				gameStateComponent.scene.add(this.peerAvatarHead);
+			this.sendBufferSecure.push({
+				eventType: 'handshake',
+				content: 'the peer is inline',
 			});
-			loader.load('assets/bearclaw-right.glb', (gltf) => {
-				this.peerRightHand = gltf.scene;
-				gameStateComponent.scene.add(this.peerRightHand);
-			});
-			loader.load('assets/bearclaw-left.glb', (gltf) => {
-				this.peerLeftHand = gltf.scene;
-				gameStateComponent.scene.add(this.peerLeftHand);
-			});
-			this.renderer = gameStateComponent.renderer;
 		});
-
-		document.getElementById('enter-vr').disabled = !this.peer.connected;
-		document.getElementById('run-inline').disabled = !this.peer.connected;
-
-		if (this.peer.connected && this.renderer && this.renderer.xr.isPresenting) {
-			const camera = this.renderer.xr.getCamera();
-			const deviceTransform = {
-				headset: serializeTransform(camera),
-			};
-			this.queries.controllers.results.forEach((entity) => {
-				const controllerInterface = entity.getComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.VrControllerComponent)
-					.controllerInterface;
-				let handKey = '';
-				if (entity.hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.LeftController)) {
-					handKey = 'left';
-				} else if (entity.hasComponent(_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.RightController)) {
-					handKey = 'right';
-				}
-				deviceTransform[handKey] = serializeControllerTransform(
-					controllerInterface,
-				);
+		document.getElementById('enter-vr').addEventListener('click', () => {
+			this.sendBufferSecure.push({
+				eventType: 'handshake',
+				content: 'the peer is immersive',
 			});
-			this.peer.send(JSON.stringify(deviceTransform));
-		}
+		});
 	}
 }
-
-RTCSystem.queries = {
-	gameManager: { components: [_components_GameStateComponent__WEBPACK_IMPORTED_MODULE_2__.GameStateComponent], listen: { added: true } },
-	controllers: { components: [_components_VrControllerComponent__WEBPACK_IMPORTED_MODULE_0__.VrControllerComponent] },
-};
-
-const serializeTransform = (object) => {
-	return {
-		position: object.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_5__.Vector3()).toArray(),
-		quaternion: object.getWorldQuaternion(new three__WEBPACK_IMPORTED_MODULE_5__.Quaternion()).toArray(),
-	};
-};
-
-const serializeControllerTransform = (controllerInterface) => {
-	return {
-		position: controllerInterface.getPosition().toArray(),
-		quaternion: controllerInterface.getQuaternion().toArray(),
-	};
-};
-
-const deserializeTransform = (transform, object) => {
-	object.position.fromArray(transform.position);
-	object.quaternion.fromArray(transform.quaternion);
-};
 
 const setConnectionStatus = (status) => {
 	[...document.getElementsByClassName('status-row')].forEach((element) => {
@@ -4155,7 +4811,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
 /* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
 /* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
 
 
 
@@ -4181,7 +4837,7 @@ class RigidBodyPhysicsSystem extends ecsy__WEBPACK_IMPORTED_MODULE_1__.System {
 			if (!rigidBodyComponent.active) return;
 
 			if (rigidBodyComponent.perishable && rigidBodyComponent.timeToLive <= 0) {
-				(0,_utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_4__.deleteEntity)(entity);
+				(0,_utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_4__.deleteEntity)(entity);
 			} else {
 				let collision = this.checkForCollision(
 					rigidBodyMesh,
@@ -4564,12 +5220,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "SnapTurnSystem": () => (/* binding */ SnapTurnSystem)
 /* harmony export */ });
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
 /* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
 
 
 
-class SnapTurnSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_0__.InteractionSystem {
+class SnapTurnSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_0__.InteractionSystem {
 	init() {
 		this.prevState = _Constants__WEBPACK_IMPORTED_MODULE_1__.LOCOMOTION_CONSTANTS.JOYSTICK_STATE.DISENGAGED;
 	}
@@ -4634,7 +5290,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var _components_TagComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/TagComponents */ "./src/js/components/TagComponents.js");
 /* harmony import */ var _lib_CurvedRaycaster__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../lib/CurvedRaycaster */ "./src/js/lib/CurvedRaycaster.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
 /* harmony import */ var _Constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../Constants */ "./src/js/Constants.js");
 /* harmony import */ var ecsy__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ecsy */ "./node_modules/ecsy/src/index.js");
 /* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
@@ -4653,7 +5309,7 @@ const MARKER_GAP = 0.4;
 const FLOOR_Y = 0;
 const MARKER_Y_OFFSET = 0.02;
 
-class TeleportSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_2__.InteractionSystem {
+class TeleportSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__.InteractionSystem {
 	init() {
 		this.footPosition = new three__WEBPACK_IMPORTED_MODULE_6__.Vector3();
 		this.teleportPosition = new three__WEBPACK_IMPORTED_MODULE_6__.Vector3();
@@ -4804,6 +5460,77 @@ const isJoystickEngaged = (controllerInterface) => {
 
 /***/ }),
 
+/***/ "./src/js/systems/TestSphereSystem.js":
+/*!********************************************!*\
+  !*** ./src/js/systems/TestSphereSystem.js ***!
+  \********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "TestSphereSystem": () => (/* binding */ TestSphereSystem),
+/* harmony export */   "createNewTestSphere": () => (/* binding */ createNewTestSphere)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+/* harmony import */ var _components_TagComponents__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../components/TagComponents */ "./src/js/components/TagComponents.js");
+/* harmony import */ var _components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components/GrabbableComponent */ "./src/js/components/GrabbableComponent.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
+/* harmony import */ var _components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/Object3DComponent */ "./src/js/components/Object3DComponent.js");
+/* harmony import */ var _components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../components/RigidBodyComponent */ "./src/js/components/RigidBodyComponent.js");
+/* harmony import */ var _components_StreamingComponent__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../components/StreamingComponent */ "./src/js/components/StreamingComponent.js");
+/* harmony import */ var _lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../lib/ControllerInterface */ "./src/js/lib/ControllerInterface.js");
+/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! uuid */ "./node_modules/uuid/dist/esm-browser/v4.js");
+
+
+
+
+
+
+
+
+
+
+
+class TestSphereSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__.InteractionSystem {
+	onExecute(_delta, _time) {
+		Object.values(this.controllerInterfaces).forEach((controller) => {
+			if (controller.triggerJustPressed(_lib_ControllerInterface__WEBPACK_IMPORTED_MODULE_6__.TRIGGERS.INDEX_TRIGGER)) {
+				const sphereEntity = createNewTestSphere(
+					this.world,
+					(0,uuid__WEBPACK_IMPORTED_MODULE_7__["default"])(),
+					_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_5__.StreamingComponent.OWNER.SELF,
+					this.gameStateComponent.scene,
+				);
+				const sphere = sphereEntity.getComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent).value;
+				sphere.position.copy(controller.getPosition());
+				sphere.quaternion.copy(controller.getQuaternion());
+			}
+		});
+	}
+}
+
+const createNewTestSphere = (world, id, owner, scene) => {
+	const sphere = new three__WEBPACK_IMPORTED_MODULE_8__.Mesh(
+		new three__WEBPACK_IMPORTED_MODULE_8__.SphereGeometry(0.06, 12, 8),
+		new three__WEBPACK_IMPORTED_MODULE_8__.MeshStandardMaterial({ color: 0xffffff }),
+	);
+	scene.add(sphere);
+	const sphereEntity = world.createEntity();
+	sphereEntity.addComponent(
+		_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_4__.RigidBodyComponent,
+		_components_RigidBodyComponent__WEBPACK_IMPORTED_MODULE_4__.RigidBodyComponent.createDefaultSchema(),
+	);
+	sphereEntity.addComponent(_components_StreamingComponent__WEBPACK_IMPORTED_MODULE_5__.StreamingComponent, { id, owner });
+	sphereEntity.addComponent(_components_Object3DComponent__WEBPACK_IMPORTED_MODULE_3__.Object3DComponent, { value: sphere });
+	sphereEntity.addComponent(_components_GrabbableComponent__WEBPACK_IMPORTED_MODULE_1__.GrabbableComponent);
+	sphereEntity.addComponent(_components_TagComponents__WEBPACK_IMPORTED_MODULE_0__.Collider);
+	return sphereEntity;
+};
+
+
+/***/ }),
+
 /***/ "./src/js/systems/VrInputSystem.js":
 /*!*****************************************!*\
   !*** ./src/js/systems/VrInputSystem.js ***!
@@ -4849,7 +5576,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 /* harmony import */ var _utils_buttonUtils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils/buttonUtils */ "./src/js/utils/buttonUtils.js");
-/* harmony import */ var _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/ECSYUtils */ "./src/js/utils/ECSYUtils.js");
+/* harmony import */ var _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/ecsyUtils */ "./src/js/utils/ecsyUtils.js");
 
 
 
@@ -4859,7 +5586,7 @@ __webpack_require__.r(__webpack_exports__);
 const BUTTON_RADIUS = 0.015;
 const BUTTON_TIMEOUT = 0.5;
 
-class WristMenuSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.InteractionSystem {
+class WristMenuSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_1__.InteractionSystem {
 	init() {
 		this.watchObject = null;
 		this.exitButton = null;
@@ -4982,9 +5709,111 @@ class WristMenuSystem extends _utils_ECSYUtils__WEBPACK_IMPORTED_MODULE_1__.Inte
 
 /***/ }),
 
-/***/ "./src/js/utils/ECSYUtils.js":
+/***/ "./src/js/utils/buttonUtils.js":
+/*!*************************************!*\
+  !*** ./src/js/utils/buttonUtils.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "createLongButton": () => (/* binding */ createLongButton),
+/* harmony export */   "createRoundButton": () => (/* binding */ createRoundButton),
+/* harmony export */   "checkButtonIntersect": () => (/* binding */ checkButtonIntersect)
+/* harmony export */ });
+/* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
+
+
+const TOUCH_RADIUS = 0.01;
+
+const createLongButton = (width, height, path) => {
+	const geometry = new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(width, height);
+	const material = new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
+		color: 0xffff00,
+		transparent: true,
+		opacity: 0,
+	});
+	const plane = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(geometry, material);
+
+	const defaultButtonMesh = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(
+		new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(width, height),
+		new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
+			map: new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader().load(path),
+			transparent: true,
+			side: three__WEBPACK_IMPORTED_MODULE_0__.DoubleSide,
+		}),
+	);
+	plane.add(defaultButtonMesh);
+	defaultButtonMesh.position.z = 0.001;
+	return plane;
+};
+
+const createRoundButton = (radius, defaultPath, pressedPath = null) => {
+	const geometry = new three__WEBPACK_IMPORTED_MODULE_0__.CircleGeometry(radius, 8);
+	const material = new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
+		color: 0xffff00,
+		transparent: true,
+		opacity: 0,
+	});
+	const circle = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(geometry, material);
+
+	const defaultButtonMesh = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(
+		new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(radius * 2, radius * 2),
+		new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
+			map: new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader().load(defaultPath),
+			transparent: true,
+			side: three__WEBPACK_IMPORTED_MODULE_0__.DoubleSide,
+		}),
+	);
+	circle.add(defaultButtonMesh);
+	defaultButtonMesh.position.z = 0.001;
+
+	if (pressedPath) {
+		const pressedButtonMesh = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(
+			new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(radius * 2, radius * 2),
+			new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
+				map: new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader().load(pressedPath),
+				transparent: true,
+				side: three__WEBPACK_IMPORTED_MODULE_0__.DoubleSide,
+			}),
+		);
+		circle.add(pressedButtonMesh);
+		pressedButtonMesh.position.z = 0.001;
+
+		pressedButtonMesh.visible = false;
+		circle.pressed = false;
+		circle.toggle = function () {
+			this.pressed = !this.pressed;
+			defaultButtonMesh.visible = !this.pressed;
+			pressedButtonMesh.visible = this.pressed;
+		};
+	}
+	return circle;
+};
+
+const checkButtonIntersect = (handComponent, buttonMesh) => {
+	if (!buttonMesh.geometry.boundsTree) {
+		buttonMesh.geometry.computeBoundsTree();
+	}
+
+	const transformMatrix = new three__WEBPACK_IMPORTED_MODULE_0__.Matrix4()
+		.copy(buttonMesh.matrixWorld)
+		.invert()
+		.multiply(handComponent.indexTip.matrixWorld);
+
+	const sphere = new three__WEBPACK_IMPORTED_MODULE_0__.Sphere(undefined, TOUCH_RADIUS);
+	sphere.applyMatrix4(transformMatrix);
+
+	return buttonMesh.geometry.boundsTree.intersectsSphere(sphere);
+};
+
+
+/***/ }),
+
+/***/ "./src/js/utils/ecsyUtils.js":
 /*!***********************************!*\
-  !*** ./src/js/utils/ECSYUtils.js ***!
+  !*** ./src/js/utils/ecsyUtils.js ***!
   \***********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -5189,103 +6018,40 @@ GameSystem.addQueries = function (additionalQueries) {
 
 /***/ }),
 
-/***/ "./src/js/utils/buttonUtils.js":
-/*!*************************************!*\
-  !*** ./src/js/utils/buttonUtils.js ***!
-  \*************************************/
+/***/ "./src/js/utils/threeUtils.js":
+/*!************************************!*\
+  !*** ./src/js/utils/threeUtils.js ***!
+  \************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "createLongButton": () => (/* binding */ createLongButton),
-/* harmony export */   "createRoundButton": () => (/* binding */ createRoundButton),
-/* harmony export */   "checkButtonIntersect": () => (/* binding */ checkButtonIntersect)
+/* harmony export */   "swapModel": () => (/* binding */ swapModel),
+/* harmony export */   "serializeTransform": () => (/* binding */ serializeTransform),
+/* harmony export */   "deserializeTransform": () => (/* binding */ deserializeTransform)
 /* harmony export */ });
 /* harmony import */ var three__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! three */ "./node_modules/three/build/three.module.js");
 
 
-const TOUCH_RADIUS = 0.01;
-
-const createLongButton = (width, height, path) => {
-	const geometry = new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(width, height);
-	const material = new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
-		color: 0xffff00,
-		transparent: true,
-		opacity: 0,
-	});
-	const plane = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(geometry, material);
-
-	const defaultButtonMesh = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(
-		new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(width, height),
-		new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
-			map: new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader().load(path),
-			transparent: true,
-			side: three__WEBPACK_IMPORTED_MODULE_0__.DoubleSide,
-		}),
-	);
-	plane.add(defaultButtonMesh);
-	defaultButtonMesh.position.z = 0.001;
-	return plane;
+const swapModel = (oldModel, newModel, discard = true) => {
+	if (oldModel.parent) oldModel.parent.add(newModel);
+	newModel.position.copy(oldModel.position);
+	newModel.quaternion.copy(oldModel.quaternion);
+	[...oldModel.children].forEach(newModel.attach);
+	if (oldModel.parent && discard) oldModel.parent.remove(oldModel);
 };
 
-const createRoundButton = (radius, defaultPath, pressedPath = null) => {
-	const geometry = new three__WEBPACK_IMPORTED_MODULE_0__.CircleGeometry(radius, 8);
-	const material = new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
-		color: 0xffff00,
-		transparent: true,
-		opacity: 0,
-	});
-	const circle = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(geometry, material);
-
-	const defaultButtonMesh = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(
-		new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(radius * 2, radius * 2),
-		new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
-			map: new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader().load(defaultPath),
-			transparent: true,
-			side: three__WEBPACK_IMPORTED_MODULE_0__.DoubleSide,
-		}),
-	);
-	circle.add(defaultButtonMesh);
-	defaultButtonMesh.position.z = 0.001;
-
-	if (pressedPath) {
-		const pressedButtonMesh = new three__WEBPACK_IMPORTED_MODULE_0__.Mesh(
-			new three__WEBPACK_IMPORTED_MODULE_0__.PlaneGeometry(radius * 2, radius * 2),
-			new three__WEBPACK_IMPORTED_MODULE_0__.MeshBasicMaterial({
-				map: new three__WEBPACK_IMPORTED_MODULE_0__.TextureLoader().load(pressedPath),
-				transparent: true,
-				side: three__WEBPACK_IMPORTED_MODULE_0__.DoubleSide,
-			}),
-		);
-		circle.add(pressedButtonMesh);
-		pressedButtonMesh.position.z = 0.001;
-
-		pressedButtonMesh.visible = false;
-		circle.pressed = false;
-		circle.toggle = function () {
-			this.pressed = !this.pressed;
-			defaultButtonMesh.visible = !this.pressed;
-			pressedButtonMesh.visible = this.pressed;
-		};
-	}
-	return circle;
+const serializeTransform = (object) => {
+	return {
+		position: object.getWorldPosition(new three__WEBPACK_IMPORTED_MODULE_0__.Vector3()).toArray(),
+		quaternion: object.getWorldQuaternion(new three__WEBPACK_IMPORTED_MODULE_0__.Quaternion()).toArray(),
+	};
 };
 
-const checkButtonIntersect = (handComponent, buttonMesh) => {
-	if (!buttonMesh.geometry.boundsTree) {
-		buttonMesh.geometry.computeBoundsTree();
-	}
-
-	const transformMatrix = new three__WEBPACK_IMPORTED_MODULE_0__.Matrix4()
-		.copy(buttonMesh.matrixWorld)
-		.invert()
-		.multiply(handComponent.indexTip.matrixWorld);
-
-	const sphere = new three__WEBPACK_IMPORTED_MODULE_0__.Sphere(undefined, TOUCH_RADIUS);
-	sphere.applyMatrix4(transformMatrix);
-
-	return buttonMesh.geometry.boundsTree.intersectsSphere(sphere);
+const deserializeTransform = (transform, object) => {
+	object.position.fromArray(transform.position);
+	object.quaternion.fromArray(transform.quaternion);
 };
 
 
