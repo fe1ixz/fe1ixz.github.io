@@ -4126,9 +4126,8 @@ class ObjectGNTSystem extends _utils_ecsyUtils__WEBPACK_IMPORTED_MODULE_2__.Inte
 						this._helperVec3.subVectors(endFrame[1], startFrame[1]);
 						let speed =
 							this._helperVec3.length() / (endFrame[0] - startFrame[0]);
-						// rigidBodyComponent.direction.copy(this._helperVec3.normalize());
-						rigidBodyComponent.direction.copy(new three__WEBPACK_IMPORTED_MODULE_7__.Vector3(0, 0, -1));
-						rigidBodyComponent.speed = speed + 1;
+						rigidBodyComponent.direction.copy(this._helperVec3.normalize());
+						rigidBodyComponent.speed = speed;
 
 						let deltaQuat = startFrame[2].invert().multiply(endFrame[2]);
 						let [axis, angle] = getAxisAndAngelFromQuaternion(deltaQuat);
